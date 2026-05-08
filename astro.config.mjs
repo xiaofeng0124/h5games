@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://chillarcade.com',
+  site: 'https://chillarcade.io',
   output: 'static',
   trailingSlash: 'never',
 
