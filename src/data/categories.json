@@ -1,0 +1,10 @@
+{
+  "match-3": { "name": "Match-3", "description": "Match three or more tiles to clear the board and score points", "icon": "💎" },
+  "puzzle": { "name": "Puzzle", "description": "Challenge your brain with logic puzzles and brain teasers", "icon": "🧩" },
+  "merge": { "name": "Merge", "description": "Combine items to create new ones and build up your collection", "icon": "🔄" },
+  "casual": { "name": "Casual", "description": "Easy and relaxing games for quick fun breaks", "icon": "🎮" },
+  "arcade": { "name": "Arcade", "description": "Classic arcade action and endless runner games", "icon": "🕹️" },
+  "word": { "name": "Word", "description": "Word puzzles, spelling challenges and vocabulary games", "icon": "📝" },
+  "card": { "name": "Card", "description": "Classic card games and solitaire variations", "icon": "🃏" },
+  "hidden-object": { "name": "Hidden Object", "description": "Find hidden items in beautifully illustrated scenes", "icon": "🔍" }
+}

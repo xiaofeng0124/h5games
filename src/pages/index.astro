@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GameGrid from '../components/GameGrid.astro';
+import games from '../data/games.json' with { type: 'json' };
+import categories from '../data/categories.json' with { type: 'json' };
+
+const featured = games.filter(g => g.featured).slice(0, 8);
+const latest = games.slice(0, 12);
+const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
+---
+
+<Layout title="Free Online Relaxing Games - Play Instantly">
+  <section class="text-center py-12 md:py-20">
+    <h1 class="text-4xl md:text-6xl font-extrabold text-slate-800 dark:text-slate-100 mb-4">
+      Play Free Relaxing Games
+      <span class="block text-indigo-600 dark:text-indigo-400 mt-2">Instantly in Your Browser</span>
+    </h1>
+    <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-8">
+      No downloads. No signups. Just click and play hundreds of casual games — match-3, puzzles, merge games, and more!
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="#games" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all hover:scale-105">
+        Browse Games
+      </a>
+      <a href="/category/puzzle" class="px-8 py-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 transition-all hover:scale-105">
+        Puzzle Games
+      </a>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="mb-12">
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">Browse by Category</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
+      {categoryEntries.map(([slug, cat]) => (
+        <a href={`/category/${slug}`} class="flex flex-col items-center p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-md transition-all group">
+          <span class="text-3xl mb-2 group-hover:scale-110 transition-transform">{cat.icon}</span>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300 text-center">{cat.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Games -->
+  <section class="mb-12" id="games">
+    <GameGrid games={featured} cols={4} title="🔥 Featured Games" />
+  </section>
+
+  <!-- Latest Games -->
+  <section class="mb-12">
+    <GameGrid games={latest} cols={4} title="🎮 All Games" />
+  </section>
+
+  <!-- Why section -->
+  <section class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-8 text-center">Why Play on Chill Arcade?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center">
+        <div class="text-4xl mb-3">⚡</div>
+        <h3 class="font-semibold text-slate-700 dark:text-slate-300 mb-2">Instant Play</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">No downloads, no installations. Games load instantly in your browser.</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl mb-3">🎯</div>
+        <h3 class="font-semibold text-slate-700 dark:text-slate-300 mb-2">Always Free</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Every game is completely free to play. No paywalls, no subscriptions.</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl mb-3">📱</div>
+        <h3 class="font-semibold text-slate-700 dark:text-slate-300 mb-2">Mobile Friendly</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">All games work perfectly on your phone. Play anywhere, anytime.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schema structured data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Chill Arcade",
+    "url": "https://chillarcade.com",
+    "description": "Play free relaxing online games in your browser. No download, no signup, instant fun!",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://chillarcade.com/games/{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  })} />
+</Layout>

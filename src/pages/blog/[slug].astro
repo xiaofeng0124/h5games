@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import blogPosts from '../../data/blog.json' with { type: 'json' };
+import type { BlogPost } from '../../data/games';
+
+export async function getStaticPaths() {
+  return blogPosts.map((post: BlogPost) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<Layout title={post.title} description={post.description}>
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
+    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+    <span>/</span>
+    <a href="/blog" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Guides</a>
+    <span>/</span>
+    <span class="text-slate-700 dark:text-slate-300">{post.title}</span>
+  </nav>
+
+  <article class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-3 py-1 rounded-full capitalize">{post.category}</span>
+        <span class="text-xs text-slate-400">{post.date}</span>
+        <span class="text-xs text-slate-400">{post.readTime} read</span>
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-6">{post.title}</h1>
+
+      <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+        {post.content}
+      </div>
+    </div>
+  </article>
+
+  <!-- Back link -->
+  <div class="mt-6">
+    <a href="/blog" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">← Back to Guides</a>
+  </div>
+</Layout>
