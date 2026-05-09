@@ -19,7 +19,7 @@ const related = allGames
   .filter((g: Game) => g.category === game.category && g.slug !== game.slug)
   .slice(0, 8);
 
-const canonicalUrl = `https://chillarcade.com/games/${game.slug}`;
+const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
 ---
 
 <Layout title={game.title} description={game.shortDescription} canonical={canonicalUrl}>
@@ -51,7 +51,7 @@ const canonicalUrl = `https://chillarcade.com/games/${game.slug}`;
     <div class="w-full bg-slate-900 flex items-center justify-center">
       <div class="w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] flex items-center justify-center">
         {game.iframeUrl ? (
-          <iframe src={game.iframeUrl} class="w-full h-full" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <iframe src={game.iframeUrl} class="w-full h-full" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
         ) : (
           <div class="text-center p-8">
             <div class="text-6xl mb-4">🎮</div>

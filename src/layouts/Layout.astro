@@ -13,8 +13,10 @@ export interface Props {
 const { title, description, image, canonical } = Astro.props;
 const siteTitle = title ? `${title} | Chill Arcade` : 'Chill Arcade';
 const siteDesc = description || 'Play free relaxing online games in your browser. No download, no signup, instant fun!';
-const siteImage = image || '/og-default.png';
-const canonicalUrl = canonical || Astro.url.pathname;
+const siteImage = image
+  ? (image.startsWith('http') ? image : new URL(image, Astro.site).href)
+  : new URL('/og-default.png', Astro.site).href;
+const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>

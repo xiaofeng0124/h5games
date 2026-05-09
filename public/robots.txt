@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chillarcade.com/sitemap-index.xml
+Sitemap: https://chillarcade.io/sitemap-index.xml

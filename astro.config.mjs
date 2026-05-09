@@ -22,7 +22,7 @@ export default defineConfig({
       lastmod: new Date(),
       serialize: (item) => {
         // Homepage gets highest priority
-        if (item.url === 'https://chillarcade.com/') {
+        if (item.url === 'https://chillarcade.io/') {
           item.priority = 1.0;
           item.changefreq = 'daily';
         }

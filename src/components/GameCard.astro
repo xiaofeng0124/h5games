@@ -22,8 +22,12 @@ const difficultyColor: Record<string, string> = {
 
 <a
   href={`/games/${slug}`}
-  class="group block bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-[5000ms]"
+  class="group block bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-200"
   data-iframe-url={iframeUrl || ''}
+  data-category={category}
+  data-title={title.toLowerCase()}
+  data-description={description.toLowerCase()}
+  data-difficulty={difficulty || ''}
 >
   <!-- Thumbnail -->
   <div class="game-thumb relative aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 flex items-center justify-center text-6xl overflow-hidden">
@@ -32,10 +36,10 @@ const difficultyColor: Record<string, string> = {
       : <span>{emojiMap[category] || '🎮'}</span>
     }
     <!-- Preview container: real game loads here on hover -->
-    <div class="game-preview absolute inset-0 w-full h-full z-10 hidden opacity-0 transition-opacity duration-[5000ms]"></div>
+    <div class="game-preview absolute inset-0 w-full h-full z-10 hidden opacity-0 transition-opacity duration-200"></div>
     <!-- Play overlay -->
-    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-[5000ms] z-20">
-      <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-[5000ms] w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200 z-20">
+      <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
         <svg class="w-6 h-6 text-indigo-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </div>
     </div>
@@ -48,55 +52,65 @@ const difficultyColor: Record<string, string> = {
         <span class={`text-xs font-medium px-2 py-1 rounded-full ${difficultyColor[difficulty] || difficultyColor.easy}`}>{difficulty}</span>
       )}
     </div>
-    <h3 class="font-semibold text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-[5000ms] line-clamp-1">{title}</h3>
+    <h3 class="font-semibold text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200 line-clamp-1">{title}</h3>
     <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{description}</p>
   </div>
 </a>
 
 <script>
-  document.querySelectorAll('[data-iframe-url]').forEach(card => {
+  document.querySelectorAll('[data-iframe-url]').forEach((card) => {
     const iframeUrl = card.dataset.iframeUrl;
     if (!iframeUrl) return;
 
-    const preview = card.querySelector('.game-preview');
-    const thumb = card.querySelector('.game-thumb');
-    let iframe = null;
-    let hoverTimer = null;
+    const previewEl = card.querySelector('.game-preview');
+    if (!previewEl) return;
+
+    let iframeInstance = null;
+    let enterTimer = null;
+    let leaveTimer = null;
 
     const loadPreview = () => {
-      if (iframe) return;
-      iframe = document.createElement('iframe');
-      iframe.src = iframeUrl;
-      iframe.className = 'w-full h-full border-0';
-      iframe.loading = 'lazy';
-      iframe.allow = 'autoplay; fullscreen';
-      preview.appendChild(iframe);
-      preview.classList.remove('hidden');
-      // Trigger fade-in in next frame
+      if (iframeInstance) return;
+      iframeInstance = document.createElement('iframe');
+      iframeInstance.src = iframeUrl;
+      iframeInstance.className = 'w-full h-full border-0';
+      iframeInstance.loading = 'lazy';
+      iframeInstance.allow = 'autoplay; fullscreen';
+      iframeInstance.sandbox = 'allow-scripts allow-same-origin';
+      iframeInstance.onerror = () => {
+        iframeInstance.remove();
+        iframeInstance = null;
+      };
+      previewEl.appendChild(iframeInstance);
+      previewEl.classList.remove('hidden');
       requestAnimationFrame(() => {
-        preview.style.opacity = '1';
+        previewEl.style.opacity = '1';
       });
     };
 
     const unloadPreview = () => {
-      preview.style.opacity = '0';
-      setTimeout(() => {
-        if (iframe) {
-          iframe.remove();
-          iframe = null;
+      previewEl.style.opacity = '0';
+      // Remove iframe quickly after fade starts
+      leaveTimer = setTimeout(() => {
+        if (iframeInstance) {
+          iframeInstance.remove();
+          iframeInstance = null;
         }
-        preview.classList.add('hidden');
-      }, 5000); // Wait for fade-out animation
+        previewEl.classList.add('hidden');
+      }, 400);
     };
 
     card.addEventListener('mouseenter', () => {
-      clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(loadPreview, 500);
+      clearTimeout(enterTimer);
+      clearTimeout(leaveTimer);
+      enterTimer = setTimeout(loadPreview, 500);
     });
 
     card.addEventListener('mouseleave', () => {
-      clearTimeout(hoverTimer);
-      unloadPreview();
+      clearTimeout(enterTimer);
+      if (iframeInstance) {
+        unloadPreview();
+      }
     });
   });
 </script>
