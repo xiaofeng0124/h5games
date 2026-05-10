@@ -4,13 +4,39 @@ import GameGrid from '../components/GameGrid.astro';
 import games from '../data/games.json' with { type: 'json' };
 import categories from '../data/categories.json' with { type: 'json' };
 
-const featured = games.filter(g => g.featured).slice(0, 8);
+const featured = games.filter(g => g.featured).slice(0, 6);
 const featuredSlugs = new Set(featured.map(g => g.slug));
-const allGames = games.filter(g => !featuredSlugs.has(g.slug)).slice(0, 12);
+const allGames = games.filter(g => !featuredSlugs.has(g.slug)).slice(0, 8);
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
 ---
 
 <Layout title="Free Relaxing Browser Games - Play Online Instantly">
+  <!-- Notification bar -->
+  <div id="notif-bar" class="relative overflow-hidden h-12 bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-600 dark:to-pink-600 text-white text-base font-bold shadow-md flex items-center" style="cursor:default">
+    <div id="notif-text" class="whitespace-nowrap will-change-transform" style="animation: marquee 18s linear forwards">
+      🎮 {games.length} free games and counting — new ones added regularly! 🎮
+    </div>
+  </div>
+  <style>
+    @keyframes marquee {
+      from { transform: translateX(100vw); }
+      to { transform: translateX(-100%); }
+    }
+  </style>
+  <script>
+    document.getElementById('notif-text')?.addEventListener('animationend', () => {
+      const bar = document.getElementById('notif-bar');
+      if (bar) {
+        bar.style.transition = 'opacity 0.5s, height 0.5s, margin 0.5s';
+        bar.style.opacity = '0';
+        bar.style.height = '0';
+        bar.style.margin = '0';
+        bar.style.padding = '0';
+        bar.style.overflow = 'hidden';
+        setTimeout(() => { if (bar.parentNode) bar.parentNode.removeChild(bar); }, 600);
+      }
+    });
+  </script>
   <section class="relative text-center py-12 md:py-24 overflow-hidden">
     <!-- Background decoration -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -71,7 +97,7 @@ const categoryEntries = Object.entries(categories) as [string, { name: string; d
   </section>
 
   <!-- Categories -->
-  <section class="mb-12">
+  <section class="mb-12" style="content-visibility:auto">
     <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">Browse by Category</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
       {categoryEntries.map(([slug, cat]) => (
@@ -89,12 +115,29 @@ const categoryEntries = Object.entries(categories) as [string, { name: string; d
   </section>
 
   <!-- Latest Games -->
-  <section class="mb-12">
-    <GameGrid games={allGames} cols={4} title="🎮 All Games" />
+  <section class="mb-12" style="content-visibility:auto">
+    <GameGrid games={allGames} cols={4} title="🎮 Latest Games" />
+    <div class="text-center mt-6">
+      <a href="/category/puzzle" class="inline-flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium transition-colors">
+        View All Games &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- My Favorites (client-rendered) -->
+  <section id="my-favorites" class="mb-12 hidden" style="content-visibility:auto">
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">❤️ My Favorites</h2>
+    <div id="fav-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+  </section>
+
+  <!-- Recently Played (client-rendered) -->
+  <section id="my-recent" class="mb-12 hidden" style="content-visibility:auto">
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">🕐 Recently Played</h2>
+    <div id="recent-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"></div>
   </section>
 
   <!-- Why section -->
-  <section class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+  <section class="mb-12 p-8 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700" style="content-visibility:auto">
     <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-8 text-center">Why Play on Chill Arcade?</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="text-center">
@@ -143,6 +186,16 @@ const categoryEntries = Object.entries(categories) as [string, { name: string; d
       </div>
     </form>
   </section>
+
+  <!-- Embedded games data for client-side rendering -->
+  <script id="games-data" type="application/json" set:html={JSON.stringify(games.map(g => ({
+    slug: g.slug,
+    title: g.title,
+    category: g.category,
+    image: g.image,
+    description: g.shortDescription,
+    difficulty: g.difficulty
+  })))} />
 
   <!-- Schema structured data -->
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -253,4 +306,56 @@ const categoryEntries = Object.entries(categories) as [string, { name: string; d
       feedbackSubmit.textContent = 'Send Feedback';
     }
   });
+</script>
+
+<script>
+  // Render favorites and recently played from localStorage
+  (function() {
+    var gamesData = JSON.parse(document.getElementById('games-data').textContent);
+    var lookup = {};
+    gamesData.forEach(function(g) { lookup[g.slug] = g; });
+
+    var icons = {'match-3':'💎','puzzle':'🧩','merge':'🔄','casual':'🎮','arcade':'🕹️','word':'📝','card':'🃏','hidden-object':'🔍','board':'♟️'};
+
+    function renderCard(game) {
+      var img = game.image
+        ? '<img src="' + game.image + '" alt="' + game.title + '" class="w-full h-full object-cover" loading="lazy" decoding="async" />'
+        : '<span>' + (icons[game.category] || '🎮') + '</span>';
+      var diff = game.difficulty
+        ? '<span class="text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">' + game.difficulty + '</span>'
+        : '';
+      return '<a href="/games/' + game.slug + '" class="group block bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-200">'
+        + '<div class="relative aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 flex items-center justify-center text-6xl overflow-hidden">'
+        + img
+        + '<div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200 z-10">'
+        + '<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg">'
+        + '<svg class="w-6 h-6 text-indigo-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'
+        + '</div></div></div>'
+        + '<div class="p-4"><div class="flex items-center justify-between mb-2">'
+        + '<span class="text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-2 py-1 rounded-full capitalize">' + game.category + '</span>'
+        + diff
+        + '</div><h3 class="font-semibold text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">' + game.title + '</h3>'
+        + '<p class="text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">' + (game.description || '') + '</p></div></a>';
+    }
+
+    function loadSection(key, containerId, sectionId, limit) {
+      var el = document.getElementById(sectionId);
+      var ctr = document.getElementById(containerId);
+      if (!el || !ctr) return;
+      var items;
+      try { items = JSON.parse(localStorage.getItem(key) || '[]'); } catch { return; }
+      var valid = [];
+      for (var i = 0; i < items.length && valid.length < limit; i++) {
+        if (lookup[items[i].slug]) valid.push(lookup[items[i].slug]);
+      }
+      if (valid.length === 0) return;
+      el.classList.remove('hidden');
+      var html = '';
+      for (var j = 0; j < valid.length; j++) html += renderCard(valid[j]);
+      ctr.innerHTML = html;
+    }
+
+    loadSection('favorites', 'fav-grid', 'my-favorites', 8);
+    loadSection('recent', 'recent-grid', 'my-recent', 8);
+  })();
 </script>

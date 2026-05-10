@@ -47,8 +47,12 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <link rel="preconnect" href="https://html5.gamedistribution.com" />
     <link rel="preconnect" href="https://img.gamedistribution.com" />
     <link rel="dns-prefetch" href="https://html5.gamedistribution.com" />
+    <link rel="preconnect" href="https://static.cloudflareinsights.com" />
 
     <title>{siteTitle}</title>
+
+    <!-- Cloudflare Web Analytics (privacy-first, no cookies) -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "6f01648ac96340dfa19a805a19941cdc"}'></script>
   </head>
   <body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-100">
     <Header />

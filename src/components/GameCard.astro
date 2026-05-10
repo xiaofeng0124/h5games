@@ -7,9 +7,10 @@ export interface Props {
   description: string;
   difficulty?: string;
   iframeUrl?: string;
+  priority?: boolean;
 }
 
-const { slug, title, category, image, description, difficulty, iframeUrl } = Astro.props;
+const { slug, title, category, image, description, difficulty, iframeUrl, priority } = Astro.props;
 const emojiMap: Record<string, string> = {
   'match-3': '💎', 'puzzle': '🧩', 'merge': '🔄', 'casual': '🎮', 'arcade': '🕹️', 'word': '📝', 'card': '🃏', 'hidden-object': '🔍',
 };
@@ -32,7 +33,7 @@ const difficultyColor: Record<string, string> = {
   <!-- Thumbnail -->
   <div class="game-thumb relative aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 flex items-center justify-center text-6xl overflow-hidden">
     {image
-      ? <img src={image} alt={title} class="w-full h-full object-cover" loading="lazy" />
+      ? <img src={image} alt={title} class="w-full h-full object-cover" loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'low'} />
       : <span>{emojiMap[category] || '🎮'}</span>
     }
     <!-- Preview container: real game loads here on hover -->

@@ -1,0 +1,83 @@
+name: Weekly Game Health Check
+
+on:
+  schedule:
+    # Every Monday at 9:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check all game cover images
+        run: |
+          python3 -c "
+import json, subprocess, sys
+
+with open('src/data/games.json') as f:
+    games = json.load(f)
+
+broken = []
+for i, g in enumerate(games):
+    url = g.get('image', '')
+    if not url:
+        broken.append((g['slug'], g['title'], 'NO IMAGE'))
+        continue
+    result = subprocess.run(
+        ['curl', '-s', '-o', '/dev/null', '-w', '%{http_code}', '--max-time', '10', url],
+        capture_output=True, text=True, timeout=15
+    )
+    code = result.stdout.strip()
+    if code != '200':
+        broken.append((g['slug'], g['title'], f'HTTP {code}'))
+    if (i + 1) % 100 == 0:
+        print(f'  Images: checked {i+1}/{len(games)}')
+
+print(f'\\n=== Image Check ===')
+print(f'Total: {len(games)}, Broken: {len(broken)}')
+for slug, title, err in broken:
+    print(f'  {title} ({slug}): {err}')
+
+if broken:
+    sys.exit(1)
+"
+
+      - name: Check all game iframe URLs
+        run: |
+          python3 -c "
+import json, subprocess, sys
+
+with open('src/data/games.json') as f:
+    games = json.load(f)
+
+broken = []
+for i, g in enumerate(games):
+    url = g.get('iframeUrl', '')
+    if not url:
+        broken.append((g['slug'], g['title'], 'NO URL'))
+        continue
+    result = subprocess.run(
+        ['curl', '-s', '-o', '/dev/null', '-w', '%{http_code}', '--max-time', '15', '-L', url],
+        capture_output=True, text=True, timeout=20
+    )
+    code = result.stdout.strip()
+    if code != '200':
+        broken.append((g['slug'], g['title'], f'HTTP {code}'))
+    if (i + 1) % 100 == 0:
+        print(f'  Iframes: checked {i+1}/{len(games)}')
+
+print(f'\\n=== Iframe Check ===')
+print(f'Total: {len(games)}, Broken: {len(broken)}')
+for slug, title, err in broken:
+    print(f'  {title} ({slug}): {err}')
+
+if broken:
+    sys.exit(1)
+"

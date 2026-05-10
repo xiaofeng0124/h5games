@@ -19,7 +19,7 @@ const gridCols = {
 <div>
   {title && <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">{title}</h2>}
   <div class={`grid ${gridCols[cols]} gap-4 sm:gap-6`}>
-    {games.map(game => (
+    {games.map((game, i) => (
       <GameCard
         slug={game.slug}
         title={game.title}
@@ -28,6 +28,7 @@ const gridCols = {
         description={game.shortDescription}
         difficulty={game.difficulty}
         iframeUrl={game.iframeUrl}
+        priority={i < 2}
       />
     ))}
   </div>

@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# temp batch scripts
+add_games_batch*.cjs
+
+# GameMonetize temp data
+scripts/gm_games.json
