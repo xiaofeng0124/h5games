@@ -48,10 +48,15 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     </div>
 
     <!-- Game iframe area -->
-    <div class="w-full bg-slate-900 flex items-center justify-center">
+    <div class="w-full bg-slate-900 flex items-center justify-center relative">
+      <!-- Loading spinner -->
+      <div id="game-loading" class="absolute inset-0 flex flex-col items-center justify-center z-10">
+        <div class="w-12 h-12 border-4 border-slate-600 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
+        <p class="text-slate-400 text-sm">Loading game...</p>
+      </div>
       <div class="w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] flex items-center justify-center">
         {game.iframeUrl ? (
-          <iframe src={game.iframeUrl} class="w-full h-full" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+          <iframe src={game.iframeUrl} class="w-full h-full relative z-20" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals" onload="document.getElementById('game-loading').style.display='none'"></iframe>
         ) : (
           <div class="text-center p-8">
             <div class="text-6xl mb-4">🎮</div>

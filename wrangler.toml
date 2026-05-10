@@ -1,0 +1,7 @@
+name = "chillarcade"
+compatibility_date = "2026-05-09"
+pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "FEEDBACK"
+id = "e8d58b735df94d2a9b6f405f5c51ff3e"

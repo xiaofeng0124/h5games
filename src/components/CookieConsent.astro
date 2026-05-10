@@ -1,0 +1,70 @@
+---
+// GDPR-compliant cookie consent banner
+// Shows once, stores consent in localStorage
+---
+
+<div id="cookie-consent" class="fixed bottom-0 left-0 right-0 z-50 hidden">
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div class="flex-1 text-sm text-slate-600 dark:text-slate-300">
+        <p>
+          We use cookies and similar technologies to enhance your experience and serve ads.
+          By clicking "Accept", you consent to our use of cookies.
+          Learn more in our
+          <a href="/privacy" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">Privacy Policy</a>
+          and
+          <a href="/terms" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">Terms of Service</a>.
+        </p>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <button id="cookie-decline"
+          class="px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+          Decline
+        </button>
+        <button id="cookie-accept"
+          class="px-6 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all hover:scale-105 shadow-md">
+          Accept
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const banner = document.getElementById('cookie-consent');
+    const acceptBtn = document.getElementById('cookie-accept');
+    const declineBtn = document.getElementById('cookie-decline');
+
+    function hasConsented() {
+      return localStorage.getItem('cookie-consent') !== null;
+    }
+
+    function showBanner() {
+      banner.classList.remove('hidden');
+    }
+
+    function hideBanner() {
+      banner.classList.add('hidden');
+    }
+
+    function setConsent(value) {
+      localStorage.setItem('cookie-consent', value);
+      hideBanner();
+    }
+
+    // Show banner if no consent decision has been made yet
+    if (!hasConsented()) {
+      // Delay slightly to not flash on page load
+      setTimeout(showBanner, 500);
+    }
+
+    acceptBtn.addEventListener('click', function() {
+      setConsent('accepted');
+    });
+
+    declineBtn.addEventListener('click', function() {
+      setConsent('declined');
+    });
+  })();
+</script>

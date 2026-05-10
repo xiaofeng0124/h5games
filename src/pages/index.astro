@@ -115,6 +115,35 @@ const categoryEntries = Object.entries(categories) as [string, { name: string; d
     </div>
   </section>
 
+  <!-- Feedback Form -->
+  <section class="mb-8 py-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+    <div class="px-6 sm:px-8">
+      <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-0.5 text-center">We'd Love to Hear From You</h2>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-2 text-center">Have a suggestion or found a bug? Drop us a message!</p>
+    </div>
+    <form id="feedback-form" class="px-6 sm:px-8">
+      <div class="flex gap-2 items-start">
+        <input type="text" id="feedback-name" placeholder="Your name (optional)" maxlength="50"
+          class="w-1/3 shrink-0 px-3 py-1.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all" />
+        <textarea id="feedback-message" rows="3" placeholder="Your message..." maxlength="2000" required
+          class="flex-1 px-3 py-1.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all resize-none"></textarea>
+        <button type="submit" id="feedback-submit"
+          class="px-5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-sm shrink-0">
+          Send
+        </button>
+      </div>
+      <div class="flex items-center justify-between mt-1">
+        <span id="feedback-char-count" class="text-xs text-slate-400">0/2000</span>
+        <div>
+          <div id="feedback-success" class="hidden inline-block px-2 py-0.5 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-lg">
+            Thanks for your feedback!
+          </div>
+          <div id="feedback-error" class="hidden inline-block px-2 py-0.5 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs rounded-lg"></div>
+        </div>
+      </div>
+    </form>
+  </section>
+
   <!-- Schema structured data -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -171,4 +200,57 @@ const categoryEntries = Object.entries(categories) as [string, { name: string; d
   searchInput.addEventListener('input', filterGames);
   categoryFilter.addEventListener('change', filterGames);
   difficultyFilter.addEventListener('change', filterGames);
+
+  // Feedback form
+  const feedbackForm = document.getElementById('feedback-form');
+  const feedbackName = document.getElementById('feedback-name');
+  const feedbackMessage = document.getElementById('feedback-message');
+  const feedbackSubmit = document.getElementById('feedback-submit');
+  const feedbackSuccess = document.getElementById('feedback-success');
+  const feedbackError = document.getElementById('feedback-error');
+  const charCount = document.getElementById('feedback-char-count');
+
+  if (feedbackMessage && charCount) {
+    feedbackMessage.addEventListener('input', () => {
+      charCount.textContent = `${feedbackMessage.value.length}/2000`;
+    });
+  }
+
+  feedbackForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const message = feedbackMessage.value.trim();
+    if (!message || message.length < 2) return;
+
+    feedbackSubmit.disabled = true;
+    feedbackSubmit.textContent = 'Sending...';
+    feedbackSuccess.classList.add('hidden');
+    feedbackError.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: feedbackName.value.trim(),
+          message,
+        }),
+      });
+      if (res.ok) {
+        feedbackForm.reset();
+        charCount.textContent = '0/2000';
+        feedbackSuccess.classList.remove('hidden');
+        setTimeout(() => feedbackSuccess.classList.add('hidden'), 4000);
+      } else {
+        const data = await res.json();
+        feedbackError.textContent = data.error || 'Failed to send. Try again.';
+        feedbackError.classList.remove('hidden');
+      }
+    } catch {
+      feedbackError.textContent = 'Network error. Please try again later.';
+      feedbackError.classList.remove('hidden');
+    } finally {
+      feedbackSubmit.disabled = false;
+      feedbackSubmit.textContent = 'Send Feedback';
+    }
+  });
 </script>

@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Contact Us">
   <div class="max-w-2xl mx-auto">
     <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-6">Contact Us</h1>
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 mb-8">
       <p class="text-slate-600 dark:text-slate-300 mb-6">Have a question, suggestion, or issue? We'd love to hear from you.</p>
       <ul class="space-y-4 text-slate-600 dark:text-slate-300">
         <li class="flex items-center gap-3">
@@ -22,5 +22,102 @@ import Layout from '../layouts/Layout.astro';
         </li>
       </ul>
     </div>
+
+    <!-- View Messages -->
+    <details class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <summary class="p-4 sm:p-6 text-lg font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors select-none">
+        🔒 View User Messages (Admin)
+      </summary>
+      <div class="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-700">
+        <div id="admin-login" class="flex gap-3 mb-6">
+          <input type="password" id="admin-password" placeholder="Enter admin password"
+            class="flex-1 px-4 py-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all" />
+          <button id="admin-login-btn"
+            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all hover:scale-105 text-sm whitespace-nowrap">
+            View Messages
+          </button>
+        </div>
+        <div id="admin-loading" class="hidden text-center text-slate-400 py-8">Loading messages...</div>
+        <div id="admin-error" class="hidden text-center text-red-500 py-4"></div>
+        <div id="admin-empty" class="hidden text-center text-slate-400 py-8">No messages yet.</div>
+        <div id="admin-messages" class="hidden space-y-4 max-h-[600px] overflow-y-auto"></div>
+      </div>
+    </details>
   </div>
 </Layout>
+
+<script>
+  const loginBtn = document.getElementById('admin-login-btn');
+  const passwordInput = document.getElementById('admin-password');
+  const loadingEl = document.getElementById('admin-loading');
+  const errorEl = document.getElementById('admin-error');
+  const emptyEl = document.getElementById('admin-empty');
+  const messagesEl = document.getElementById('admin-messages');
+  const loginEl = document.getElementById('admin-login');
+
+  async function loadMessages() {
+    const password = passwordInput.value.trim();
+    if (!password) return;
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Loading...';
+    loadingEl.classList.remove('hidden');
+    errorEl.classList.add('hidden');
+    emptyEl.classList.add('hidden');
+    messagesEl.classList.add('hidden');
+    messagesEl.innerHTML = '';
+
+    try {
+      const res = await fetch(`/api/feedback?password=${encodeURIComponent(password)}`);
+      if (!res.ok) {
+        const errMsg = res.status === 401 ? 'Wrong password' : 'Failed to load messages';
+        throw new Error(errMsg);
+      }
+      const data = await res.json();
+
+      loadingEl.classList.add('hidden');
+
+      if (!data || data.length === 0) {
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      messagesEl.classList.remove('hidden');
+      data.forEach((msg) => {
+        const div = document.createElement('div');
+        div.className = 'p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600';
+        div.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-medium text-sm text-slate-700 dark:text-slate-200">${escapeHtml(msg.name)}</span>
+            <span class="text-xs text-slate-400">${formatDate(msg.createdAt)}</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-wrap">${escapeHtml(msg.message)}</p>
+        `;
+        messagesEl.appendChild(div);
+      });
+    } catch (err) {
+      loadingEl.classList.add('hidden');
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'View Messages';
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  loginBtn?.addEventListener('click', loadMessages);
+  passwordInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loadMessages();
+  });
+</script>

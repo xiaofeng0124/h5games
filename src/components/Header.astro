@@ -7,6 +7,7 @@ const categories = [
   { name: 'Arcade', slug: 'arcade' },
   { name: 'Word', slug: 'word' },
   { name: 'Card', slug: 'card' },
+  { name: 'Hidden Object', slug: 'hidden-object' },
 ];
 ---
 
@@ -77,7 +78,18 @@ const categories = [
   });
 
   // Mobile menu toggle
-  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
-    document.getElementById('mobile-menu')?.classList.toggle('hidden');
-  });
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mobileMenu.classList.toggle('hidden');
+    });
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.classList.contains('hidden') && !menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+  }
 </script>
