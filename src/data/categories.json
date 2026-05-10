@@ -6,5 +6,6 @@
   "arcade": { "name": "Arcade", "description": "Classic arcade action and endless runner games", "icon": "🕹️" },
   "word": { "name": "Word", "description": "Word puzzles, spelling challenges and vocabulary games", "icon": "📝" },
   "card": { "name": "Card", "description": "Classic card games and solitaire variations", "icon": "🃏" },
-  "hidden-object": { "name": "Hidden Object", "description": "Find hidden items in beautifully illustrated scenes", "icon": "🔍" }
+  "hidden-object": { "name": "Hidden Object", "description": "Find hidden items in beautifully illustrated scenes", "icon": "🔍" },
+  "board": { "name": "Board", "description": "Classic board games including chess, mahjong, backgammon and more", "icon": "♟️" }
 }
