@@ -50,7 +50,6 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <link rel="preconnect" href="https://static.cloudflareinsights.com" />
 
     <!-- i18n support -->
-    <script src="/i18n/i18n.js" is:inline></script>
 
     <title>{siteTitle}</title>
 
@@ -64,6 +63,9 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     </main>
     <Footer />
     <CookieConsent />
+    <script is:inline>
+(function(){'use strict';var e=localStorage.getItem('i18n_lang')||'en',t=null,n=null;function r(r){if(t){r();return}fetch('/i18n/translations.json?'+Date.now()).then(function(e){return e.json()}).then(function(e){t=e.translations,n=e.languages,r()}).catch(function(){r()})}function o(r){e=r,localStorage.setItem('i18n_lang',r);if(!t)return;var o=document.querySelectorAll('[data-i18n]');for(var i=0;i<o.length;i++){var a=o[i],u=a.getAttribute('data-i18n');if(!u||!t[u])continue;var f=t[u][r]||t[u].en||u;if(a.getAttribute('data-i18n-attr')==='placeholder')a.placeholder=f;else if(a.tagName==='INPUT'||a.tagName==='TEXTAREA')a.value=f;else a.textContent=f}var s=document.documentElement;s.lang=r;var c=null;if(n)for(var l=0;l<n.length;l++){if(n[l].code===r){c=n[l];break}}c&&c.dir?s.dir=c.dir:s.dir='ltr';var d=document.getElementById('lang-flag'),v=document.getElementById('lang-name');if(d&&v&&c){d.src='/flags/'+(c.country||'us')+'.svg';v.textContent=c.nativeName}var g=document.getElementById('lang-selector-menu');if(g){g.classList.add('hidden');g.classList.remove('grid')}var p=document.querySelectorAll('[data-lang-code]');for(var h=0;h<p.length;h++){var m=p[h].getAttribute('data-lang-code');if(m===r)p[h].classList.add('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30');else p[h].classList.remove('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30')}}function i(){var t=document.getElementById('lang-selector-btn'),n=document.getElementById('lang-selector-menu');if(!t||!n)return;t.addEventListener('click',function(e){e.stopPropagation();n.classList.toggle('hidden');n.classList.toggle('grid')});n.addEventListener('click',function(e){var n=e.target.closest('[data-lang-code]');if(n)o(n.getAttribute('data-lang-code'))});document.addEventListener('click',function(){n.classList.add('hidden');n.classList.remove('grid')});var r=document.querySelectorAll('[data-lang-code]');for(var a=0;a<r.length;a++){if(r[a].getAttribute('data-lang-code')===e)r[a].classList.add('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30')}}window.__=function(n){if(!t||!t[n])return n;return t[n][e]||t[n].en||n};r(function(){o(e);i()})})();
+    </script>
   </body>
 </html>
 
