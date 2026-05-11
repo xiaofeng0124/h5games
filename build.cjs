@@ -1,24 +1,21 @@
 // Retry build script for Cloudflare Pages
 // Tailwind CSS v4 Vite plugin has a race condition with Astro prerender
-// Running build twice ensures all pages are generated
+// Patching the esm-cache loader fixes the issue
 const { execSync } = require('child_process');
+const fs = require('fs');
 
-console.log('=== Astro Build (attempt 1) ===');
-try {
-  execSync('npx astro build', { stdio: 'inherit', shell: true });
-  console.log('Build succeeded on first attempt.');
-  process.exit(0);
-} catch (err) {
-  console.log('\n=== First build failed, retrying... ===');
+// Patch tailwindcss esm-cache loader to prevent race condition
+const patchFile = 'node_modules/@tailwindcss/node/dist/esm-cache.loader.mjs';
+const original = fs.readFileSync(patchFile, 'utf-8');
+const patched = `import{isBuiltin as i}from"module";var o=async(a,e,u)=>u(a,e);export{o as resolve};`;
+
+if (original !== patched) {
+  fs.writeFileSync(patchFile, patched, 'utf-8');
+  console.log('Patched tailwindcss esm-cache.loader.mjs');
+} else {
+  console.log('Tailwind esm-cache already patched');
 }
 
-// Retry without cleaning (cached chunks from first attempt)
-console.log('\n=== Astro Build (attempt 2) ===');
-try {
-  execSync('npx astro build', { stdio: 'inherit', shell: true });
-  console.log('Build succeeded on second attempt.');
-  process.exit(0);
-} catch (err) {
-  console.error('\n=== Build failed on second attempt ===');
-  process.exit(1);
-}
+console.log('\n=== Astro Build ===');
+execSync('npx astro build', { stdio: 'inherit', shell: true });
+console.log('\nBuild completed successfully.');

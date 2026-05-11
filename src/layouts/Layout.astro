@@ -86,6 +86,7 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
       if (cached && cached.translations && cached.languages) {
         trans = cached.translations;
         langs = cached.languages;
+        mergeGameTrans();
         cb();
         fetch('/i18n/translations.json?' + Date.now())
           .then(function(r) { return r.json(); })
@@ -164,17 +165,8 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     if (trans && d) { Object.assign(trans, d); apply(lang); }
   };
 
-  // Process queued game translations (injected before this script ran)
-  try {
-    if (window.__gqueue && window.__gqueue.length) {
-      for (var qi = 0; qi < window.__gqueue.length; qi++) {
-        if (trans) Object.assign(trans, window.__gqueue[qi]);
-      }
-      if (trans) apply(lang);
-    }
-  } catch(ex) {}
-
-  // Helper to re-merge game translations after trans is replaced
+  // Helper to merge game translations into trans (called from load() and cache refresh)
+  // The game page queues translations in __gqueue, which is processed after trans is set
   function mergeGameTrans() {
     try {
       if (window.__gqueue && window.__gqueue.length) {

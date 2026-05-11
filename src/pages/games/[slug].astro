@@ -163,7 +163,7 @@ if (ginstKey) {
     }
   })} />
   <!-- Game i18n data -->
-  <script type="application/json" id="game-i18n-data" set:html={JSON.stringify(gameI18nData)} />
+  <script type="application/json" id="game-i18n-data">{JSON.stringify(gameI18nData)}</script>
   <script>
     (function(){
       var el = document.getElementById('game-i18n-data');
