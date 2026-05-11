@@ -1,67 +1,66 @@
-<footer class="bg-white/60 dark:bg-slate-800/60 border-t border-slate-200 dark:border-slate-700 mt-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-      <!-- Brand -->
-      <div class="sm:col-span-2 md:col-span-1">
-        <h3 class="text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-3">Chill Arcade</h3>
-        <p class="text-sm text-slate-500 dark:text-slate-400">
-          Your destination for free relaxing online games. Play instantly in your browser — no downloads, no signups, just fun.
-        </p>
-      </div>
-      <!-- Categories (merged) -->
+<footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-12">
+  <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Left: Brand + Feedback -->
       <div>
-        <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="nav.categories">Categories</h4>
-        <ul class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-slate-500 dark:text-slate-400">
-          <li><a href="/category/match-3" data-i18n="cat.match-3" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Match-3</a></li>
-          <li><a href="/category/puzzle" data-i18n="cat.puzzle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Puzzle</a></li>
-          <li><a href="/category/merge" data-i18n="cat.merge" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Merge</a></li>
-          <li><a href="/category/word" data-i18n="cat.word" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Word</a></li>
-          <li><a href="/category/card" data-i18n="cat.card" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Card</a></li>
-          <li><a href="/category/board" data-i18n="cat.board" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Board</a></li>
-          <li><a href="/category/arcade" data-i18n="cat.arcade" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Arcade</a></li>
-          <li><a href="/category/casual" data-i18n="cat.casual" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Casual</a></li>
-          <li><a href="/category/hidden-object" data-i18n="cat.hidden-object" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Hidden Object</a></li>
-          <li><a href="/category/strategy" data-i18n="cat.strategy" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Strategy</a></li>
-          <li><a href="/category/sports" data-i18n="cat.sports" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Sports</a></li>
-          <li><a href="/category/racing" data-i18n="cat.racing" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Racing</a></li>
-          <li><a href="/category/action" data-i18n="cat.action" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Action</a></li>
-          <li><a href="/category/fighting" data-i18n="cat.fighting" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Fighting</a></li>
-          <li><a href="/category/adventure" data-i18n="cat.adventure" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Adventure</a></li>
-          <li><a href="/category/idle" data-i18n="cat.idle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Idle</a></li>
-          <li><a href="/category/multiplayer" data-i18n="cat.multiplayer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Multiplayer</a></li>
-        </ul>
+        <h3 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">Chill Arcade</h3>
+        <!-- Feedback -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 md:p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+          <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="feedback.title">Feedback</h4>
+          <form id="footer-feedback" class="space-y-2.5">
+            <input type="text" id="fb-name" data-i18n="feedback.name" data-i18n-attr="placeholder" placeholder="Your name (optional)"
+              class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+            <textarea id="fb-message" rows="4" placeholder="Your message..." data-i18n="feedback.message" data-i18n-attr="placeholder"
+              class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"></textarea>
+            <div id="fb-success" class="hidden text-xs text-green-600 dark:text-green-400 font-medium">&#10003; Thanks for your feedback!</div>
+            <div class="flex justify-end">
+              <button type="submit" data-i18n="feedback.send"
+                class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-all hover:scale-105 shadow-sm">
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-      <!-- More -->
-      <div>
-        <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="footer.more">More</h4>
-        <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
-          <li><a href="/blog" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.guides">Game Guides & Tips</a></li>
-          <li><a href="/privacy" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.privacy">Privacy Policy</a></li>
-          <li><a href="/terms" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.terms">Terms of Service</a></li>
-          <li><a href="/contact" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.contact">Contact</a></li>
-        </ul>
-      </div>
-      <!-- Feedback -->
-      <div>
-        <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="feedback.title">Feedback</h4>
-        <form id="footer-feedback" class="space-y-2.5">
-          <input type="text" id="fb-name" data-i18n="feedback.name" data-i18n-attr="placeholder" placeholder="Your name (optional)"
-            class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-          <textarea id="fb-message" rows="4" placeholder="Your message..." data-i18n="feedback.message" data-i18n-attr="placeholder"
-            class="w-full px-4 py-2.5 text-sm bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"></textarea>
-          <div id="fb-success" class="hidden text-xs text-green-600 dark:text-green-400 font-medium">&#10003; Thanks for your feedback!</div>
-          <div class="flex justify-end">
-            <button type="submit" data-i18n="feedback.send"
-              class="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-all hover:scale-105 shadow-sm">
-              Send
-            </button>
-          </div>
-        </form>
+
+      <!-- Right: Categories + More -->
+      <div class="flex flex-wrap gap-8 sm:gap-12 md:justify-center md:self-start">
+        <!-- Categories -->
+        <div>
+          <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="nav.categories">Categories</h4>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-base text-slate-500 dark:text-slate-400">
+            <li><a href="/category/match-3" data-i18n="cat.match-3" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Match-3</a></li>
+            <li><a href="/category/puzzle" data-i18n="cat.puzzle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Puzzle</a></li>
+            <li><a href="/category/merge" data-i18n="cat.merge" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Merge</a></li>
+            <li><a href="/category/word" data-i18n="cat.word" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Word</a></li>
+            <li><a href="/category/card" data-i18n="cat.card" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Card</a></li>
+            <li><a href="/category/board" data-i18n="cat.board" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Board</a></li>
+            <li><a href="/category/arcade" data-i18n="cat.arcade" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Arcade</a></li>
+            <li><a href="/category/casual" data-i18n="cat.casual" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Casual</a></li>
+            <li><a href="/category/hidden-object" data-i18n="cat.hidden-object" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Hidden Object</a></li>
+            <li><a href="/category/strategy" data-i18n="cat.strategy" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Strategy</a></li>
+            <li><a href="/category/sports" data-i18n="cat.sports" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Sports</a></li>
+            <li><a href="/category/racing" data-i18n="cat.racing" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Racing</a></li>
+            <li><a href="/category/action" data-i18n="cat.action" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Action</a></li>
+            <li><a href="/category/fighting" data-i18n="cat.fighting" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Fighting</a></li>
+            <li><a href="/category/adventure" data-i18n="cat.adventure" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Adventure</a></li>
+            <li><a href="/category/idle" data-i18n="cat.idle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Idle</a></li>
+            <li><a href="/category/multiplayer" data-i18n="cat.multiplayer" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Multiplayer</a></li>
+          </ul>
+        </div>
+        <!-- More -->
+        <div class="ml-8 md:ml-16">
+          <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="footer.more">More</h4>
+          <ul class="space-y-2 text-base text-slate-500 dark:text-slate-400">
+            <li><a href="/blog" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.guides">Game Guides & Tips</a></li>
+            <li><a href="/privacy" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.privacy">Privacy Policy</a></li>
+            <li><a href="/terms" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.terms">Terms of Service</a></li>
+            <li><a href="/contact" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.contact">Contact</a></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="border-t border-slate-200 dark:border-slate-700 mt-8 pt-6 text-center text-xs text-slate-400 dark:text-slate-500">
-      &copy; {new Date().getFullYear()} Chill Arcade. All rights reserved.
-    </div>
+
   </div>
 </footer>
 

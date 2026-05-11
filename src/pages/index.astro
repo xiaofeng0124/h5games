@@ -3,12 +3,34 @@ import Layout from '../layouts/Layout.astro';
 import games from '../data/games.json' with { type: 'json' };
 import categories from '../data/categories.json' with { type: 'json' };
 
-const featured = games.filter(g => g.featured).slice(0, 6);
-const featuredSlugs = new Set(featured.map(g => g.slug));
-const allGames = games.filter(g => !featuredSlugs.has(g.slug));
+const featured = games.filter(g => g.featured).slice(0, 64);
+const latestGames = games.slice(0, 40);
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
 const emojiMap: Record<string, string> = {
-  'match-3': '💎', 'puzzle': '🧩', 'merge': '🔄', 'casual': '🎮', 'arcade': '🕹️', 'word': '📝', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🧠', 'adventure': '⚔️', 'sports': '🏆', 'racing': '🏎️', 'action': '🎯', 'fighting': '🥊', 'multiplayer': '🌐', 'idle': '⏳',
+  'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾',
+  'word': '🔤', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🎯',
+  'adventure': '⚔️', 'sports': '⚽', 'racing': '🏎️', 'action': '🎯', 'fighting': '🥊',
+  'multiplayer': '👥', 'idle': '📈',
+};
+
+const catGradients: Record<string, string> = {
+  'match-3': 'from-pink-100 to-rose-100 dark:from-pink-900/40 dark:to-rose-900/40',
+  'puzzle': 'from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40',
+  'merge': 'from-emerald-100 to-teal-100 dark:from-emerald-900/40 dark:to-teal-900/40',
+  'casual': 'from-amber-50 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/40',
+  'arcade': 'from-purple-100 to-violet-100 dark:from-purple-900/40 dark:to-violet-900/40',
+  'word': 'from-sky-100 to-cyan-100 dark:from-sky-900/40 dark:to-cyan-900/40',
+  'card': 'from-red-100 to-orange-100 dark:from-red-900/40 dark:to-orange-900/40',
+  'hidden-object': 'from-lime-100 to-green-100 dark:from-lime-900/40 dark:to-green-900/40',
+  'board': 'from-yellow-100 to-amber-100 dark:from-yellow-900/40 dark:to-amber-900/40',
+  'strategy': 'from-slate-200 to-zinc-200 dark:from-slate-700/60 dark:to-zinc-700/60',
+  'adventure': 'from-orange-100 to-red-100 dark:from-orange-900/40 dark:to-red-900/40',
+  'sports': 'from-teal-100 to-cyan-100 dark:from-teal-900/40 dark:to-cyan-900/40',
+  'racing': 'from-blue-200 to-sky-200 dark:from-blue-800/50 dark:to-sky-800/50',
+  'action': 'from-rose-100 to-pink-100 dark:from-rose-900/40 dark:to-pink-900/40',
+  'fighting': 'from-red-200 to-orange-200 dark:from-red-800/50 dark:to-orange-800/50',
+  'multiplayer': 'from-indigo-100 to-blue-100 dark:from-indigo-900/40 dark:to-blue-900/40',
+  'idle': 'from-gray-100 to-slate-100 dark:from-gray-700/60 dark:to-slate-700/60',
 };
 ---
 
@@ -153,25 +175,38 @@ const emojiMap: Record<string, string> = {
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(129,140,248,.4); }
       50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(129,140,248,0); }
     }
+
+    /* Category card animations */
+    .cat-card {
+      transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .cat-card:hover {
+      transform: translateY(-4px) scale(1.03);
+    }
   </style>
 
   <!-- Hero -->
-  <section class="relative text-center py-8 md:py-16 overflow-hidden">
+  <section class="relative text-center py-6 md:py-10 overflow-hidden bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm mb-8">
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
-      <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-200/30 dark:bg-indigo-800/20 rounded-full blur-3xl"></div>
-      <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-200/30 dark:bg-purple-800/20 rounded-full blur-3xl"></div>
+      <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-200 dark:bg-indigo-800/40 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-purple-200 dark:bg-purple-800/40 rounded-full blur-3xl"></div>
     </div>
-    <h1 class="relative text-3xl md:text-5xl font-extrabold text-slate-800 dark:text-slate-100 mb-2">
-      Chill Arcade
-      <span class="block text-indigo-600 dark:text-indigo-400 text-xl md:text-2xl mt-1">{games.length} Free Browser Games</span>
-    </h1>
-    <p class="relative text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-4" data-i18n="hero.subtitle">
-      No downloads. No signups. Just click and play.
-    </p>
-    <div class="flex flex-wrap justify-center gap-3">
-      <a href="#categories" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all hover:scale-105 text-sm" data-i18n="hero.browse">
-        Browse by Category
-      </a>
+    <div class="relative px-6 py-4 md:px-10 md:py-6 max-w-2xl mx-auto">
+      <h1 class="text-3xl md:text-5xl font-extrabold text-slate-800 dark:text-slate-100 mb-2">
+        Chill Arcade
+        <span class="block text-indigo-600 dark:text-indigo-400 text-xl md:text-2xl mt-1">{games.length} <span data-i18n="hero.count">Free Browser Games</span></span>
+      </h1>
+      <p class="text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-3" data-i18n="hero.subtitle">
+        No downloads, no sign-ups, no paywalls. Click and play thousands of games across multiple categories, supporting 16 languages. From match-3 puzzles to strategy adventures, from sports racing to fighting battles, from casual games to card games and more — all the entertainment you're looking for is right here. New games are added continuously. Play on mobile, desktop, tablet, and other devices.
+      </p>
+      <div class="flex flex-wrap justify-center gap-2.5">
+        <a href="#categories" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all hover:scale-105 text-sm" data-i18n="hero.browse">
+          Browse by Category
+        </a>
+        <a href="/games" class="px-6 py-2 bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 font-semibold rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow-md hover:scale-105 transition-all text-sm">
+          🎮 <span data-i18n="view_all">View All Games</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -198,44 +233,30 @@ const emojiMap: Record<string, string> = {
       </div>
       <div id="search-results-info" class="mt-1 text-xs text-slate-400 hidden">
         <span id="result-count">0</span> <span data-i18n="search.found">games found</span>
+        <span class="mx-1">·</span>
+        <a href="/games" class="text-indigo-500 hover:text-indigo-600 underline">View all games</a>
       </div>
     </div>
+    <!-- Tag filter -->
+    <div id="tag-filter" class="flex flex-wrap gap-1.5 mt-2"></div>
   </section>
 
-  <!-- Categories -->
-  <section id="categories" class="mb-8" style="content-visibility:auto">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-2">
-      {categoryEntries.map(([slug, cat]) => {
-        const count = games.filter(g => g.category === slug).length;
-        return (
-          <a href={`/category/${slug}`} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-sm transition-all group">
-            <span class="text-lg shrink-0">{cat.icon}</span>
-            <div class="min-w-0">
-              <div class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate"><span data-i18n={`cat.${slug}`}>{cat.name}</span></div>
-              <div class="text-[10px] text-slate-400">{count} <span data-i18n="cat.games">games</span></div>
-            </div>
-          </a>
-        );
-      })}
-    </div>
-  </section>
+  <!-- Dynamic search results -->
+  <div id="search-results" class="hidden mb-8">
+    <div id="results-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2"></div>
+  </div>
 
   <!-- Featured Games -->
-  <section class="mb-8">
+  <section class="mb-10">
     <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      {featured.map((game, i) => (
-        <a href={`/games/${game.slug}`} class="gc"
-          data-category={game.category}
-          data-title={game.title.toLowerCase()}
-          data-description={game.shortDescription.toLowerCase()}
-          data-difficulty={game.difficulty || ''}>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-3">
+      {featured.map(game => (
+        <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" fetchpriority={i < 3 ? 'high' : 'auto'} width="320" height="240" />
+              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" width="320" height="240" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
-            <div class="gc-preview" data-preview-src={game.iframeUrl ? game.iframeUrl.split('?')[0] : ''}></div>
             <div class="gc-overlay">
               <div class="gc-play">
                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -248,22 +269,22 @@ const emojiMap: Record<string, string> = {
     </div>
   </section>
 
-  <!-- All Games -->
-  <section class="mb-8" style="content-visibility:auto">
-    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🎮 <span data-i18n="section.latest">All Games</span> ({allGames.length})</h2>
-    <div id="all-games-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2">
-      {allGames.map(game => (
-        <a href={`/games/${game.slug}`} class="gc"
-          data-category={game.category}
-          data-title={game.title.toLowerCase()}
-          data-description={game.shortDescription.toLowerCase()}
-          data-difficulty={game.difficulty || ''}>
+  <!-- Latest Games -->
+  <section class="mb-8">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100">🆕 <span data-i18n="section.latest">Latest Games</span></h2>
+      <a href="/games" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors inline-flex items-center gap-1">
+        View all <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-2">
+      {latestGames.map(game => (
+        <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
               ? <img src={game.image} alt={game.title} loading="lazy" decoding="async" width="240" height="180" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
-            <div class="gc-preview" data-preview-src={game.iframeUrl ? game.iframeUrl.split('?')[0] : ''}></div>
             <div class="gc-overlay">
               <div class="gc-play">
                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -273,6 +294,33 @@ const emojiMap: Record<string, string> = {
           <span class="gc-title">{game.title}</span>
         </a>
       ))}
+    </div>
+    <div class="mt-6 text-center">
+      <a href="/games" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all hover:scale-105 text-sm">
+        🎮 <span data-i18n="view_all_count" data-i18n-count={games.length}>View All {games.length} Games</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section id="categories" class="mb-10">
+    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">📂 <span data-i18n="nav.categories">Browse by Category</span></h2>
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-2">
+      {categoryEntries.map(([slug, cat]) => {
+        const count = games.filter(g => g.category === slug).length;
+        const gradient = catGradients[slug] || 'from-slate-100 to-gray-100 dark:from-slate-700/60 dark:to-gray-700/60';
+        return (
+          <a href={`/category/${slug}`} class="cat-card block bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 shadow-sm hover:shadow-md overflow-hidden">
+            <div class={`bg-gradient-to-br ${gradient} p-4 flex items-center justify-center text-4xl`}>
+              {cat.icon}
+            </div>
+            <div class="p-2 text-center">
+              <div class="text-base font-semibold text-slate-700 dark:text-slate-200 truncate"><span data-i18n={`cat.${slug}`}>{cat.name}</span></div>
+              <div class="text-sm text-slate-400 mt-0.5">{count} <span data-i18n="cat.games">games</span></div>
+            </div>
+          </a>
+        );
+      })}
     </div>
   </section>
 
@@ -289,47 +337,146 @@ const emojiMap: Record<string, string> = {
       "query-input": "required name=search_term_string"
     }
   })} />
+
+  <!-- Game data for client-side search -->
+  <script type="application/json" id="games-data">
+    {JSON.stringify(games.map(g => ({
+      slug: g.slug,
+      title: g.title,
+      category: g.category,
+      description: g.shortDescription,
+      difficulty: g.difficulty || '',
+      tags: g.tags || [],
+      image: g.image,
+      iframeUrl: g.iframeUrl,
+    })))}
+  </script>
 </Layout>
 
 <script>
   const searchInput = document.getElementById('search-input');
   const categoryFilter = document.getElementById('category-filter');
   const difficultyFilter = document.getElementById('difficulty-filter');
+  const tagFilter = document.getElementById('tag-filter');
   const resultsInfo = document.getElementById('search-results-info');
   const resultCount = document.getElementById('result-count');
-  const gameCards = document.querySelectorAll('[data-category]');
+  const searchResults = document.getElementById('search-results');
+  const resultsGrid = document.getElementById('results-grid');
+
+  // Hide sections when search is active
+  const categoriesSection = document.getElementById('categories');
+  const featuredSection = document.querySelectorAll('.mb-10')[1]; // featured
+  const latestSection = document.querySelectorAll('.mb-8')[1]; // latest
+
+  let selectedTag = '';
+  let allGamesData = [];
+  try {
+    const el = document.getElementById('games-data');
+    if (el) allGamesData = JSON.parse(el.textContent);
+  } catch(e) {}
+
+  function buildTagFilter() {
+    if (!tagFilter || !allGamesData.length) return;
+    const counts = {};
+    allGamesData.forEach(g => {
+      if (g.tags) g.tags.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
+    });
+    const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 24);
+    tagFilter.innerHTML = sorted.map(([tag, count]) =>
+      `<button data-tag="${tag}" class="tag-chip px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-indigo-300 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all whitespace-nowrap">${tag} (${count})</button>`
+    ).join('');
+    tagFilter.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-tag]');
+      if (!btn) return;
+      const tag = btn.getAttribute('data-tag');
+      if (selectedTag === tag) {
+        selectedTag = '';
+        btn.classList.remove('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
+        btn.classList.add('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
+      } else {
+        tagFilter.querySelectorAll('[data-tag]').forEach(b => {
+          b.classList.remove('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
+          b.classList.add('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
+        });
+        selectedTag = tag;
+        btn.classList.remove('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
+        btn.classList.add('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
+      }
+      filterGames();
+    });
+  }
+
+  function renderResults(games) {
+    if (!resultsGrid || !searchResults) return;
+    if (games.length === 0) {
+      resultsGrid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 dark:text-slate-500"><p class="text-lg mb-1">🔍</p><p data-i18n="search.noresults">No games found. Try a different search.</p></div>';
+      return;
+    }
+    const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
+    resultsGrid.innerHTML = games.map(g => `
+      <a href="/games/${g.slug}" class="gc">
+        <div class="gc-thumb">
+          ${g.image
+            ? `<img src="${g.image}" alt="${g.title}" loading="lazy" decoding="async" width="240" height="180" />`
+            : `<span class="gc-icon">${emojiMap[g.category] || '🎮'}</span>`
+          }
+          <div class="gc-overlay">
+            <div class="gc-play">
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+        <span class="gc-title">${g.title}</span>
+      </a>
+    `).join('');
+  }
 
   function filterGames() {
-    const query = searchInput.value.trim().toLowerCase();
-    const category = categoryFilter.value;
-    const difficulty = difficultyFilter.value;
-    let visibleCount = 0;
+    const query = (searchInput?.value || '').trim().toLowerCase();
+    const category = categoryFilter?.value || '';
+    const difficulty = difficultyFilter?.value || '';
+    const isActive = query || category || difficulty || selectedTag;
 
-    gameCards.forEach(card => {
-      const matchCategory = !category || card.dataset.category === category;
-      const matchDifficulty = !difficulty || card.dataset.difficulty === difficulty;
+    const filtered = allGamesData.filter(g => {
+      const matchCategory = !category || g.category === category;
+      const matchDifficulty = !difficulty || g.difficulty === difficulty;
+      const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
       const matchSearch = !query ||
-        card.dataset.title.includes(query) ||
-        card.dataset.description.includes(query) ||
-        card.dataset.category.includes(query);
-
-      if (matchCategory && matchDifficulty && matchSearch) {
-        card.classList.remove('hidden');
-        visibleCount++;
-      } else {
-        card.classList.add('hidden');
-      }
+        g.title.toLowerCase().includes(query) ||
+        g.description.toLowerCase().includes(query) ||
+        g.category.includes(query) ||
+        (g.tags && g.tags.some(t => t.includes(query)));
+      return matchCategory && matchDifficulty && matchTag && matchSearch;
     });
 
-    if (query || category || difficulty) {
-      resultsInfo.classList.remove('hidden');
-      resultCount.textContent = visibleCount;
+    // Show/hide results info
+    if (resultsInfo && resultCount) {
+      if (isActive) {
+        resultsInfo.classList.remove('hidden');
+        resultCount.textContent = filtered.length;
+      } else {
+        resultsInfo.classList.add('hidden');
+      }
+    }
+
+    // Show/hide sections and render results
+    if (isActive && searchResults && resultsGrid) {
+      searchResults.classList.remove('hidden');
+      if (categoriesSection) categoriesSection.style.display = 'none';
+      if (featuredSection) featuredSection.style.display = 'none';
+      if (latestSection) latestSection.style.display = 'none';
+      renderResults(filtered);
     } else {
-      resultsInfo.classList.add('hidden');
+      if (searchResults) searchResults.classList.add('hidden');
+      if (categoriesSection) categoriesSection.style.display = '';
+      if (featuredSection) featuredSection.style.display = '';
+      if (latestSection) latestSection.style.display = '';
     }
   }
 
-  searchInput.addEventListener('input', filterGames);
-  categoryFilter.addEventListener('change', filterGames);
-  difficultyFilter.addEventListener('change', filterGames);
+  searchInput?.addEventListener('input', filterGames);
+  categoryFilter?.addEventListener('change', filterGames);
+  difficultyFilter?.addEventListener('change', filterGames);
+
+  if (allGamesData.length) buildTagFilter();
 </script>

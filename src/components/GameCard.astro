@@ -13,7 +13,7 @@ export interface Props {
 
 const { slug, title, category, image, description, difficulty, iframeUrl, priority, compact } = Astro.props;
 const emojiMap: Record<string, string> = {
-  'match-3': '💎', 'puzzle': '🧩', 'merge': '🔄', 'casual': '🎮', 'arcade': '🕹️', 'word': '📝', 'card': '🃏', 'hidden-object': '🔍',
+  'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾', 'word': '🔤', 'card': '🃏', 'hidden-object': '🔍',
 };
 ---
 
@@ -27,11 +27,9 @@ const emojiMap: Record<string, string> = {
       data-description={description.toLowerCase()}
       data-difficulty={difficulty || ''}
     >
-      <div class="relative aspect-[4/3] bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 overflow-hidden">
-        {image
-          ? <img src={image} alt={title} class="w-full h-full object-cover" loading="lazy" decoding="async" />
-          : <span class="flex items-center justify-center h-full text-4xl">{emojiMap[category] || '🎮'}</span>
-        }
+      <div class="relative aspect-[4/3] bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 overflow-hidden flex items-center justify-center">
+        <span class="text-4xl">{emojiMap[category] || '🎮'}</span>
+        {image && <img src={image} alt={title} class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.style.display='none'" />}
         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
           <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
             <svg class="w-5 h-5 text-indigo-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -55,9 +53,10 @@ const emojiMap: Record<string, string> = {
       <!-- Thumbnail -->
       <div class="game-thumb relative aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 flex items-center justify-center text-6xl overflow-hidden">
         {image
-          ? <img src={image} alt={title} class="w-full h-full object-cover" loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'low'} width="320" height="180" />
+          ? <img src={image} alt={title} class="absolute inset-0 w-full h-full object-cover" loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'low'} width="320" height="180" onerror="this.style.display='none'" />
           : <span>{emojiMap[category] || '🎮'}</span>
         }
+        <span class="z-0">{emojiMap[category] || '🎮'}</span>
         <!-- Preview container: real game loads here on hover -->
         <div class="game-preview absolute inset-0 w-full h-full z-10 hidden opacity-0 transition-opacity duration-200"></div>
         <!-- Play overlay -->

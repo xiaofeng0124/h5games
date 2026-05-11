@@ -20,6 +20,17 @@ const related = allGames
   .slice(0, 8);
 
 const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
+
+// Game-specific i18n data for description & instructions
+const i18nLangs = ['en','es','fr','de','pt','it','nl','pl','sv','ru','tr','ar','ja','ko','zh','zh-tw'];
+const gdescKey = `gdesc.${game.slug}`;
+const ginstKey = game.instructions ? `ginst.${game.slug}` : null;
+const gameI18nData: Record<string, Record<string, string>> = { [gdescKey]: {} };
+i18nLangs.forEach(l => { gameI18nData[gdescKey][l] = game.description; });
+if (ginstKey) {
+  gameI18nData[ginstKey] = {};
+  i18nLangs.forEach(l => { gameI18nData[ginstKey!][l] = game.instructions; });
+}
 ---
 
 <Layout title={game.title} description={game.shortDescription} canonical={canonicalUrl}>
@@ -44,7 +55,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
             <span class="text-sm text-slate-400">👥 {(game.playCount || 0).toLocaleString()} plays</span>
           </div>
         </div>
-        <button id="fav-btn" data-slug={game.slug}
+        <button id="fav-btn" data-slug={game.slug} data-title={game.title} data-category={game.category}
           class="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-600 text-sm font-medium transition-all hover:scale-105"
           aria-label="Add to favorites">
           <span id="fav-icon" class="text-lg">🤍</span>
@@ -59,7 +70,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
         <!-- Cover image + play button overlay -->
         <div id="game-cover" class="absolute inset-0 z-10 flex flex-col items-center justify-center cursor-pointer rounded-none" style="background:linear-gradient(135deg,#1e1b4b,#312e81)">
           {game.image && (
-            <img src={game.image} alt={game.title} class="absolute inset-0 w-full h-full object-cover opacity-40" loading="lazy" />
+            <img src={game.image} alt={game.title} class="absolute inset-0 w-full h-full object-cover opacity-40" fetchpriority="high" onerror="this.style.display='none'" />
           )}
           <div class="relative flex flex-col items-center gap-4">
             <div id="play-btn" class="w-20 h-20 rounded-full bg-indigo-600/90 hover:bg-indigo-500 flex items-center justify-center transition-all hover:scale-110 shadow-2xl shadow-indigo-500/50">
@@ -68,13 +79,24 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
             <span class="text-white/90 text-lg font-semibold drop-shadow-lg" data-i18n="game.click_play">Click to Play</span>
           </div>
         </div>
-        <!-- Loading spinner -->
-        <div id="game-loading" class="absolute inset-0 flex-col items-center justify-center z-20 hidden">
-          <div class="w-12 h-12 border-4 border-slate-600 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-          <p class="text-slate-400 text-sm" data-i18n="game.loading">Loading game...</p>
+        <!-- Loading overlay with progress -->
+        <div id="game-loading" class="absolute inset-0 z-20 hidden" style="background:linear-gradient(135deg,#1e1b4b,#312e81)">
+          {game.image && (
+            <img src={game.image} alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm" loading="lazy" aria-hidden="true" onerror="this.style.display='none'" />
+          )}
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-4">
+            <!-- Spinner -->
+            <div class="w-12 h-12 border-4 border-slate-600 border-t-indigo-500 rounded-full animate-spin"></div>
+            <!-- Progress bar -->
+            <div class="w-64 max-w-[80vw] bg-slate-700/60 rounded-full h-2.5 overflow-hidden backdrop-blur-sm">
+              <div id="progress-bar" class="h-full w-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300 ease-out"></div>
+            </div>
+            <p id="progress-text" class="text-white/80 text-sm font-medium">0%</p>
+            <p class="text-slate-400 text-xs" data-i18n="game.loading">Loading game...</p>
+          </div>
         </div>
         {game.iframeUrl ? (
-          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals"></iframe>
+          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30 pointer-events-none" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals"></iframe>
         ) : (
           <div class="absolute inset-0 z-30 flex flex-col items-center justify-center text-center p-8">
             <div class="text-6xl mb-4">🎮</div>
@@ -91,13 +113,13 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     <!-- Game description and instructions -->
     <div class="p-6">
       <div class="prose prose-slate dark:prose-invert max-w-none">
-        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">{game.description}</p>
+        <p class="text-slate-600 dark:text-slate-300 leading-relaxed" data-i18n={gdescKey}>{game.description}</p>
       </div>
 
       {game.instructions && (
         <div class="mt-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3" data-i18n="game.howtoplay">📖 How to Play</h2>
-          <p class="text-slate-600 dark:text-slate-300">{game.instructions}</p>
+          <p class="text-slate-600 dark:text-slate-300" data-i18n={ginstKey}>{game.instructions}</p>
         </div>
       )}
 
@@ -140,28 +162,115 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
       "priceCurrency": "USD"
     }
   })} />
+  <!-- Game i18n data -->
+  <script type="application/json" id="game-i18n-data" set:html={JSON.stringify(gameI18nData)} />
+  <script>
+    (function(){
+      var el = document.getElementById('game-i18n-data');
+      if (!el) return;
+      try {
+        var data = JSON.parse(el.textContent);
+        if (window.__addTranslations) {
+          window.__addTranslations(data);
+        } else {
+          window.__gqueue = window.__gqueue || [];
+          window.__gqueue.push(data);
+        }
+      } catch(e) {}
+    })();
+  </script>
 </Layout>
 
 <script>
-  const slug = '{game.slug}';
-  const title = '{game.title}';
-  const category = '{game.category}';
+  const favBtnData = document.getElementById('fav-btn')?.dataset;
+  const slug = favBtnData?.slug || '';
+  const title = favBtnData?.title || '';
+  const category = favBtnData?.category || '';
   let iframeLoaded = false;
+  let progressTimer = null;
 
   // === Click-to-Play: load iframe on demand ===
   const gameCover = document.getElementById('game-cover');
   const gameIframe = document.getElementById('game-iframe');
   const gameLoading = document.getElementById('game-loading');
-  const playBtn = document.getElementById('play-btn');
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
+
+  // Simulated progress: fast start, decelerating curve
+  function startProgressSimulation() {
+    let p = 0;
+    const steps = [
+      { target: 15, duration: 400 },
+      { target: 30, duration: 800 },
+      { target: 50, duration: 1500 },
+      { target: 70, duration: 3000 },
+      { target: 82, duration: 4000 },
+      { target: 90, duration: 6000 },
+      { target: 94, duration: 10000 },
+    ];
+    let stepIdx = 0;
+    let stepStart = performance.now();
+    let stepStartP = 0;
+
+    function tick(now) {
+      if (!progressBar || !progressText) return;
+      const step = steps[stepIdx];
+      if (!step) {
+        // Hold at ~94-96%
+        p = Math.min(p + 0.3, 96);
+        progressBar.style.width = p + '%';
+        progressText.textContent = Math.round(p) + '%';
+        progressTimer = requestAnimationFrame(tick);
+        return;
+      }
+      const elapsed = now - stepStart;
+      const t = Math.min(elapsed / step.duration, 1);
+      // ease-out quad
+      const ease = t * (2 - t);
+      p = stepStartP + (step.target - stepStartP) * ease;
+      progressBar.style.width = p + '%';
+      progressText.textContent = Math.round(p) + '%';
+      if (t >= 1) {
+        stepStartP = step.target;
+        stepIdx++;
+        stepStart = now;
+      }
+      progressTimer = requestAnimationFrame(tick);
+    }
+    progressTimer = requestAnimationFrame(tick);
+  }
+
+  // Warm up the CDN connection before loading
+  function warmupCDN(src) {
+    try {
+      const url = new URL(src);
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = url.origin;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    } catch {}
+  }
 
   function loadGame() {
     if (iframeLoaded || !gameIframe || !gameCover) return;
     iframeLoaded = true;
+
+    // Warmup CDN
+    const src = gameIframe.dataset.src;
+    if (src) warmupCDN(src);
+
+    // Show loading overlay with progress animation
     gameCover.style.display = 'none';
     gameLoading.classList.remove('hidden');
-    gameLoading.classList.add('flex');
-    gameIframe.src = gameIframe.dataset.src;
-    gameIframe.removeAttribute('data-src');
+    startProgressSimulation();
+
+    // Small delay then set src (let progress bar show first)
+    setTimeout(() => {
+      gameIframe.src = src;
+      gameIframe.classList.remove('pointer-events-none');
+      gameIframe.removeAttribute('data-src');
+    }, 100);
   }
 
   if (gameCover && gameIframe) {
@@ -174,12 +283,42 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     gameCover.setAttribute('role', 'button');
   }
 
-  // Hide loading spinner once iframe loads
+  // Complete progress and hide loader once iframe loads
   if (gameIframe) {
     gameIframe.addEventListener('load', function() {
-      if (gameLoading) gameLoading.style.display = 'none';
+      // Jump to 100%
+      if (progressBar) progressBar.style.width = '100%';
+      if (progressText) progressText.textContent = '100%';
+      // Stop the animation
+      if (progressTimer) cancelAnimationFrame(progressTimer);
+      // Fade out loader after a brief pause
+      setTimeout(() => {
+        if (gameLoading) {
+          gameLoading.style.transition = 'opacity 0.3s';
+          gameLoading.style.opacity = '0';
+          setTimeout(() => { gameLoading.style.display = 'none'; }, 300);
+        }
+      }, 400);
     });
   }
+
+  // Fallback: if loading takes too long, show a retry hint
+  setTimeout(() => {
+    if (gameLoading && gameLoading.style.display !== 'none' && gameLoading.style.opacity !== '0') {
+      const hint = document.createElement('p');
+      hint.className = 'text-slate-400 text-xs mt-2 cursor-pointer hover:text-white transition-colors';
+      hint.setAttribute('data-i18n', 'game.retry');
+      hint.textContent = 'Still loading? Click to retry';
+      hint.addEventListener('click', () => {
+        if (gameIframe) {
+          gameIframe.src = gameIframe.src;
+          progressBar.style.width = '0%';
+          progressText.textContent = '0%';
+        }
+      });
+      gameLoading.appendChild(hint);
+    }
+  }, 15000);
 
   // === Recently Played ===
   try {

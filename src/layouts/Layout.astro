@@ -46,8 +46,12 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <link rel="icon" href="/favicon.ico" />
     <link rel="dns-prefetch" href="https://html5.gamedistribution.com" />
     <link rel="dns-prefetch" href="https://img.gamedistribution.com" />
+    <link rel="dns-prefetch" href="https://html5.gamemonetize.co" />
+    <link rel="dns-prefetch" href="https://img.gamemonetize.com" />
     <link rel="preconnect" href="https://html5.gamedistribution.com" />
     <link rel="preconnect" href="https://img.gamedistribution.com" crossorigin />
+    <link rel="preconnect" href="https://html5.gamemonetize.co" />
+    <link rel="preconnect" href="https://img.gamemonetize.com" crossorigin />
     <link rel="preconnect" href="https://static.cloudflareinsights.com" />
 
     <!-- i18n support -->
@@ -59,7 +63,7 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
   </head>
   <body class="min-h-screen text-slate-800 dark:text-slate-100">
     <Header />
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <slot />
     </main>
     <button id="back-to-top" aria-label="Back to top"
@@ -69,7 +73,150 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <Footer />
     <CookieConsent />
     <script is:inline>
-(function(){'use strict';var e=localStorage.getItem('i18n_lang')||'en',t=null,n=null;function r(r){if(t){r();return}fetch('/i18n/translations.json?'+Date.now()).then(function(e){return e.json()}).then(function(e){t=e.translations,n=e.languages,r()}).catch(function(){r()})}function o(r){e=r,localStorage.setItem('i18n_lang',r);if(!t)return;var o=document.querySelectorAll('[data-i18n]');for(var i=0;i<o.length;i++){var a=o[i],u=a.getAttribute('data-i18n');if(!u||!t[u])continue;var f=t[u][r]||t[u].en||u;if(a.getAttribute('data-i18n-attr')==='placeholder')a.placeholder=f;else if(a.tagName==='INPUT'||a.tagName==='TEXTAREA')a.value=f;else a.textContent=f}var s=document.documentElement;s.lang=r;var c=null;if(n)for(var l=0;l<n.length;l++){if(n[l].code===r){c=n[l];break}}c&&c.dir?s.dir=c.dir:s.dir='ltr';var d=document.getElementById('lang-flag'),v=document.getElementById('lang-name');if(d&&v&&c){d.src='/flags/'+(c.country||'us')+'.svg';v.textContent=c.nativeName}var g=document.getElementById('lang-selector-menu');if(g){g.classList.add('hidden');g.classList.remove('grid')}var p=document.querySelectorAll('[data-lang-code]');for(var h=0;h<p.length;h++){var m=p[h].getAttribute('data-lang-code');if(m===r)p[h].classList.add('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30');else p[h].classList.remove('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30')}}function i(){var t=document.getElementById('lang-selector-btn'),n=document.getElementById('lang-selector-menu');if(!t||!n)return;t.addEventListener('click',function(e){e.stopPropagation();n.classList.toggle('hidden');n.classList.toggle('grid')});n.addEventListener('click',function(e){var n=e.target.closest('[data-lang-code]');if(n)o(n.getAttribute('data-lang-code'))});document.addEventListener('click',function(){n.classList.add('hidden');n.classList.remove('grid')});var r=document.querySelectorAll('[data-lang-code]');for(var a=0;a<r.length;a++){if(r[a].getAttribute('data-lang-code')===e)r[a].classList.add('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30')}}window.__=function(n){if(!t||!t[n])return n;return t[n][e]||t[n].en||n};r(function(){o(e);i()})})();
+(function(){
+  'use strict';
+  var lang = localStorage.getItem('i18n_lang') || 'en';
+  var trans = null;
+  var langs = null;
+
+  function load(cb) {
+    if (trans) { cb(); return; }
+    try {
+      var cached = JSON.parse(localStorage.getItem('i18n_cache'));
+      if (cached && cached.translations && cached.languages) {
+        trans = cached.translations;
+        langs = cached.languages;
+        cb();
+        fetch('/i18n/translations.json?' + Date.now())
+          .then(function(r) { return r.json(); })
+          .then(function(d) {
+            trans = d.translations;
+            langs = d.languages;
+            try { localStorage.setItem('i18n_cache', JSON.stringify(d)); } catch(ex) {}
+            mergeGameTrans();
+            apply(lang);
+          })
+          .catch(function() {});
+        return;
+      }
+    } catch(ex) {}
+    fetch('/i18n/translations.json?' + Date.now())
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        trans = d.translations;
+        langs = d.languages;
+        try { localStorage.setItem('i18n_cache', JSON.stringify(d)); } catch(ex) {}
+        mergeGameTrans();
+        cb();
+      })
+      .catch(function() { cb(); });
+  }
+
+  function apply(l) {
+    lang = l;
+    localStorage.setItem('i18n_lang', l);
+    if (!trans) return;
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var key = el.getAttribute('data-i18n');
+      if (!key || !trans[key]) continue;
+      var text = trans[key][l] || trans[key].en || key;
+      var cnt = el.getAttribute('data-i18n-count');
+      if (cnt && text.indexOf('{count}') >= 0) text = text.split('{count}').join(cnt);
+      if (el.getAttribute('data-i18n-attr') === 'placeholder') {
+        el.placeholder = text;
+      } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.value = text;
+      } else {
+        el.textContent = text;
+      }
+    }
+    document.documentElement.lang = l;
+    var info = null;
+    if (langs) {
+      for (var j = 0; j < langs.length; j++) {
+        if (langs[j].code === l) { info = langs[j]; break; }
+      }
+    }
+    document.documentElement.dir = (info && info.dir) ? info.dir : 'ltr';
+    var flag = document.getElementById('lang-flag');
+    var name = document.getElementById('lang-name');
+    if (flag && name && info) {
+      flag.src = '/flags/' + (info.country || 'us') + '.svg';
+      name.textContent = info.nativeName;
+    }
+    var menu = document.getElementById('lang-selector-menu');
+    if (menu) { menu.classList.add('hidden'); menu.classList.remove('grid'); }
+    var btns = document.querySelectorAll('[data-lang-code]');
+    for (var k = 0; k < btns.length; k++) {
+      var code = btns[k].getAttribute('data-lang-code');
+      if (code === l) {
+        btns[k].classList.add('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30');
+      } else {
+        btns[k].classList.remove('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30');
+      }
+    }
+    document.dispatchEvent(new CustomEvent('i18nchange', {detail: {lang: l}}));
+  }
+
+  window.__addTranslations = function(d) {
+    if (trans && d) { Object.assign(trans, d); apply(lang); }
+  };
+
+  // Process queued game translations (injected before this script ran)
+  try {
+    if (window.__gqueue && window.__gqueue.length) {
+      for (var qi = 0; qi < window.__gqueue.length; qi++) {
+        if (trans) Object.assign(trans, window.__gqueue[qi]);
+      }
+      if (trans) apply(lang);
+    }
+  } catch(ex) {}
+
+  // Helper to re-merge game translations after trans is replaced
+  function mergeGameTrans() {
+    try {
+      if (window.__gqueue && window.__gqueue.length) {
+        for (var qi = 0; qi < window.__gqueue.length; qi++) {
+          Object.assign(trans, window.__gqueue[qi]);
+        }
+      }
+    } catch(ex) {}
+  }
+
+  function initUI() {
+    var btn = document.getElementById('lang-selector-btn');
+    var menu = document.getElementById('lang-selector-menu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('grid');
+    });
+    menu.addEventListener('click', function(e) {
+      var t = e.target.closest('[data-lang-code]');
+      if (t) apply(t.getAttribute('data-lang-code'));
+    });
+    document.addEventListener('click', function() {
+      menu.classList.add('hidden');
+      menu.classList.remove('grid');
+    });
+    var btns = document.querySelectorAll('[data-lang-code]');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].getAttribute('data-lang-code') === lang) {
+        btns[i].classList.add('ring-2','ring-indigo-500','bg-indigo-50','dark:bg-indigo-900/30');
+      }
+    }
+  }
+
+  window.__ = function(key) {
+    if (!trans || !trans[key]) return key;
+    return trans[key][lang] || trans[key].en || key;
+  };
+
+  load(function() { apply(lang); initUI(); });
+})();
     </script>
   </body>
 </html>

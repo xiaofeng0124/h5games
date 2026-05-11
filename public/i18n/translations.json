@@ -34,25 +34,28 @@
       "en": "100% Free Browser Games", "es": "100% Juegos de Navegador Gratis", "fr": "100% Jeux Navigateur Gratuits", "de": "100% Kostenlose Browserspiele", "pt": "100% Jogos de Navegador Grátis", "it": "100% Giochi Browser Gratuiti", "nl": "100% Gratis Browsergames", "pl": "100% Darmowe Gry Przeglądarkowe", "sv": "100% Gratis Webbläsarspel", "ru": "100% Бесплатные Браузерные Игры", "tr": "%100 Ücretsiz Tarayıcı Oyunları", "ar": "100% ألعاب متصفح مجانية", "ja": "100%無料ブラウザゲーム", "ko": "100% 무료 브라우저 게임", "zh": "100% 免费网页游戏", "zh-tw": "100% 免費網頁遊戲"
     },
     "hero.subtitle": {
-      "en": "No downloads. No signups. No paywalls. Just click and play hundreds of casual games — match-3 puzzles, merge adventures, brain teasers, and more.",
-      "es": "Sin descargas. Sin registros. Sin muros de pago. Solo haz clic y juega cientos de juegos casuales: rompecabezas match-3, aventuras de fusión, acertijos y más.",
-      "fr": "Pas de téléchargement. Pas d'inscription. Pas de paywall. Cliquez et jouez à des centaines de jeux décontractés — puzzles match-3, aventures de fusion, énigmes et plus.",
-      "de": "Keine Downloads. Keine Anmeldung. Keine Bezahlschranken. Einfach klicken und hunderte von Casual-Spielen spielen — Match-3-Puzzles, Merge-Abenteuer, Denksportaufgaben und mehr.",
-      "pt": "Sem downloads. Sem cadastros. Sem paywalls. Clique e jogue centenas de jogos casuais — quebra-cabeças match-3, aventuras de fusão, desafios mentais e muito mais.",
-      "it": "Niente download. Niente registrazioni. Niente paywall. Basta cliccare e giocare a centinaia di giochi casual — puzzle match-3, avventure merge, rompicapo e altro.",
-      "nl": "Geen downloads. Geen registraties. Geen betaalmuren. Klik en speel honderden casual games — match-3 puzzels, merge avonturen, breinbrekers en meer.",
-      "pl": "Bez pobierania. Bez rejestracji. Bez paywalli. Kliknij i graj w setki gier casualowych — puzzle match-3, przygody merge, łamigłówki i więcej.",
-      "sv": "Inga nedladdningar. Inga registreringar. Inga betalväggar. Bara klicka och spela hundratals avslappnade spel — match-3-pussel, merge-äventyr, hjärngympa och mer.",
-      "ru": "Без скачивания. Без регистрации. Без платных подписок. Просто нажмите и играйте в сотни казуальных игр — пазлы match-3, приключения merge, головоломки и многое другое.",
-      "tr": "İndirme yok. Kayıt yok. Ödeme duvarı yok. Tıkla ve yüzlerce sıradan oyunu oyna — match-3 bulmacalar, birleştirme maceraları, beyin jimnastiği ve daha fazlası.",
-      "ar": "لا تنزيل. لا تسجيل. لا جدران دفع. فقط انقر والعب المئات من الألعاب العادية — ألغاز المطابقة الثلاثية، مغامرات الدمج، ألغاز العقل والمزيد.",
-      "ja": "ダウンロード不要。登録不要。課金なし。クリックするだけで何百ものカジュアルゲームをプレイ — マッチ3パズル、マージアドベンチャー、脳トレなど。",
-      "ko": "다운로드 불필요. 회원가입 불필요. 유료 장벽 없음. 클릭만으로 수백 가지 캐주얼 게임을 플레이하세요 — 매치3 퍼즐, 머지 어드벤처, 두뇌 퀴즈 등.",
-      "zh": "无需下载。无需注册。无付费墙。点击即玩数百款休闲游戏 — 三消益智、合并冒险、脑筋急转弯等等。",
-      "zh-tw": "無需下載。無需註冊。無付費牆。點擊即玩數百款休閒遊戲 — 三消益智、合併冒險、腦筋急轉彎等等。"
+      "en": "No downloads, no sign-ups, no paywalls. Click and play thousands of games across multiple categories, supporting 16 languages. From match-3 puzzles to strategy adventures, from sports racing to fighting battles, from casual games to card games and more — all the entertainment you're looking for is right here. New games are added continuously. Play on mobile, desktop, tablet, and other devices.",
+      "es": "Sin descargas, sin registros, sin muros de pago. Juega al instante miles de juegos en múltiples categorías y 16 idiomas. Desde match-3 hasta estrategia, desde deportes hasta lucha — nuevos juegos cada semana, juega en cualquier dispositivo.",
+      "fr": "Pas de téléchargement, pas d'inscription, pas de paywall. Jouez instantanément à des milliers de jeux dans plusieurs catégories et 16 langues. Du match-3 à la stratégie, du sport au combat — nouveaux jeux régulièrement, jouez sur tous vos appareils.",
+      "de": "Keine Downloads, keine Anmeldung, keine Bezahlschranken. Spiele sofort tausende Spiele in mehreren Kategorien und 16 Sprachen. Von Match-3 bis Strategie, von Sport bis Kampf — neue Spiele regelmäßig, spiele auf jedem Gerät.",
+      "pt": "Sem downloads, sem cadastros, sem paywalls. Jogue instantaneamente milhares de jogos em várias categorias e 16 idiomas. De match-3 a estratégia, de esportes a luta — novos jogos regularmente, jogue em qualquer dispositivo.",
+      "it": "Niente download, niente registrazione, niente paywall. Gioca immediatamente a migliaia di giochi in molteplici categorie e 16 lingue. Dal match-3 alla strategia, dallo sport al combattimento — nuovi giochi regolarmente, gioca su qualsiasi dispositivo.",
+      "nl": "Geen downloads, geen registratie, geen betaalmuren. Speel direct duizenden games in meerdere categorieën en 16 talen. Van match-3 tot strategie, van sport tot vechten — nieuwe games regelmatig, speel op elk apparaat.",
+      "pl": "Bez pobierania, bez rejestracji, bez paywalli. Graj natychmiast w tysiące gier w wielu kategoriach i 16 językach. Od match-3 po strategię, od sportu po walkę — nowe gry regularnie, graj na każdym urządzeniu.",
+      "sv": "Inga nedladdningar, inga registreringar, inga betalväggar. Spela direkt tusentals spel i flera kategorier och 16 språk. Från match-3 till strategi, från sport till fighting — nya spel regelbundet, spela på vilken enhet som helst.",
+      "ru": "Без скачивания, без регистрации, без платных подписок. Играйте мгновенно в тысячи игр в множестве категорий и на 16 языках. От match-3 до стратегий, от спорта до файтингов — новые игры регулярно, играйте на любом устройстве.",
+      "tr": "İndirme yok, kayıt yok, ödeme duvarı yok. Binlerce oyunu anında oynayın, birden çok kategoride ve 16 dilde. Match-3'ten stratejiye, spordan dövüşe — düzenli yeni oyunlar, her cihazda oynayın.",
+      "ar": "لا تنزيل، لا تسجيل، لا جدران دفع. العب فوراً آلاف الألعاب في فئات متعددة و16 لغة. من ألغاز المطابقة إلى الإستراتيجية، من الرياضة إلى القتال — ألعاب جديدة بانتظام، العب على أي جهاز.",
+      "ja": "ダウンロード不要、登録不要、課金なし。数千ものゲームを複数のカテゴリーと16言語で即プレイ。マッチ3からストラテジー、スポーツから格闘まで — 定期的に新作追加、どんなデバイスでもプレイ可能。",
+      "ko": "다운로드 불필요, 회원가입 불필요, 유료 장벽 없음. 수천 가지 게임을 여러 카테고리와 16개 언어로 즉시 플레이하세요. 매치3부터 전략, 스포츠부터 격투까지 — 정기적으로 새로운 게임 추가, 모든 기기에서 플레이 가능.",
+      "zh": "无需下载，无需注册，无付费墙。即点即玩数千款游戏，涵盖多个分类，支持16种语言。从三消拼图到策略冒险，从体育竞速到格斗对战，新游戏持续更新，手机电脑均可畅玩。",
+      "zh-tw": "無需下載，無需註冊，無付費牆。即點即玩數千款遊戲，涵蓋多個分類，支援16種語言。從三消拼圖到策略冒險，從體育競速到格鬥對戰，新遊戲持續更新，手機電腦均可暢玩。"
     },
     "hero.browse": {
       "en": "Browse Games", "es": "Explorar Juegos", "fr": "Parcourir les Jeux", "de": "Spiele Durchsuchen", "pt": "Navegar Jogos", "it": "Sfoglia Giochi", "nl": "Bladeren", "pl": "Przeglądaj Gry", "sv": "Bläddra Spel", "ru": "Искать Игры", "tr": "Oyunları Keşfet", "ar": "تصفح الألعاب", "ja": "ゲームを見る", "ko": "게임 둘러보기", "zh": "浏览游戏", "zh-tw": "瀏覽遊戲"
+    },
+    "hero.count": {
+      "en": "Free Browser Games", "es": "Juegos de Navegador Gratis", "fr": "Jeux Navigateur Gratuits", "de": "Kostenlose Browserspiele", "pt": "Jogos de Navegador Grátis", "it": "Giochi Browser Gratuiti", "nl": "Gratis Browsergames", "pl": "Darmowe Gry Przeglądarkowe", "sv": "Gratis Webbläsarspel", "ru": "Бесплатные Браузерные Игры", "tr": "Ücretsiz Tarayıcı Oyunları", "ar": "ألعاب متصفح مجانية", "ja": "無料ブラウザゲーム", "ko": "무료 브라우저 게임", "zh": "免费网页游戏", "zh-tw": "免費網頁遊戲"
     },
     "hero.puzzle": {
       "en": "Puzzle Games", "es": "Juegos de Puzzle", "fr": "Jeux de Puzzle", "de": "Puzzle-Spiele", "pt": "Jogos de Puzzle", "it": "Giochi Puzzle", "nl": "Puzzlegames", "pl": "Gry Logiczne", "sv": "Pusselspel", "ru": "Головоломки", "tr": "Bulmaca Oyunları", "ar": "ألعاب الألغاز", "ja": "パズルゲーム", "ko": "퍼즐 게임", "zh": "益智游戏", "zh-tw": "益智遊戲"
@@ -171,6 +174,15 @@
       "tr": "Oyun Yükleniyor...", "ar": "جاري تحميل اللعبة...", "ja": "ゲーム読み込み中...",
       "ko": "게임 로딩 중...", "zh": "游戏加载中...", "zh-tw": "遊戲加載中..."
     },
+    "game.retry": {
+      "en": "Still loading? Click to retry", "es": "¿Sigue cargando? Haz clic para reintentar", "fr": "Toujours en chargement? Cliquez pour réessayer",
+      "de": "Lädt noch? Klicken zum erneuten Versuchen", "pt": "Ainda carregando? Clique para tentar novamente",
+      "it": "Ancora in caricamento? Clicca per riprovare", "nl": "Nog aan het laden? Klik om opnieuw te proberen",
+      "pl": "Nadal się ładuje? Kliknij, aby spróbować ponownie", "sv": "Laddar fortfarande? Klicka för att försöka igen",
+      "ru": "Всё ещё загружается? Нажмите, чтобы повторить", "tr": "Hala yükleniyor? Tekrar denemek için tıklayın",
+      "ar": "لا يزال جاري التحميل؟ انقر لإعادة المحاولة", "ja": "まだ読み込み中？クリックして再試行",
+      "ko": "아직 로딩 중? 클릭하여 재시도", "zh": "还在加载？点击重试", "zh-tw": "還在加載？點擊重試"
+    },
     "game.click_play": {
       "en": "Click the button below to start playing", "es": "Haz clic en el botón de abajo para empezar a jugar", "fr": "Cliquez sur le bouton ci-dessous pour commencer à jouer",
       "de": "Klicken Sie auf die Schaltfläche unten, um zu spielen", "pt": "Clique no botão abaixo para começar a jogar",
@@ -253,6 +265,30 @@
     },
     "cat.multiplayer": {
       "en": "Multiplayer", "zh": "多人", "zh-tw": "多人"
+    },
+    "nav.browse": {
+      "en": "All Games", "es": "Todos los Juegos", "fr": "Tous les Jeux", "de": "Alle Spiele",
+      "pt": "Todos os Jogos", "it": "Tutti i Giochi", "nl": "Alle Games",
+      "pl": "Wszystkie Gry", "sv": "Alla Spel", "ru": "Все Игры",
+      "tr": "Tüm Oyunlar", "ar": "جميع الألعاب", "ja": "すべてのゲーム",
+      "ko": "모든 게임", "zh": "全部游戏", "zh-tw": "全部遊戲"
+    },
+    "view_all_count": {
+      "en": "View All {count} Games", "es": "Ver Todos los {count} Juegos", "fr": "Voir Tous les {count} Jeux", "de": "Alle {count} Spiele Anzeigen",
+      "pt": "Ver Todos os {count} Jogos", "it": "Vedi Tutti i {count} Giochi", "nl": "Bekijk Alle {count} Games",
+      "pl": "Zobacz Wszystkie {count} Gry", "sv": "Visa Alla {count} Spel", "ru": "Все {count} Игры",
+      "tr": "Tüm {count} Oyunları Gör", "ar": "عرض جميع {count} الألعاب", "ja": "{count}ゲームをすべて見る",
+      "ko": "{count}개 게임 모두 보기", "zh": "查看全部 {count} 款游戏", "zh-tw": "查看全部 {count} 款遊戲"
+    },
+    "search.noresults": {
+      "en": "No games found. Try a different search.", "es": "No se encontraron juegos. Prueba otra búsqueda.",
+      "fr": "Aucun jeu trouvé. Essayez une autre recherche.", "de": "Keine Spiele gefunden. Versuchen Sie eine andere Suche.",
+      "pt": "Nenhum jogo encontrado. Tente uma pesquisa diferente.", "it": "Nessun gioco trovato. Prova una ricerca diversa.",
+      "nl": "Geen games gevonden. Probeer een andere zoekopdracht.", "pl": "Nie znaleziono gier. Spróbuj innego wyszukiwania.",
+      "sv": "Inga spel hittades. Prova en annan sökning.", "ru": "Игры не найдены. Попробуйте другой поиск.",
+      "tr": "Oyun bulunamadı. Farklı bir arama deneyin.", "ar": "لم يتم العثور على ألعاب. جرب بحثًا مختلفًا.",
+      "ja": "ゲームが見つかりませんでした。別の検索をお試しください。", "ko": "게임을 찾을 수 없습니다. 다른 검색어를 시도해보세요.",
+      "zh": "未找到游戏。请尝试其他搜索。", "zh-tw": "未找到遊戲。請嘗試其他搜索。"
     }
   }
 }
