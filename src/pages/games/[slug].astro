@@ -53,18 +53,30 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
       </div>
     </div>
 
-    <!-- Game iframe area -->
-    <div class="w-full bg-slate-900 flex items-center justify-center relative">
-      <!-- Loading spinner -->
-      <div id="game-loading" class="absolute inset-0 flex flex-col items-center justify-center z-10">
-        <div class="w-12 h-12 border-4 border-slate-600 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-        <p class="text-slate-400 text-sm" data-i18n="game.loading">Loading game...</p>
-      </div>
-      <div class="w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] flex items-center justify-center">
+    <!-- Game iframe area with click-to-play -->
+    <div id="game-container" class="w-full bg-slate-900 relative overflow-hidden">
+      <div class="w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] relative">
+        <!-- Cover image + play button overlay -->
+        <div id="game-cover" class="absolute inset-0 z-10 flex flex-col items-center justify-center cursor-pointer rounded-none" style="background:linear-gradient(135deg,#1e1b4b,#312e81)">
+          {game.image && (
+            <img src={game.image} alt={game.title} class="absolute inset-0 w-full h-full object-cover opacity-40" loading="lazy" />
+          )}
+          <div class="relative flex flex-col items-center gap-4">
+            <div id="play-btn" class="w-20 h-20 rounded-full bg-indigo-600/90 hover:bg-indigo-500 flex items-center justify-center transition-all hover:scale-110 shadow-2xl shadow-indigo-500/50">
+              <svg class="w-10 h-10 text-white ml-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <span class="text-white/90 text-lg font-semibold drop-shadow-lg" data-i18n="game.click_play">Click to Play</span>
+          </div>
+        </div>
+        <!-- Loading spinner -->
+        <div id="game-loading" class="absolute inset-0 flex-col items-center justify-center z-20 hidden">
+          <div class="w-12 h-12 border-4 border-slate-600 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
+          <p class="text-slate-400 text-sm" data-i18n="game.loading">Loading game...</p>
+        </div>
         {game.iframeUrl ? (
-          <iframe src={game.iframeUrl} class="w-full h-full relative z-20" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals" onload="document.getElementById('game-loading').style.display='none'"></iframe>
+          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals"></iframe>
         ) : (
-          <div class="text-center p-8">
+          <div class="absolute inset-0 z-30 flex flex-col items-center justify-center text-center p-8">
             <div class="text-6xl mb-4">🎮</div>
             <p class="text-slate-300 text-lg font-medium" data-i18n="game.loading_title">Game Loading...</p>
             <p class="text-slate-400 text-sm mt-2" data-i18n="game.click_play">Click the button below to start playing</p>
@@ -134,6 +146,40 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
   const slug = '{game.slug}';
   const title = '{game.title}';
   const category = '{game.category}';
+  let iframeLoaded = false;
+
+  // === Click-to-Play: load iframe on demand ===
+  const gameCover = document.getElementById('game-cover');
+  const gameIframe = document.getElementById('game-iframe');
+  const gameLoading = document.getElementById('game-loading');
+  const playBtn = document.getElementById('play-btn');
+
+  function loadGame() {
+    if (iframeLoaded || !gameIframe || !gameCover) return;
+    iframeLoaded = true;
+    gameCover.style.display = 'none';
+    gameLoading.classList.remove('hidden');
+    gameLoading.classList.add('flex');
+    gameIframe.src = gameIframe.dataset.src;
+    gameIframe.removeAttribute('data-src');
+  }
+
+  if (gameCover && gameIframe) {
+    gameCover.addEventListener('click', loadGame);
+    // Also allow keyboard activation
+    gameCover.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadGame(); }
+    });
+    gameCover.setAttribute('tabindex', '0');
+    gameCover.setAttribute('role', 'button');
+  }
+
+  // Hide loading spinner once iframe loads
+  if (gameIframe) {
+    gameIframe.addEventListener('load', function() {
+      if (gameLoading) gameLoading.style.display = 'none';
+    });
+  }
 
   // === Recently Played ===
   try {

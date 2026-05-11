@@ -82,7 +82,7 @@ const emojiMap: Record<string, string> = {
       transition: transform .35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .gc:hover .gc-thumb img {
-      transform: scale(1.28);
+      transform: scale(1.45);
     }
     .gc-thumb .gc-icon {
       font-size: 2.5rem;
@@ -111,6 +111,7 @@ const emojiMap: Record<string, string> = {
       transform: scale(0.8);
       transition: all .22s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 4px 14px rgba(0,0,0,.2);
+      cursor: pointer;
     }
     .gc:hover .gc-play {
       opacity: 1;
@@ -185,7 +186,7 @@ const emojiMap: Record<string, string> = {
         <select id="category-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           <option value="" data-i18n="filter.all">All Categories</option>
           {categoryEntries.map(([slug, cat]) => (
-            <option value={slug}>{cat.name}</option>
+            <option value={slug} data-i18n={`cat.${slug}`}>{cat.name}</option>
           ))}
         </select>
         <select id="difficulty-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
@@ -223,7 +224,7 @@ const emojiMap: Record<string, string> = {
   <section class="mb-8">
     <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      {featured.map(game => (
+      {featured.map((game, i) => (
         <a href={`/games/${game.slug}`} class="gc"
           data-category={game.category}
           data-title={game.title.toLowerCase()}
@@ -231,7 +232,7 @@ const emojiMap: Record<string, string> = {
           data-difficulty={game.difficulty || ''}>
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" />
+              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" fetchpriority={i < 3 ? 'high' : 'auto'} width="320" height="240" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-preview" data-preview-src={game.iframeUrl ? game.iframeUrl.split('?')[0] : ''}></div>
@@ -259,10 +260,11 @@ const emojiMap: Record<string, string> = {
           data-difficulty={game.difficulty || ''}>
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="lazy" decoding="async" />
+              ? <img src={game.image} alt={game.title} loading="lazy" decoding="async" width="240" height="180" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-preview" data-preview-src={game.iframeUrl ? game.iframeUrl.split('?')[0] : ''}></div>
+            <div class="gc-overlay">
               <div class="gc-play">
                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
               </div>
