@@ -44,8 +44,8 @@ const categories = [
       <!-- Language Selector -->
       <div class="relative ml-auto md:ml-0">
         <button id="lang-selector-btn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-600" aria-label="Select language">
-          <img src="/flags/us.svg" alt="" class="w-5 h-4 rounded-sm object-cover shrink-0" width="20" height="15" />
-          <span class="lang-current-name">English</span>
+          <img id="lang-flag" src="/flags/us.svg" alt="" class="w-5 h-4 rounded-sm object-cover shrink-0" width="20" height="15" />
+          <span id="lang-name">English</span>
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div id="lang-selector-menu" class="hidden fixed md:absolute md:top-full md:right-0 md:left-auto md:mt-1 inset-x-0 bottom-0 md:bottom-auto md:w-[360px] max-h-[80vh] md:max-h-[440px] overflow-y-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-3 z-[100]">
