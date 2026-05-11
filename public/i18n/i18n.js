@@ -58,8 +58,8 @@
     // Update language selector button
     var btn = document.getElementById('lang-selector-btn');
     if (btn && langData) {
-      btn.style.backgroundImage = 'url(/flags/' + (langData.country || 'us') + '.svg)';
-      btn.innerHTML = '<span class="lang-current-name">' + langData.nativeName + '</span>';
+      btn.style.background = 'url(/flags/' + (langData.country || 'us') + '.svg) center / cover no-repeat';
+      btn.innerHTML = '<span class="lang-current-name" style="text-shadow:0 1px 4px rgba(0,0,0,0.7)">' + langData.nativeName + '</span>';
     }
 
     // Close dropdown
