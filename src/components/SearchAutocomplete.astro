@@ -1,0 +1,237 @@
+---
+// SearchAutocomplete - 搜索自动补全组件
+// 被放置在现有的搜索输入框位置，通过 #games-data 获取游戏数据
+// 提供输入时下拉建议、hover 封面预览、点击跳转功能
+// 不影响已有的分类/难度/标签筛选器和搜索结果网格
+---
+
+<div id="search-autocomplete" class="relative flex-1 flex gap-2">
+  <div class="relative flex-1">
+    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    </svg>
+    <input type="text" id="search-input"
+      class="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+      placeholder="Search games..."
+      autocomplete="off"
+      data-i18n="search.placeholder" data-i18n-attr="placeholder" />
+    <!-- Dropdown -->
+    <div id="ac-dropdown" style="display:none" class="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl shadow-xl max-h-[400px] overflow-y-auto">
+    </div>
+  </div>
+  <button id="search-btn" type="button"
+    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-400 flex items-center gap-1.5 whitespace-nowrap">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    </svg>
+    <span class="hidden sm:inline" data-i18n="search.button">Search</span>
+  </button>
+</div>
+
+<script>
+  (function() {
+    var input = document.getElementById('search-input');
+    var dropdown = document.getElementById('ac-dropdown');
+    if (!input || !dropdown) return;
+
+    var EMOJI_MAP = {
+      'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾',
+      'word': '🔤', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🎯',
+      'adventure': '⚔️', 'sports': '⚽', 'racing': '🏎️', 'action': '🎯', 'fighting': '🥊',
+      'multiplayer': '👥', 'idle': '📈',
+    };
+
+    // Load games data from page's shared async data source
+    var gamesData = window.__gamesData || [];
+    (window.__gamesDataPromise || Promise.resolve([])).then(function(data) {
+      gamesData = data;
+    });
+
+    var MAX_RESULTS = 12;
+    var hideTimeout = null;
+    var activeIndex = -1;
+
+    function filterGames(query) {
+      if (!query.trim()) return [];
+      var q = query.toLowerCase();
+      var results = [];
+      for (var i = 0; i < gamesData.length; i++) {
+        var g = gamesData[i];
+        if (g.title.toLowerCase().indexOf(q) !== -1) {
+          results.push(g);
+          if (results.length >= MAX_RESULTS) break;
+        }
+      }
+      return results;
+    }
+
+    function renderDropdown(results) {
+      if (!results.length) {
+        dropdown.style.display = 'none';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < results.length; i++) {
+        var g = results[i];
+        var emoji = EMOJI_MAP[g.category] || '🎮';
+        var escapedTitle = g.title.replace(/"/g, '&quot;');
+        html += '<a href="/games/' + g.slug + '"'
+          + ' class="ac-item flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 cursor-pointer transition-colors border-b border-slate-100 dark:border-slate-700/50 last:border-b-0"'
+          + ' data-index="' + i + '"'
+          + ' data-image="' + (g.image || '') + '"'
+          + ' data-title="' + escapedTitle + '">'
+          + '<span class="flex-shrink-0 w-7 h-7 flex items-center justify-center text-base bg-slate-100 dark:bg-slate-700 rounded-lg">' + emoji + '</span>'
+          + '<span class="flex-1 truncate">' + g.title + '</span>'
+          + '<span class="flex-shrink-0 text-xs text-slate-400 dark:text-slate-500 capitalize">' + g.category + '</span>'
+          + '</a>';
+      }
+      dropdown.innerHTML = html;
+      dropdown.style.display = 'block';
+
+      // Preview tooltip
+      var items = dropdown.querySelectorAll('.ac-item');
+      var previewEl = null;
+
+      for (var j = 0; j < items.length; j++) {
+        (function(item) {
+          item.addEventListener('mouseenter', function(e) {
+            var imgUrl = this.dataset.image;
+            if (!imgUrl) return;
+
+            if (previewEl) previewEl.remove();
+
+            previewEl = document.createElement('div');
+            previewEl.className = 'fixed z-[60] rounded-lg overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-600 pointer-events-none';
+            previewEl.style.width = '160px';
+            previewEl.style.height = '120px';
+
+            var img = document.createElement('img');
+            img.src = imgUrl;
+            img.alt = this.dataset.title;
+            img.className = 'w-full h-full object-cover';
+            img.loading = 'lazy';
+            previewEl.appendChild(img);
+
+            var rect = this.getBoundingClientRect();
+            var left = rect.right + 12;
+            var top = rect.top;
+
+            if (left + 170 > window.innerWidth) {
+              left = rect.left - 172;
+            }
+            if (top + 130 > window.innerHeight) {
+              top = window.innerHeight - 130;
+            }
+            if (top < 4) top = 4;
+
+            previewEl.style.left = left + 'px';
+            previewEl.style.top = top + 'px';
+            document.body.appendChild(previewEl);
+          });
+
+          item.addEventListener('mouseleave', function() {
+            if (previewEl) {
+              previewEl.remove();
+              previewEl = null;
+            }
+          });
+
+          item.addEventListener('mouseenter', function() {
+            activeIndex = parseInt(this.dataset.index);
+          });
+        })(items[j]);
+      }
+    }
+
+    function hideDropdown() {
+      dropdown.style.display = 'none';
+      var previews = document.querySelectorAll('[id="ac-preview"]');
+      for (var i = 0; i < previews.length; i++) {
+        previews[i].remove();
+      }
+    }
+
+    // On input: filter and show dropdown
+    var debounceTimer = null;
+    input.addEventListener('input', function() {
+      clearTimeout(debounceTimer);
+      var self = this;
+      debounceTimer = setTimeout(function() {
+        var results = filterGames(self.value);
+        renderDropdown(results);
+        activeIndex = -1;
+      }, 200);
+    });
+
+    // Keyboard navigation
+    input.addEventListener('keydown', function(e) {
+      var items = dropdown.querySelectorAll('.ac-item');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeIndex = Math.min(activeIndex + 1, items.length - 1);
+        items[activeIndex] && items[activeIndex].focus();
+        items[activeIndex] && items[activeIndex].dispatchEvent(new Event('mouseenter'));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (activeIndex <= 0) {
+          activeIndex = -1;
+          input.focus();
+        } else {
+          activeIndex = Math.max(activeIndex - 1, 0);
+          items[activeIndex] && items[activeIndex].focus();
+          items[activeIndex] && items[activeIndex].dispatchEvent(new Event('mouseenter'));
+        }
+      } else if (e.key === 'Escape') {
+        hideDropdown();
+        input.blur();
+      } else if (e.key === 'Enter' && activeIndex >= 0 && items[activeIndex]) {
+        items[activeIndex].click();
+      }
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener('click', function(e) {
+      var wrapper = document.getElementById('search-autocomplete');
+      if (wrapper && !wrapper.contains(e.target)) {
+        hideDropdown();
+      }
+    });
+
+    // Close on blur, but with delay to allow item click
+    input.addEventListener('blur', function() {
+      hideTimeout = setTimeout(hideDropdown, 200);
+    });
+    input.addEventListener('focus', function() {
+      clearTimeout(hideTimeout);
+      if (input.value.trim()) {
+        var results = filterGames(input.value);
+        renderDropdown(results);
+      }
+    });
+
+    // Remove preview on scroll
+    window.addEventListener('scroll', function() {
+      var previews = document.querySelectorAll('.fixed.z-\\[60\\]');
+      for (var i = 0; i < previews.length; i++) {
+        previews[i].remove();
+      }
+    }, { passive: true });
+
+    // Search button: if a tag is selected and search is empty, go to tag page
+    var searchBtn = document.getElementById('search-btn');
+    if (searchBtn) {
+      searchBtn.addEventListener('click', function() {
+        var activeTag = document.querySelector('.tag-chip.bg-indigo-100');
+        if (activeTag && (!input.value || !input.value.trim())) {
+          var tag = activeTag.getAttribute('data-tag');
+          if (tag) { location.href = '/tags/' + tag; return; }
+        }
+        input.dispatchEvent(new Event('input'));
+        input.focus();
+      });
+    }
+  })();
+</script>

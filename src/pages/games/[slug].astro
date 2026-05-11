@@ -20,17 +20,6 @@ const related = allGames
   .slice(0, 8);
 
 const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
-
-// Game-specific i18n data for description & instructions
-const i18nLangs = ['en','es','fr','de','pt','it','nl','pl','sv','ru','tr','ar','ja','ko','zh','zh-tw'];
-const gdescKey = `gdesc.${game.slug}`;
-const ginstKey = game.instructions ? `ginst.${game.slug}` : null;
-const gameI18nData: Record<string, Record<string, string>> = { [gdescKey]: {} };
-i18nLangs.forEach(l => { gameI18nData[gdescKey][l] = game.description; });
-if (ginstKey) {
-  gameI18nData[ginstKey] = {};
-  i18nLangs.forEach(l => { gameI18nData[ginstKey!][l] = game.instructions; });
-}
 ---
 
 <Layout title={game.title} description={game.shortDescription} canonical={canonicalUrl}>
@@ -113,13 +102,13 @@ if (ginstKey) {
     <!-- Game description and instructions -->
     <div class="p-6">
       <div class="prose prose-slate dark:prose-invert max-w-none">
-        <p class="text-slate-600 dark:text-slate-300 leading-relaxed" data-i18n={gdescKey}>{game.description}</p>
+        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">{game.description}</p>
       </div>
 
       {game.instructions && (
         <div class="mt-6">
           <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3" data-i18n="game.howtoplay">📖 How to Play</h2>
-          <p class="text-slate-600 dark:text-slate-300" data-i18n={ginstKey}>{game.instructions}</p>
+          <p class="text-slate-600 dark:text-slate-300">{game.instructions}</p>
         </div>
       )}
 
@@ -162,23 +151,6 @@ if (ginstKey) {
       "priceCurrency": "USD"
     }
   })} />
-  <!-- Game i18n data -->
-  <script type="application/json" id="game-i18n-data">{JSON.stringify(gameI18nData)}</script>
-  <script>
-    (function(){
-      var el = document.getElementById('game-i18n-data');
-      if (!el) return;
-      try {
-        var data = JSON.parse(el.textContent);
-        if (window.__addTranslations) {
-          window.__addTranslations(data);
-        } else {
-          window.__gqueue = window.__gqueue || [];
-          window.__gqueue.push(data);
-        }
-      } catch(e) {}
-    })();
-  </script>
 </Layout>
 
 <script>

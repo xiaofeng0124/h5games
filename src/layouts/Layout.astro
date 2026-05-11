@@ -86,7 +86,6 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
       if (cached && cached.translations && cached.languages) {
         trans = cached.translations;
         langs = cached.languages;
-        mergeGameTrans();
         cb();
         fetch('/i18n/translations.json?' + Date.now())
           .then(function(r) { return r.json(); })
@@ -94,7 +93,6 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
             trans = d.translations;
             langs = d.languages;
             try { localStorage.setItem('i18n_cache', JSON.stringify(d)); } catch(ex) {}
-            mergeGameTrans();
             apply(lang);
           })
           .catch(function() {});
@@ -107,7 +105,6 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
         trans = d.translations;
         langs = d.languages;
         try { localStorage.setItem('i18n_cache', JSON.stringify(d)); } catch(ex) {}
-        mergeGameTrans();
         cb();
       })
       .catch(function() { cb(); });
@@ -129,6 +126,8 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
         el.placeholder = text;
       } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
         el.value = text;
+      } else if (el.tagName === 'OPTION') {
+        el.text = text;
       } else {
         el.textContent = text;
       }
@@ -159,22 +158,6 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
       }
     }
     document.dispatchEvent(new CustomEvent('i18nchange', {detail: {lang: l}}));
-  }
-
-  window.__addTranslations = function(d) {
-    if (trans && d) { Object.assign(trans, d); apply(lang); }
-  };
-
-  // Helper to merge game translations into trans (called from load() and cache refresh)
-  // The game page queues translations in __gqueue, which is processed after trans is set
-  function mergeGameTrans() {
-    try {
-      if (window.__gqueue && window.__gqueue.length) {
-        for (var qi = 0; qi < window.__gqueue.length; qi++) {
-          Object.assign(trans, window.__gqueue[qi]);
-        }
-      }
-    } catch(ex) {}
   }
 
   function initUI() {

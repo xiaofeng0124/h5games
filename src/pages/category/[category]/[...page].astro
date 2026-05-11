@@ -1,68 +1,81 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import SearchAutocomplete from '../../components/SearchAutocomplete.astro';
-import GameCard from '../../components/GameCard.astro';
-import Pagination from '../../components/Pagination.astro';
-import allGames from '../../data/games.json' with { type: 'json' };
-import categories from '../../data/categories.json' with { type: 'json' };
-import fs from 'node:fs';
+import Layout from '../../../layouts/Layout.astro';
+import SearchAutocomplete from '../../../components/SearchAutocomplete.astro';
+import GameCard from '../../../components/GameCard.astro';
+import Pagination from '../../../components/Pagination.astro';
+import type { Game, Category } from '../../../data/games';
+import categoriesObj from '../../../data/categories.json' with { type: 'json' };
+import allGames from '../../../data/games.json' with { type: 'json' };
 
 const PER_PAGE = 48;
-const totalPages = Math.ceil(allGames.length / PER_PAGE);
 
 export async function getStaticPaths() {
-  const g = JSON.parse(fs.readFileSync('src/data/games.json', 'utf-8'));
-  const total = Math.ceil(g.length / 48);
-  const paths = [{ params: { page: undefined } }];
-  for (let i = 2; i <= total; i++) {
-    paths.push({ params: { page: String(i) } });
+  const PER_PAGE = 48;
+  const categoryEntries = Object.entries(categoriesObj) as [string, Record<string, unknown>][];
+  const paths: { params: Record<string, string | undefined>; props: Record<string, unknown> }[] = [];
+  for (const [slug] of categoryEntries) {
+    const catGames = (allGames as Game[]).filter((g: Game) => g.category === slug);
+    const totalPages = Math.ceil(catGames.length / PER_PAGE);
+    // First page: /category/{slug}
+    paths.push({ params: { category: slug, page: undefined }, props: { categorySlug: slug, pageNum: 1 } });
+    // Subsequent pages: /category/{slug}/{page}
+    for (let i = 2; i <= totalPages; i++) {
+      paths.push({ params: { category: slug, page: String(i) }, props: { categorySlug: slug, pageNum: i } });
+    }
   }
   return paths;
 }
 
-const { page } = Astro.props;
-const currentPage = page ? parseInt(page as string, 10) : 1;
+const { categorySlug, pageNum } = Astro.props as { categorySlug: string; pageNum: number };
+const category = categoriesObj[categorySlug];
+const categoryGames = (allGames as Game[]).filter((g: Game) => g.category === categorySlug);
+const totalPages = Math.ceil(categoryGames.length / PER_PAGE);
+const currentPage = pageNum as number;
 const start = (currentPage - 1) * PER_PAGE;
-const end = Math.min(start + PER_PAGE, allGames.length);
-const pageGames = allGames.slice(start, end);
-const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
-const emojiMap: Record<string, string> = {
-  'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾',
-  'word': '🔤', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🎯',
-  'adventure': '⚔️', 'sports': '⚽', 'racing': '🏎️', 'action': '🎯', 'fighting': '🥊',
-  'multiplayer': '👥', 'idle': '📈',
-};
+const end = Math.min(start + PER_PAGE, categoryGames.length);
+const pageGames = categoryGames.slice(start, end);
+
+const pageTitle = currentPage === 1
+  ? `${category?.name || categorySlug} Games - Play Free Online`
+  : `${category?.name || categorySlug} Games - Page ${currentPage} - Play Free Online`;
+const pageDesc = currentPage === 1
+  ? (category?.description || `Free ${categorySlug} games to play online`)
+  : `Free ${categorySlug} games - page ${currentPage} of ${totalPages}. Play online instantly.`;
+const canonical = currentPage === 1 ? `/category/${categorySlug}` : undefined;
 ---
 
-<Layout title={`Browse All Free Online Games - Page ${currentPage}`} description={`Browse ${allGames.length} free online games. Page ${currentPage} of ${totalPages}. Play instantly in your browser, no downloads needed.`}>
+<Layout title={pageTitle} description={pageDesc} canonical={canonical}>
   <!-- Breadcrumb -->
   <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
     <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.home">Home</a>
     <span>/</span>
-    <span class="text-slate-700 dark:text-slate-300 font-medium" data-i18n="nav.browse">All Games</span>
+    <a href="/games" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.browse">All Games</a>
+    <span>/</span>
+    <span class="text-slate-700 dark:text-slate-300 capitalize"><span data-i18n={`cat.${categorySlug}`}>{category?.name || categorySlug}</span></span>
   </nav>
 
-  <!-- Header -->
-  <div class="mb-8">
-    <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2">
-      🎮 <span data-i18n="nav.browse">All Games</span>
-    </h1>
-    <p class="text-slate-500 dark:text-slate-400">
-      <span class="font-semibold text-indigo-600 dark:text-indigo-400">{allGames.length}</span> free online games — page {currentPage} of {totalPages}
-    </p>
+  <!-- Category Header -->
+  <div class="mb-6">
+    <div class="flex items-start justify-between">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-3">
+          <span>{category?.icon || '🎮'}</span>
+          <span><span data-i18n={`cat.${categorySlug}`}>{category?.name || categorySlug}</span> <span data-i18n="cat.games">Games</span></span>
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-2">{pageDesc}</p>
+        <p class="text-sm text-slate-400 mt-1">
+          <span class="font-semibold text-indigo-600 dark:text-indigo-400">{categoryGames.length}</span> <span data-i18n="cat.games">games</span>
+          {totalPages > 1 && <span> &mdash; page {currentPage} of {totalPages}</span>}
+        </p>
+      </div>
+    </div>
   </div>
 
   <!-- Search & Filter -->
-  <section class="mb-8">
+  <section class="mb-6">
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-3">
       <div class="flex flex-col sm:flex-row gap-2">
         <SearchAutocomplete />
-        <select id="category-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          <option value="" data-i18n="filter.all">All Categories</option>
-          {categoryEntries.map(([slug, cat]) => (
-            <option value={slug} data-i18n={`cat.${slug}`}>{cat.name}</option>
-          ))}
-        </select>
         <select id="difficulty-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           <option value="" data-i18n="filter.all">All Difficulties</option>
           <option value="easy" data-i18n="filter.easy">Easy</option>
@@ -74,13 +87,17 @@ const emojiMap: Record<string, string> = {
         <span id="result-count">0</span> <span data-i18n="search.found">games found</span>
       </div>
     </div>
-    <!-- Tag filter -->
     <div id="tag-filter" class="flex flex-wrap gap-1.5 mt-2"></div>
   </section>
 
-  <!-- Game Grid -->
-  <section class="mb-8">
-    <div id="games-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+  <!-- Dynamic search results -->
+  <div id="search-results" class="hidden mb-8">
+    <div id="results-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2"></div>
+  </div>
+
+  <!-- Game Grid (paginated) -->
+  <section class="mb-8" id="games-section">
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2">
       {pageGames.map(game => (
         <GameCard
           slug={game.slug}
@@ -97,11 +114,27 @@ const emojiMap: Record<string, string> = {
   </section>
 
   <!-- Pagination -->
-  <section class="mb-12">
-    <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/games" />
-  </section>
+  {totalPages > 1 && (
+    <section class="mb-8">
+      <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={`/category/${categorySlug}`} />
+    </section>
+  )}
 
-  <!-- Game search data (loaded async to keep page fast) -->
+  <!-- SEO text (only on page 1) -->
+  {currentPage === 1 && (
+    <section class="mt-8 p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+      <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3">
+        Free {category?.name || categorySlug} Games Online
+      </h2>
+      <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+        Play the best free {category?.name || categorySlug} games right in your browser.
+        No download required, no signup needed. All {categorySlug} games are optimized for mobile and desktop,
+        and are completely free to play. Bookmark your favorites and come back anytime!
+      </p>
+    </section>
+  )}
+
+  <!-- Game search data (loaded async, keeps page fast) -->
   <script is:inline>
     window.__gamesData = window.__gamesData || [];
     window.__gamesDataPromise = window.__gamesDataPromise || fetch('/search-data.json')
@@ -116,26 +149,26 @@ const emojiMap: Record<string, string> = {
 
 <script>
   const searchInput = document.getElementById('search-input');
-  const categoryFilter = document.getElementById('category-filter');
   const difficultyFilter = document.getElementById('difficulty-filter');
   const tagFilter = document.getElementById('tag-filter');
   const resultsInfo = document.getElementById('search-results-info');
   const resultCount = document.getElementById('result-count');
-  const gamesGrid = document.getElementById('games-grid');
+  const searchResults = document.getElementById('search-results');
+  const resultsGrid = document.getElementById('results-grid');
+  const gamesSection = document.getElementById('games-section');
 
   let selectedTag = '';
   let allGamesData = window.__gamesData || [];
 
-  // When search data finishes loading, build tag filter and re-run any active filter
+  // When search data loads, build tag filter and re-run any active filter
   (window.__gamesDataPromise || Promise.resolve([])).then(function(data) {
     allGamesData = data;
     buildTagFilter();
-    if (searchInput?.value || categoryFilter?.value || difficultyFilter?.value || selectedTag) {
+    if (searchInput?.value || difficultyFilter?.value || selectedTag) {
       filterGames();
     }
   });
 
-  // Build tag filter chips from game data
   function buildTagFilter() {
     if (!tagFilter || !allGamesData.length) return;
     const tagCN = {
@@ -185,14 +218,14 @@ const emojiMap: Record<string, string> = {
     });
   }
 
-  function renderGames(games) {
-    if (!gamesGrid) return;
+  function renderResults(games) {
+    if (!resultsGrid || !searchResults) return;
     if (games.length === 0) {
-      gamesGrid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 dark:text-slate-500"><p class="text-lg mb-1">😕</p><p data-i18n="search.noresults">No games found. Try a different search.</p></div>';
+      resultsGrid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 dark:text-slate-500"><p class="text-lg mb-1">🔍</p><p data-i18n="search.noresults">No games found. Try a different search.</p></div>';
       return;
     }
     const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
-    gamesGrid.innerHTML = games.map(g => `
+    resultsGrid.innerHTML = games.map(g => `
       <a href="/games/${g.slug}" class="gc group block bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-200">
         <div class="relative aspect-[4/3] bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 overflow-hidden flex items-center justify-center">
           ${g.image
@@ -214,11 +247,10 @@ const emojiMap: Record<string, string> = {
 
   function filterGames() {
     const query = (searchInput?.value || '').trim().toLowerCase();
-    const category = categoryFilter?.value || '';
     const difficulty = difficultyFilter?.value || '';
+    const isActive = query || difficulty || selectedTag;
 
     const filtered = allGamesData.filter(g => {
-      const matchCategory = !category || g.category === category;
       const matchDifficulty = !difficulty || g.difficulty === difficulty;
       const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
       const matchSearch = !query ||
@@ -226,11 +258,16 @@ const emojiMap: Record<string, string> = {
         g.description.toLowerCase().includes(query) ||
         g.category.includes(query) ||
         (g.tags && g.tags.some(t => t.includes(query)));
-      return matchCategory && matchDifficulty && matchTag && matchSearch;
+      return matchCategory(g) && matchDifficulty && matchTag && matchSearch;
     });
 
+    function matchCategory(g) {
+      // On a category page, we only show games in this category
+      return g.category === categorySlug;
+    }
+
     if (resultsInfo && resultCount) {
-      if (query || category || difficulty || selectedTag) {
+      if (isActive) {
         resultsInfo.classList.remove('hidden');
         resultCount.textContent = filtered.length;
       } else {
@@ -238,10 +275,16 @@ const emojiMap: Record<string, string> = {
       }
     }
 
-    renderGames(filtered);
+    if (isActive && searchResults && resultsGrid) {
+      searchResults.classList.remove('hidden');
+      if (gamesSection) gamesSection.style.display = 'none';
+      renderResults(filtered);
+    } else {
+      if (searchResults) searchResults.classList.add('hidden');
+      if (gamesSection) gamesSection.style.display = '';
+    }
   }
 
   searchInput?.addEventListener('input', filterGames);
-  categoryFilter?.addEventListener('change', filterGames);
   difficultyFilter?.addEventListener('change', filterGames);
 </script>

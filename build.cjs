@@ -16,6 +16,10 @@ if (original !== patched) {
   console.log('Tailwind esm-cache already patched');
 }
 
+// Generate search data JSON (lean, no images)
+console.log('\n=== Generate Search Data ===');
+execSync('node scripts/generate-search-data.cjs', { stdio: 'inherit', shell: true });
+
 console.log('\n=== Astro Build ===');
 execSync('npx astro build', { stdio: 'inherit', shell: true });
 console.log('\nBuild completed successfully.');
