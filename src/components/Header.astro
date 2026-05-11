@@ -26,8 +26,8 @@ const categories = [
       <nav class="hidden md:flex items-center gap-6">
         <a href="/" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.home">Home</a>
         <div id="categories-dropdown" class="relative">
-          <button id="cat-toggle" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1" data-i18n="nav.categories">
-            Categories
+          <button id="cat-toggle" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
+            <span data-i18n="nav.categories">Categories</span>
             <svg id="cat-arrow" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </button>
           <div id="cat-menu" class="absolute top-full left-0 mt-1 w-44 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 opacity-0 invisible transition-all duration-200 py-2">

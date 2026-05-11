@@ -186,8 +186,8 @@ const emojiMap: Record<string, string> = {
           <a href={`/category/${slug}`} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-sm transition-all group">
             <span class="text-lg shrink-0">{cat.icon}</span>
             <div class="min-w-0">
-              <div class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">{cat.name}</div>
-              <div class="text-[10px] text-slate-400">{count} games</div>
+              <div class="text-xs font-medium text-slate-700 dark:text-slate-300 truncate"><span data-i18n={`cat.${slug}`}>{cat.name}</span></div>
+              <div class="text-[10px] text-slate-400">{count} <span data-i18n="cat.games">games</span></div>
             </div>
           </a>
         );

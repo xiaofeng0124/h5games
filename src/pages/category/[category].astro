@@ -25,19 +25,19 @@ const categoryGames = (allGames as Game[]).filter((g: Game) => g.category === ca
   <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
     <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.home">Home</a>
     <span>/</span>
-    <span class="text-slate-700 dark:text-slate-300 capitalize">{category?.name || categorySlug} Games</span>
+    <span class="text-slate-700 dark:text-slate-300 capitalize"><span data-i18n={`cat.${categorySlug}`}>{category?.name || categorySlug}</span> <span data-i18n="cat.games">Games</span></span>
   </nav>
 
   <!-- Category Header -->
   <div class="mb-8">
     <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-3">
       <span>{category?.icon || '🎮'}</span>
-      <span>{category?.name || categorySlug} Games</span>
+      <span><span data-i18n={`cat.${categorySlug}`}>{category?.name || categorySlug}</span> <span data-i18n="cat.games">Games</span></span>
     </h1>
     <p class="text-slate-500 dark:text-slate-400 mt-2 text-lg">
       {category?.description || `Free ${categorySlug} games to play online`}
     </p>
-    <p class="text-sm text-slate-400 mt-1">{categoryGames.length} games</p>
+    <p class="text-sm text-slate-400 mt-1">{categoryGames.length} <span data-i18n="cat.games">games</span></p>
   </div>
 
   <!-- Game List -->

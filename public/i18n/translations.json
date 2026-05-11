@@ -212,6 +212,16 @@
       "tr": "← Rehberlere Dön", "ar": "← العودة إلى الأدلة", "ja": "← ガイドに戻る",
       "ko": "← 가이드로 돌아가기", "zh": "← 返回攻略", "zh-tw": "← 返回攻略"
     },
+    "cat.match-3": { "en": "Match-3", "zh": "三消", "zh-tw": "三消" },
+    "cat.puzzle": { "en": "Puzzle", "zh": "益智", "zh-tw": "益智" },
+    "cat.merge": { "en": "Merge", "zh": "合并", "zh-tw": "合併" },
+    "cat.casual": { "en": "Casual", "zh": "休闲", "zh-tw": "休閒" },
+    "cat.arcade": { "en": "Arcade", "zh": "街机", "zh-tw": "街機" },
+    "cat.word": { "en": "Word", "zh": "单词", "zh-tw": "單詞" },
+    "cat.card": { "en": "Card", "zh": "卡牌", "zh-tw": "卡牌" },
+    "cat.hidden-object": { "en": "Hidden Object", "zh": "隐藏物品", "zh-tw": "隱藏物品" },
+    "cat.board": { "en": "Board", "zh": "棋盘", "zh-tw": "棋盤" },
+    "cat.games": { "en": "Games", "zh": "游戏", "zh-tw": "遊戲" },
     "search.found": {
       "en": "games found", "es": "juegos encontrados", "fr": "jeux trouvés", "de": "Spiele gefunden", "pt": "jogos encontrados", "it": "giochi trovati", "nl": "games gevonden", "pl": "znalezionych gier", "sv": "spel hittades", "ru": "игр найдено", "tr": "oyun bulundu", "ar": "لعبة تم العثور عليها", "ja": "件のゲームが見つかりました", "ko": "개의 게임을 찾았습니다", "zh": "款游戏找到", "zh-tw": "款遊戲找到"
     }
