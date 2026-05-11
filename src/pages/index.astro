@@ -140,11 +140,11 @@ const emojiMap: Record<string, string> = {
       Chill Arcade
       <span class="block text-indigo-600 dark:text-indigo-400 text-xl md:text-2xl mt-1">{games.length} Free Browser Games</span>
     </h1>
-    <p class="relative text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-4">
+    <p class="relative text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-4" data-i18n="hero.subtitle">
       No downloads. No signups. Just click and play.
     </p>
     <div class="flex flex-wrap justify-center gap-3">
-      <a href="#categories" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all hover:scale-105 text-sm">
+      <a href="#categories" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 transition-all hover:scale-105 text-sm" data-i18n="hero.browse">
         Browse by Category
       </a>
     </div>
@@ -156,23 +156,23 @@ const emojiMap: Record<string, string> = {
       <div class="flex flex-col sm:flex-row gap-2">
         <div class="relative flex-1">
           <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input type="text" id="search-input" placeholder="Search {games.length} games..." class="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent" />
+          <input type="text" id="search-input" data-i18n="search.placeholder" data-i18n-attr="placeholder" placeholder="Search {games.length} games..." class="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent" />
         </div>
         <select id="category-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          <option value="">All Categories</option>
+          <option value="" data-i18n="filter.all">All Categories</option>
           {categoryEntries.map(([slug, cat]) => (
             <option value={slug}>{cat.name}</option>
           ))}
         </select>
         <select id="difficulty-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          <option value="">All</option>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
+          <option value="" data-i18n="filter.all">All Difficulties</option>
+          <option value="easy" data-i18n="filter.easy">Easy</option>
+          <option value="medium" data-i18n="filter.medium">Medium</option>
+          <option value="hard" data-i18n="filter.hard">Hard</option>
         </select>
       </div>
       <div id="search-results-info" class="mt-1 text-xs text-slate-400 hidden">
-        <span id="result-count">0</span> games found
+        <span id="result-count">0</span> <span data-i18n="search.found">games found</span>
       </div>
     </div>
   </section>
@@ -197,7 +197,7 @@ const emojiMap: Record<string, string> = {
 
   <!-- Featured Games -->
   <section class="mb-8">
-    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 Featured Games</h2>
+    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {featured.map(game => (
         <a href={`/games/${game.slug}`} class="gc"
@@ -224,7 +224,7 @@ const emojiMap: Record<string, string> = {
 
   <!-- All Games -->
   <section class="mb-8" style="content-visibility:auto">
-    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🎮 All Games ({allGames.length})</h2>
+    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🎮 <span data-i18n="section.latest">All Games</span> ({allGames.length})</h2>
     <div id="all-games-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2">
       {allGames.map(game => (
         <a href={`/games/${game.slug}`} class="gc"

@@ -4,8 +4,8 @@ import blogPosts from '../../data/blog.json' with { type: 'json' };
 ---
 
 <Layout title="Game Guides & Tips - Chill Arcade Blog">
-  <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2">🎮 Game Guides & Tips</h1>
-  <p class="text-slate-500 dark:text-slate-400 mb-8 text-lg">Strategy guides, tips, and articles about your favorite casual games.</p>
+  <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2">🎮 <span data-i18n="nav.guides">Game Guides & Tips</span></h1>
+  <p class="text-slate-500 dark:text-slate-400 mb-8 text-lg" data-i18n="blog.subtitle">Strategy guides, tips, and articles about your favorite casual games.</p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     {blogPosts.map(post => (

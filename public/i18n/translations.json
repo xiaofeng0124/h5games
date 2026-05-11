@@ -1,0 +1,219 @@
+{
+  "languages": [
+    { "code": "en", "name": "English", "nativeName": "English", "flag": "🇺🇸", "dir": "ltr" },
+    { "code": "es", "name": "Spanish", "nativeName": "Español", "flag": "🇪🇸", "dir": "ltr" },
+    { "code": "fr", "name": "French", "nativeName": "Français", "flag": "🇫🇷", "dir": "ltr" },
+    { "code": "de", "name": "German", "nativeName": "Deutsch", "flag": "🇩🇪", "dir": "ltr" },
+    { "code": "pt", "name": "Portuguese", "nativeName": "Português", "flag": "🇧🇷", "dir": "ltr" },
+    { "code": "it", "name": "Italian", "nativeName": "Italiano", "flag": "🇮🇹", "dir": "ltr" },
+    { "code": "nl", "name": "Dutch", "nativeName": "Nederlands", "flag": "🇳🇱", "dir": "ltr" },
+    { "code": "pl", "name": "Polish", "nativeName": "Polski", "flag": "🇵🇱", "dir": "ltr" },
+    { "code": "sv", "name": "Swedish", "nativeName": "Svenska", "flag": "🇸🇪", "dir": "ltr" },
+    { "code": "ru", "name": "Russian", "nativeName": "Русский", "flag": "🇷🇺", "dir": "ltr" },
+    { "code": "tr", "name": "Turkish", "nativeName": "Türkçe", "flag": "🇹🇷", "dir": "ltr" },
+    { "code": "ar", "name": "Arabic", "nativeName": "العربية", "flag": "🇸🇦", "dir": "rtl" },
+    { "code": "ja", "name": "Japanese", "nativeName": "日本語", "flag": "🇯🇵", "dir": "ltr" },
+    { "code": "ko", "name": "Korean", "nativeName": "한국어", "flag": "🇰🇷", "dir": "ltr" },
+    { "code": "zh", "name": "Chinese", "nativeName": "简体中文", "flag": "🇨🇳", "dir": "ltr" },
+    { "code": "zh-tw", "name": "Chinese (TW)", "nativeName": "繁體中文", "flag": "🇭🇰", "dir": "ltr" }
+  ],
+  "translations": {
+    "nav.home": {
+      "en": "Home", "es": "Inicio", "fr": "Accueil", "de": "Start", "pt": "Início", "it": "Home", "nl": "Home", "pl": "Strona główna", "sv": "Hem", "ru": "Главная", "tr": "Ana Sayfa", "ar": "الرئيسية", "ja": "ホーム", "ko": "홈", "zh": "首页", "zh-tw": "首頁"
+    },
+    "nav.categories": {
+      "en": "Categories", "es": "Categorías", "fr": "Catégories", "de": "Kategorien", "pt": "Categorias", "it": "Categorie", "nl": "Categorieën", "pl": "Kategorie", "sv": "Kategorier", "ru": "Категории", "tr": "Kategoriler", "ar": "التصنيفات", "ja": "カテゴリー", "ko": "카테고리", "zh": "游戏分类", "zh-tw": "遊戲分類"
+    },
+    "nav.guides": {
+      "en": "Guides", "es": "Guías", "fr": "Guides", "de": "Anleitungen", "pt": "Guias", "it": "Guide", "nl": "Gidsen", "pl": "Poradniki", "sv": "Guider", "ru": "Гайды", "tr": "Rehberler", "ar": "الأدلة", "ja": "ガイド", "ko": "가이드", "zh": "攻略", "zh-tw": "攻略"
+    },
+    "hero.title1": {
+      "en": "Instant Play, Zero Hassle", "es": "Juego Instantáneo, Sin Complicaciones", "fr": "Jeu Instantané, Zéro Effort", "de": "Sofort Spielen, Kein Aufwand", "pt": "Jogue Agora, Sem Complicação", "it": "Gioco Immediato, Zero Pensieri", "nl": "Direct Spelen, Geen Gedoe", "pl": "Graj Natychmiast, Zero Problemów", "sv": "Spela Direkt, Inget Strul", "ru": "Мгновенная Игра, Без Хлопот", "tr": "Anında Oyna, Zahmetsiz", "ar": "العب فوراً، بدون عناء", "ja": "即プレイ、面倒なし", "ko": "즉시 플레이, 번거로움 없음", "zh": "即点即玩，无需麻烦", "zh-tw": "即點即玩，無需麻煩"
+    },
+    "hero.title2": {
+      "en": "100% Free Browser Games", "es": "100% Juegos de Navegador Gratis", "fr": "100% Jeux Navigateur Gratuits", "de": "100% Kostenlose Browserspiele", "pt": "100% Jogos de Navegador Grátis", "it": "100% Giochi Browser Gratuiti", "nl": "100% Gratis Browsergames", "pl": "100% Darmowe Gry Przeglądarkowe", "sv": "100% Gratis Webbläsarspel", "ru": "100% Бесплатные Браузерные Игры", "tr": "%100 Ücretsiz Tarayıcı Oyunları", "ar": "100% ألعاب متصفح مجانية", "ja": "100%無料ブラウザゲーム", "ko": "100% 무료 브라우저 게임", "zh": "100% 免费网页游戏", "zh-tw": "100% 免費網頁遊戲"
+    },
+    "hero.subtitle": {
+      "en": "No downloads. No signups. No paywalls. Just click and play hundreds of casual games — match-3 puzzles, merge adventures, brain teasers, and more.",
+      "es": "Sin descargas. Sin registros. Sin muros de pago. Solo haz clic y juega cientos de juegos casuales: rompecabezas match-3, aventuras de fusión, acertijos y más.",
+      "fr": "Pas de téléchargement. Pas d'inscription. Pas de paywall. Cliquez et jouez à des centaines de jeux décontractés — puzzles match-3, aventures de fusion, énigmes et plus.",
+      "de": "Keine Downloads. Keine Anmeldung. Keine Bezahlschranken. Einfach klicken und hunderte von Casual-Spielen spielen — Match-3-Puzzles, Merge-Abenteuer, Denksportaufgaben und mehr.",
+      "pt": "Sem downloads. Sem cadastros. Sem paywalls. Clique e jogue centenas de jogos casuais — quebra-cabeças match-3, aventuras de fusão, desafios mentais e muito mais.",
+      "it": "Niente download. Niente registrazioni. Niente paywall. Basta cliccare e giocare a centinaia di giochi casual — puzzle match-3, avventure merge, rompicapo e altro.",
+      "nl": "Geen downloads. Geen registraties. Geen betaalmuren. Klik en speel honderden casual games — match-3 puzzels, merge avonturen, breinbrekers en meer.",
+      "pl": "Bez pobierania. Bez rejestracji. Bez paywalli. Kliknij i graj w setki gier casualowych — puzzle match-3, przygody merge, łamigłówki i więcej.",
+      "sv": "Inga nedladdningar. Inga registreringar. Inga betalväggar. Bara klicka och spela hundratals avslappnade spel — match-3-pussel, merge-äventyr, hjärngympa och mer.",
+      "ru": "Без скачивания. Без регистрации. Без платных подписок. Просто нажмите и играйте в сотни казуальных игр — пазлы match-3, приключения merge, головоломки и многое другое.",
+      "tr": "İndirme yok. Kayıt yok. Ödeme duvarı yok. Tıkla ve yüzlerce sıradan oyunu oyna — match-3 bulmacalar, birleştirme maceraları, beyin jimnastiği ve daha fazlası.",
+      "ar": "لا تنزيل. لا تسجيل. لا جدران دفع. فقط انقر والعب المئات من الألعاب العادية — ألغاز المطابقة الثلاثية، مغامرات الدمج، ألغاز العقل والمزيد.",
+      "ja": "ダウンロード不要。登録不要。課金なし。クリックするだけで何百ものカジュアルゲームをプレイ — マッチ3パズル、マージアドベンチャー、脳トレなど。",
+      "ko": "다운로드 불필요. 회원가입 불필요. 유료 장벽 없음. 클릭만으로 수백 가지 캐주얼 게임을 플레이하세요 — 매치3 퍼즐, 머지 어드벤처, 두뇌 퀴즈 등.",
+      "zh": "无需下载。无需注册。无付费墙。点击即玩数百款休闲游戏 — 三消益智、合并冒险、脑筋急转弯等等。",
+      "zh-tw": "無需下載。無需註冊。無付費牆。點擊即玩數百款休閒遊戲 — 三消益智、合併冒險、腦筋急轉彎等等。"
+    },
+    "hero.browse": {
+      "en": "Browse Games", "es": "Explorar Juegos", "fr": "Parcourir les Jeux", "de": "Spiele Durchsuchen", "pt": "Navegar Jogos", "it": "Sfoglia Giochi", "nl": "Bladeren", "pl": "Przeglądaj Gry", "sv": "Bläddra Spel", "ru": "Искать Игры", "tr": "Oyunları Keşfet", "ar": "تصفح الألعاب", "ja": "ゲームを見る", "ko": "게임 둘러보기", "zh": "浏览游戏", "zh-tw": "瀏覽遊戲"
+    },
+    "hero.puzzle": {
+      "en": "Puzzle Games", "es": "Juegos de Puzzle", "fr": "Jeux de Puzzle", "de": "Puzzle-Spiele", "pt": "Jogos de Puzzle", "it": "Giochi Puzzle", "nl": "Puzzlegames", "pl": "Gry Logiczne", "sv": "Pusselspel", "ru": "Головоломки", "tr": "Bulmaca Oyunları", "ar": "ألعاب الألغاز", "ja": "パズルゲーム", "ko": "퍼즐 게임", "zh": "益智游戏", "zh-tw": "益智遊戲"
+    },
+    "search.placeholder": {
+      "en": "Search games...", "es": "Buscar juegos...", "fr": "Rechercher des jeux...", "de": "Spiele suchen...", "pt": "Pesquisar jogos...", "it": "Cerca giochi...", "nl": "Zoeken...", "pl": "Szukaj gier...", "sv": "Sök spel...", "ru": "Поиск игр...", "tr": "Oyun ara...", "ar": "البحث عن ألعاب...", "ja": "ゲームを検索...", "ko": "게임 검색...", "zh": "搜索游戏...", "zh-tw": "搜索遊戲..."
+    },
+    "filter.all": {
+      "en": "All Categories", "es": "Todas las Categorías", "fr": "Toutes les Catégories", "de": "Alle Kategorien", "pt": "Todas as Categorias", "it": "Tutte le Categorie", "nl": "Alle Categorieën", "pl": "Wszystkie Kategorie", "sv": "Alla Kategorier", "ru": "Все Категории", "tr": "Tüm Kategoriler", "ar": "جميع التصنيفات", "ja": "すべてのカテゴリー", "ko": "모든 카테고리", "zh": "全部分类", "zh-tw": "全部分類"
+    },
+    "filter.difficulty": {
+      "en": "All Difficulties", "es": "Todas las Dificultades", "fr": "Toutes les Difficultés", "de": "Alle Schwierigkeiten", "pt": "Todas as Dificuldades", "it": "Tutte le Difficoltà", "nl": "Alle Moeilijkheden", "pl": "Wszystkie Poziomy", "sv": "Alla Svårigheter", "ru": "Все Сложности", "tr": "Tüm Zorluklar", "ar": "جميع المستويات", "ja": "すべての難易度", "ko": "모든 난이도", "zh": "全部难度", "zh-tw": "全部難度"
+    },
+    "filter.easy": {
+      "en": "Easy", "es": "Fácil", "fr": "Facile", "de": "Leicht", "pt": "Fácil", "it": "Facile", "nl": "Makkelijk", "pl": "Łatwy", "sv": "Lätt", "ru": "Легко", "tr": "Kolay", "ar": "سهل", "ja": "簡単", "ko": "쉬움", "zh": "简单", "zh-tw": "簡單"
+    },
+    "filter.medium": {
+      "en": "Medium", "es": "Medio", "fr": "Moyen", "de": "Mittel", "pt": "Médio", "it": "Medio", "nl": "Gemiddeld", "pl": "Średni", "sv": "Medel", "ru": "Средне", "tr": "Orta", "ar": "متوسط", "ja": "普通", "ko": "보통", "zh": "中等", "zh-tw": "中等"
+    },
+    "filter.hard": {
+      "en": "Hard", "es": "Difícil", "fr": "Difficile", "de": "Schwer", "pt": "Difícil", "it": "Difficile", "nl": "Moeilijk", "pl": "Trudny", "sv": "Svår", "ru": "Сложно", "tr": "Zor", "ar": "صعب", "ja": "難しい", "ko": "어려움", "zh": "困难", "zh-tw": "困難"
+    },
+    "section.featured": {
+      "en": "Featured Games", "es": "Juegos Destacados", "fr": "Jeux en Vedette", "de": "Empfohlene Spiele", "pt": "Jogos em Destaque", "it": "Giochi in Primo Piano", "nl": "Aanbevolen Games", "pl": "Polecane Gry", "sv": "Utvalda Spel", "ru": "Рекомендуемые Игры", "tr": "Öne Çıkan Oyunlar", "ar": "ألعاب مميزة", "ja": "注目のゲーム", "ko": "추천 게임", "zh": "精选游戏", "zh-tw": "精選遊戲"
+    },
+    "section.latest": {
+      "en": "Latest Games", "es": "Últimos Juegos", "fr": "Derniers Jeux", "de": "Neueste Spiele", "pt": "Últimos Jogos", "it": "Ultimi Giochi", "nl": "Nieuwste Games", "pl": "Najnowsze Gry", "sv": "Senaste Spelen", "ru": "Новые Игры", "tr": "Yeni Oyunlar", "ar": "أحدث الألعاب", "ja": "最新ゲーム", "ko": "최신 게임", "zh": "最新游戏", "zh-tw": "最新遊戲"
+    },
+    "section.favorites": {
+      "en": "My Favorites", "es": "Mis Favoritos", "fr": "Mes Favoris", "de": "Meine Favoriten", "pt": "Meus Favoritos", "it": "I Miei Preferiti", "nl": "Mijn Favorieten", "pl": "Ulubione", "sv": "Mina Favoriter", "ru": "Мои Избранные", "tr": "Favorilerim", "ar": "المفضلة", "ja": "お気に入り", "ko": "즐겨찾기", "zh": "我的收藏", "zh-tw": "我的收藏"
+    },
+    "section.recent": {
+      "en": "Recently Played", "es": "Jugados Recientemente", "fr": "Récemment Joués", "de": "Zuletzt Gespielt", "pt": "Jogados Recentemente", "it": "Giocati di Recente", "nl": "Recent Gespeeld", "pl": "Ostatnio Grane", "sv": "Senast Spelade", "ru": "Недавние Игры", "tr": "Son Oynananlar", "ar": "التي لعبتها مؤخراً", "ja": "最近プレイしたゲーム", "ko": "최근 플레이", "zh": "最近玩过", "zh-tw": "最近玩過"
+    },
+    "section.why.title": {
+      "en": "Why Play on Chill Arcade?", "es": "¿Por qué jugar en Chill Arcade?", "fr": "Pourquoi jouer sur Chill Arcade?", "de": "Warum auf Chill Arcade spielen?", "pt": "Por que jogar no Chill Arcade?", "it": "Perché giocare su Chill Arcade?", "nl": "Waarom spelen op Chill Arcade?", "pl": "Dlaczego grać na Chill Arcade?", "sv": "Varför spela på Chill Arcade?", "ru": "Почему стоит играть на Chill Arcade?", "tr": "Neden Chill Arcade'de Oynamalısınız?", "ar": "لماذا تلعب على Chill Arcade؟", "ja": "なぜChill Arcadeでプレイするのか？", "ko": "Chill Arcade에서 플레이해야 하는 이유?", "zh": "为什么选择 Chill Arcade？", "zh-tw": "為什麼選擇 Chill Arcade？"
+    },
+    "section.why.instant": {
+      "en": "Instant Play", "es": "Juego Instantáneo", "fr": "Jeu Instantané", "de": "Sofort Spielen", "pt": "Jogo Instantâneo", "it": "Gioco Immediato", "nl": "Direct Spelen", "pl": "Natychmiastowa Gra", "sv": "Direkt Spel", "ru": "Мгновенная Игра", "tr": "Anında Oyun", "ar": "لعب فوري", "ja": "即時プレイ", "ko": "즉시 플레이", "zh": "即点即玩", "zh-tw": "即點即玩"
+    },
+    "section.why.instant_desc": {
+      "en": "No downloads, no installations. Games load instantly in your browser.", "es": "Sin descargas ni instalaciones. Los juegos cargan al instante en tu navegador.", "fr": "Pas de téléchargement, pas d'installation. Les jeux se chargent instantanément dans votre navigateur.", "de": "Keine Downloads, keine Installation. Spiele laden sofort in Ihrem Browser.", "pt": "Sem downloads ou instalações. Os jogos carregam instantaneamente no seu navegador.", "it": "Niente download, niente installazioni. I giochi caricano istantaneamente nel browser.", "nl": "Geen downloads, geen installaties. Games laden direct in je browser.", "pl": "Bez pobierania, bez instalacji. Gry ładują się natychmiast w przeglądarce.", "sv": "Inga nedladdningar, ingen installation. Spel laddas direkt i din webbläsare.", "ru": "Без скачивания и установки. Игры загружаются мгновенно в вашем браузере.", "tr": "İndirme yok, kurulum yok. Oyunlar tarayıcınızda anında yüklenir.", "ar": "لا تنزيل، لا تثبيت. الألعاب تُحمل فوراً في متصفحك.", "ja": "ダウンロード不要、インストール不要。ブラウザですぐにゲームが始まります。", "ko": "다운로드 없음, 설치 없음. 브라우저에서 즉시 게임이 로드됩니다.", "zh": "无需下载，无需安装。游戏在浏览器中即刻加载。", "zh-tw": "無需下載，無需安裝。遊戲在瀏覽器中即刻載入。"
+    },
+    "section.why.free": {
+      "en": "Always Free", "es": "Siempre Gratis", "fr": "Toujours Gratuit", "de": "Immer Kostenlos", "pt": "Sempre Grátis", "it": "Sempre Gratuito", "nl": "Altijd Gratis", "pl": "Zawsze Darmowe", "sv": "Alltid Gratis", "ru": "Всегда Бесплатно", "tr": "Her Zaman Ücretsiz", "ar": "دائماً مجاني", "ja": "いつでも無料", "ko": "항상 무료", "zh": "永久免费", "zh-tw": "永久免費"
+    },
+    "section.why.free_desc": {
+      "en": "Every game is completely free to play. No paywalls, no subscriptions.", "es": "Cada juego es completamente gratuito. Sin muros de pago ni suscripciones.", "fr": "Chaque jeu est entièrement gratuit à jouer. Sans paywall ni abonnement.", "de": "Jedes Spiel ist völlig kostenlos spielbar. Keine Bezahlschranken, keine Abonnements.", "pt": "Cada jogo é completamente gratuito. Sem paywalls ou assinaturas.", "it": "Ogni gioco è completamente gratuito. Niente paywall, niente abbonamenti.", "nl": "Elke game is volledig gratis te spelen. Geen betaalmuren, geen abonnementen.", "pl": "Każda gra jest całkowicie darmowa. Bez paywalli, bez subskrypcji.", "sv": "Varje spel är helt gratis att spela. Inga betalväggar, inga prenumerationer.", "ru": "Каждая игра полностью бесплатна. Никаких платных подписок.", "tr": "Her oyun tamamen ücretsizdir. Ödeme duvarı yok, abonelik yok.", "ar": "كل لعبة مجانية بالكامل. لا جدران دفع، لا اشتراكات.", "ja": "すべてのゲームが完全無料。課金なし、サブスクリプションなし。", "ko": "모든 게임을 완전 무료로 플레이할 수 있습니다. 유료 장벽 없음, 구독 없음.", "zh": "每款游戏完全免费。无付费墙，无订阅。", "zh-tw": "每款遊戲完全免費。無付費牆，無訂閱。"
+    },
+    "section.why.mobile": {
+      "en": "Mobile Friendly", "es": "Amigable Móvil", "fr": "Adapté Mobile", "de": "Mobilfreundlich", "pt": "Amigável Móvel", "it": "Adatto Mobile", "nl": "Mobiel Vriendelijk", "pl": "Przyjazny Mobilnie", "sv": "Mobilvänligt", "ru": "Мобильная Версия", "tr": "Mobil Dostu", "ar": "متوافق مع الجوال", "ja": "モバイル対応", "ko": "모바일 친화적", "zh": "手机友好", "zh-tw": "手機友好"
+    },
+    "section.why.mobile_desc": {
+      "en": "All games work perfectly on your phone. Play anywhere, anytime.", "es": "Todos los juegos funcionan perfectamente en tu teléfono. Juega en cualquier lugar, en cualquier momento.", "fr": "Tous les jeux fonctionnent parfaitement sur votre téléphone. Jouez n'importe où, n'importe quand.", "de": "Alle Spiele funktionieren perfekt auf Ihrem Telefon. Spielen Sie überall und jederzeit.", "pt": "Todos os jogos funcionam perfeitamente no seu celular. Jogue em qualquer lugar, a qualquer hora.", "it": "Tutti i giochi funzionano perfettamente sul telefono. Gioca ovunque, in qualsiasi momento.", "nl": "Alle games werken perfect op je telefoon. Speel overal, altijd.", "pl": "Wszystkie gry działają idealnie na telefonie. Graj gdziekolwiek, kiedykolwiek.", "sv": "Alla spel fungerar perfekt på din telefon. Spela var som helst, när som helst.", "ru": "Все игры отлично работают на телефоне. Играйте где угодно, когда угодно.", "tr": "Tüm oyunlar telefonunuzda mükemmel çalışır. Her yerde, her zaman oynayın.", "ar": "جميع الألعاب تعمل بشكل مثالي على هاتفك. العب في أي مكان وفي أي وقت.", "ja": "すべてのゲームがスマホで完璧に動作。いつでもどこでもプレイ可能。", "ko": "모든 게임이 휴대폰에서 완벽하게 작동합니다. 언제 어디서나 플레이하세요.", "zh": "所有游戏在手机上完美运行。随时随地畅玩。", "zh-tw": "所有遊戲在手機上完美運行。隨時隨地暢玩。"
+    },
+    "feedback.title": {
+      "en": "We'd Love to Hear From You", "es": "Nos Encantaría Saber de Ti", "fr": "Nous Aimons Recevoir Vos Avis", "de": "Wir Würden Gerne von Ihnen Hören", "pt": "Adoraríamos Ouvir de Você", "it": "Ci Piacerebbe Sentire la Tua Opinione", "nl": "We Horen Graag van Je", "pl": "Chcielibyśmy Usłyszeć od Ciebie", "sv": "Vi Vill Gärna Höra Från Dig", "ru": "Мы Будем Рады Услышать Ваше Мнение", "tr": "Sizden Duymak İsteriz", "ar": "يسعدنا سماع رأيك", "ja": "ご意見をお聞かせください", "ko": "여러분의 의견을 듣고 싶습니다", "zh": "我们期待您的反馈", "zh-tw": "我們期待您的反饋"
+    },
+    "feedback.subtitle": {
+      "en": "Have a suggestion or found a bug? Drop us a message!", "es": "¿Tienes una sugerencia o encontraste un error? ¡Envíanos un mensaje!", "fr": "Une suggestion ou un bug trouvé? Envoyez-nous un message!", "de": "Haben Sie einen Vorschlag oder einen Fehler gefunden? Schreiben Sie uns!", "pt": "Tem uma sugestão ou encontrou um bug? Mande uma mensagem!", "it": "Hai un suggerimento o hai trovato un bug? Mandaci un messaggio!", "nl": "Heb je een suggestie of een bug gevonden? Stuur ons een bericht!", "pl": "Masz sugestię lub znalazłeś błąd? Wyślij nam wiadomość!", "sv": "Har du ett förslag eller hittat ett fel? Skicka oss ett meddelande!", "ru": "Есть предложение или нашли ошибку? Напишите нам!", "tr": "Bir öneriniz veya bulduğunuz bir hata mı var? Bize mesaj gönderin!", "ar": "هل لديك اقتراح أو وجدت خطأ؟ أرسل لنا رسالة!", "ja": "提案やバグを見つけましたか？メッセージをお送りください！", "ko": "제안이나 버그를 발견하셨나요? 메시지를 보내주세요!", "zh": "有建议或发现了 Bug？给我们留言吧！", "zh-tw": "有建議或發現了 Bug？給我們留言吧！"
+    },
+    "feedback.name": {
+      "en": "Your name (optional)", "es": "Tu nombre (opcional)", "fr": "Votre nom (optionnel)", "de": "Ihr Name (optional)", "pt": "Seu nome (opcional)", "it": "Il tuo nome (opzionale)", "nl": "Je naam (optioneel)", "pl": "Twoje imię (opcjonalne)", "sv": "Ditt namn (valfritt)", "ru": "Ваше имя (необязательно)", "tr": "Adınız (isteğe bağlı)", "ar": "اسمك (اختياري)", "ja": "お名前（任意）", "ko": "이름 (선택사항)", "zh": "你的名字（可选）", "zh-tw": "你的名字（可選）"
+    },
+    "feedback.message": {
+      "en": "Your message...", "es": "Tu mensaje...", "fr": "Votre message...", "de": "Ihre Nachricht...", "pt": "Sua mensagem...", "it": "Il tuo messaggio...", "nl": "Je bericht...", "pl": "Twoja wiadomość...", "sv": "Ditt meddelande...", "ru": "Ваше сообщение...", "tr": "Mesajınız...", "ar": "رسالتك...", "ja": "メッセージ...", "ko": "메시지...", "zh": "你的留言...", "zh-tw": "你的留言..."
+    },
+    "feedback.send": {
+      "en": "Send", "es": "Enviar", "fr": "Envoyer", "de": "Senden", "pt": "Enviar", "it": "Invia", "nl": "Versturen", "pl": "Wyślij", "sv": "Skicka", "ru": "Отправить", "tr": "Gönder", "ar": "إرسال", "ja": "送信", "ko": "보내기", "zh": "发送", "zh-tw": "發送"
+    },
+    "footer.copyright": {
+      "en": "© 2026 Chill Arcade. All rights reserved.", "es": "© 2026 Chill Arcade. Todos los derechos reservados.", "fr": "© 2026 Chill Arcade. Tous droits réservés.", "de": "© 2026 Chill Arcade. Alle Rechte vorbehalten.", "pt": "© 2026 Chill Arcade. Todos os direitos reservados.", "it": "© 2026 Chill Arcade. Tutti i diritti riservati.", "nl": "© 2026 Chill Arcade. Alle rechten voorbehouden.", "pl": "© 2026 Chill Arcade. Wszelkie prawa zastrzeżone.", "sv": "© 2026 Chill Arcade. Alla rättigheter förbehållna.", "ru": "© 2026 Chill Arcade. Все права защищены.", "tr": "© 2026 Chill Arcade. Tüm hakları saklıdır.", "ar": "© 2026 Chill Arcade. جميع الحقوق محفوظة.", "ja": "© 2026 Chill Arcade. 無断転載を禁じます。", "ko": "© 2026 Chill Arcade. 모든 권리 보유.", "zh": "© 2026 Chill Arcade. 保留所有权利。", "zh-tw": "© 2026 Chill Arcade. 保留所有權利。"
+    },
+    "footer.privacy": {
+      "en": "Privacy Policy", "es": "Política de Privacidad", "fr": "Politique de Confidentialité", "de": "Datenschutz", "pt": "Política de Privacidade", "it": "Informativa sulla Privacy", "nl": "Privacybeleid", "pl": "Polityka Prywatności", "sv": "Integritetspolicy", "ru": "Политика Конфиденциальности", "tr": "Gizlilik Politikası", "ar": "سياسة الخصوصية", "ja": "プライバシーポリシー", "ko": "개인정보 처리방침", "zh": "隐私政策", "zh-tw": "隱私政策"
+    },
+    "footer.terms": {
+      "en": "Terms of Service", "es": "Términos del Servicio", "fr": "Conditions d'Utilisation", "de": "Nutzungsbedingungen", "pt": "Termos de Serviço", "it": "Termini di Servizio", "nl": "Gebruiksvoorwaarden", "pl": "Warunki Usługi", "sv": "Användarvillkor", "ru": "Условия Использования", "tr": "Hizmet Şartları", "ar": "شروط الخدمة", "ja": "利用規約", "ko": "서비스 약관", "zh": "服务条款", "zh-tw": "服務條款"
+    },
+    "footer.contact": {
+      "en": "Contact", "es": "Contacto", "fr": "Contact", "de": "Kontakt", "pt": "Contato", "it": "Contatto", "nl": "Contact", "pl": "Kontakt", "sv": "Kontakt", "ru": "Контакты", "tr": "İletişim", "ar": "اتصل بنا", "ja": "お問い合わせ", "ko": "문의하기", "zh": "联系我们", "zh-tw": "聯繫我們"
+    },
+    "game.save": {
+      "en": "Save", "es": "Guardar", "fr": "Sauvegarder", "de": "Speichern", "pt": "Salvar", "it": "Salva", "nl": "Opslaan", "pl": "Zapisz", "sv": "Spara", "ru": "Сохранить", "tr": "Kaydet", "ar": "حفظ", "ja": "保存", "ko": "저장", "zh": "收藏", "zh-tw": "收藏"
+    },
+    "game.saved": {
+      "en": "Saved", "es": "Guardado", "fr": "Sauvegardé", "de": "Gespeichert", "pt": "Salvo", "it": "Salvato", "nl": "Opgeslagen", "pl": "Zapisano", "sv": "Sparad", "ru": "Сохранено", "tr": "Kaydedildi", "ar": "تم الحفظ", "ja": "保存済み", "ko": "저장됨", "zh": "已收藏", "zh-tw": "已收藏"
+    },
+    "game.loading": {
+      "en": "Loading game...", "es": "Cargando juego...", "fr": "Chargement du jeu...", "de": "Spiel wird geladen...", "pt": "Carregando jogo...", "it": "Caricamento gioco...", "nl": "Game laden...", "pl": "Ładowanie gry...", "sv": "Laddar spel...", "ru": "Загрузка игры...", "tr": "Oyun yükleniyor...", "ar": "جاري تحميل اللعبة...", "ja": "ゲームを読み込み中...", "ko": "게임 로딩 중...", "zh": "游戏加载中...", "zh-tw": "遊戲加載中..."
+    },
+    "game.related": {
+      "en": "You May Also Like", "es": "También Te Puede Gustar", "fr": "Vous Pourriez Aussi Aimer", "de": "Das Könnte Ihnen Auch Gefallen", "pt": "Você Também Pode Gostar", "it": "Potrebbe Piacerti Anche", "nl": "Dit Vind Je Misschien Ook Leuk", "pl": "Może Ci Się Spodobać", "sv": "Du Kan Också Gilla", "ru": "Вам Также Может Понравиться", "tr": "Bunları da Beğenebilirsiniz", "ar": "قد يعجبك أيضاً", "ja": "こちらもおすすめ", "ko": "이것도 좋아할 수 있습니다", "zh": "猜你喜欢", "zh-tw": "猜你喜歡"
+    },
+    "view_all": {
+      "en": "View All Games", "es": "Ver Todos los Juegos", "fr": "Voir Tous les Jeux", "de": "Alle Spiele Anzeigen", "pt": "Ver Todos os Jogos", "it": "Vedi Tutti i Giochi", "nl": "Bekijk Alle Games", "pl": "Zobacz Wszystkie Gry", "sv": "Visa Alla Spel", "ru": "Все Игры", "tr": "Tüm Oyunları Gör", "ar": "عرض جميع الألعاب", "ja": "すべてのゲームを見る", "ko": "모든 게임 보기", "zh": "查看全部游戏", "zh-tw": "查看全部遊戲"
+    },
+    "game.howtoplay": {
+      "en": "📖 How to Play", "es": "📖 Cómo Jugar", "fr": "📖 Comment Jouer", "de": "📖 Spielanleitung",
+      "pt": "📖 Como Jogar", "it": "📖 Come Giocare", "nl": "📖 Hoe Te Spelen",
+      "pl": "📖 Jak Grać", "sv": "📖 Hur Man Spelar", "ru": "📖 Как Играть",
+      "tr": "📖 Nasıl Oynanır", "ar": "📖 كيفية اللعب", "ja": "📖 遊び方",
+      "ko": "📖 플레이 방법", "zh": "📖 如何游玩", "zh-tw": "📖 如何遊玩"
+    },
+    "game.playnow": {
+      "en": "▶ Play Now", "es": "▶ Jugar Ahora", "fr": "▶ Jouer", "de": "▶ Jetzt Spielen",
+      "pt": "▶ Jogar Agora", "it": "▶ Gioca Ora", "nl": "▶ Nu Spelen",
+      "pl": "▶ Graj Teraz", "sv": "▶ Spela Nu", "ru": "▶ Играть Сейчас",
+      "tr": "▶ Şimdi Oyna", "ar": "▶ العب الآن", "ja": "▶ プレイする",
+      "ko": "▶ 지금 플레이", "zh": "▶ 开始游戏", "zh-tw": "▶ 開始遊戲"
+    },
+    "game.loading_title": {
+      "en": "Game Loading...", "es": "Juego Cargando...", "fr": "Jeu en Chargement...", "de": "Spiel wird geladen...",
+      "pt": "Jogo Carregando...", "it": "Gioco in Caricamento...", "nl": "Game wordt geladen...",
+      "pl": "Gra się ładuje...", "sv": "Spelet laddas...", "ru": "Игра Загружается...",
+      "tr": "Oyun Yükleniyor...", "ar": "جاري تحميل اللعبة...", "ja": "ゲーム読み込み中...",
+      "ko": "게임 로딩 중...", "zh": "游戏加载中...", "zh-tw": "遊戲加載中..."
+    },
+    "game.click_play": {
+      "en": "Click the button below to start playing", "es": "Haz clic en el botón de abajo para empezar a jugar", "fr": "Cliquez sur le bouton ci-dessous pour commencer à jouer",
+      "de": "Klicken Sie auf die Schaltfläche unten, um zu spielen", "pt": "Clique no botão abaixo para começar a jogar",
+      "it": "Fai clic sul pulsante qui sotto per iniziare a giocare", "nl": "Klik op de knop hieronder om te beginnen",
+      "pl": "Kliknij przycisk poniżej, aby rozpocząć grę", "sv": "Klicka på knappen nedan för att börja spela",
+      "ru": "Нажмите кнопку ниже, чтобы начать игру", "tr": "Oynamaya başlamak için aşağıdaki düğmeye tıklayın",
+      "ar": "انقر على الزر أدناه لبدء اللعب", "ja": "下のボタンをクリックしてプレイを開始",
+      "ko": "아래 버튼을 클릭하여 플레이를 시작하세요", "zh": "点击下方按钮开始游戏", "zh-tw": "點擊下方按鈕開始遊戲"
+    },
+    "footer.more": {
+      "en": "More", "es": "Más", "fr": "Plus", "de": "Mehr",
+      "pt": "Mais", "it": "Altro", "nl": "Meer",
+      "pl": "Więcej", "sv": "Mer", "ru": "Ещё",
+      "tr": "Daha Fazla", "ar": "المزيد", "ja": "もっと",
+      "ko": "더보기", "zh": "更多", "zh-tw": "更多"
+    },
+    "blog.subtitle": {
+      "en": "Strategy guides, tips, and articles about your favorite casual games.",
+      "es": "Guías de estrategia, consejos y artículos sobre tus juegos casuales favoritos.",
+      "fr": "Guides stratégiques, astuces et articles sur vos jeux décontractés préférés.",
+      "de": "Strategieanleitungen, Tipps und Artikel über Ihre liebsten Casual-Spiele.",
+      "pt": "Guias de estratégia, dicas e artigos sobre seus jogos casuais favoritos.",
+      "it": "Guide strategiche, consigli e articoli sui tuoi giochi casual preferiti.",
+      "nl": "Strategiegidsen, tips en artikelen over je favoriete casual games.",
+      "pl": "Poradniki strategiczne, wskazówki i artykuły o ulubionych grach casualowych.",
+      "sv": "Strategiguider, tips och artiklar om dina favoritspel.",
+      "ru": "Стратегические руководства, советы и статьи о ваших любимых казуальных играх.",
+      "tr": "En sevdiğiniz sıradan oyunlar hakkında strateji rehberleri, ipuçları ve makaleler.",
+      "ar": "أدلة استراتيجية، نصائح، ومقالات عن ألعابك العادية المفضلة.",
+      "ja": "お気に入りのカジュアルゲームに関する戦略ガイド、ヒント、記事。",
+      "ko": "좋아하는 캐주얼 게임에 대한 전략 가이드, 팁 및 기사.",
+      "zh": "关于你喜爱的休闲游戏的策略指南、技巧和文章。",
+      "zh-tw": "關於你喜愛的休閒遊戲的策略指南、技巧和文章。"
+    },
+    "blog.back": {
+      "en": "← Back to Guides", "es": "← Volver a Guías", "fr": "← Retour aux Guides", "de": "← Zurück zu den Anleitungen",
+      "pt": "← Voltar aos Guias", "it": "← Torna alle Guide", "nl": "← Terug naar Gidsen",
+      "pl": "← Powrót do Poradników", "sv": "← Tillbaka till Guider", "ru": "← Назад к Гайдам",
+      "tr": "← Rehberlere Dön", "ar": "← العودة إلى الأدلة", "ja": "← ガイドに戻る",
+      "ko": "← 가이드로 돌아가기", "zh": "← 返回攻略", "zh-tw": "← 返回攻略"
+    },
+    "search.found": {
+      "en": "games found", "es": "juegos encontrados", "fr": "jeux trouvés", "de": "Spiele gefunden", "pt": "jogos encontrados", "it": "giochi trovati", "nl": "games gevonden", "pl": "znalezionych gier", "sv": "spel hittades", "ru": "игр найдено", "tr": "oyun bulundu", "ar": "لعبة تم العثور عليها", "ja": "件のゲームが見つかりました", "ko": "개의 게임을 찾았습니다", "zh": "款游戏找到", "zh-tw": "款遊戲找到"
+    }
+  }
+}

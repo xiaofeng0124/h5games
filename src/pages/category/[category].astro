@@ -23,7 +23,7 @@ const categoryGames = (allGames as Game[]).filter((g: Game) => g.category === ca
 <Layout title={`${category?.name || categorySlug} Games - Play Free Online`} description={category?.description}>
   <!-- Breadcrumb -->
   <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
-    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.home">Home</a>
     <span>/</span>
     <span class="text-slate-700 dark:text-slate-300 capitalize">{category?.name || categorySlug} Games</span>
   </nav>

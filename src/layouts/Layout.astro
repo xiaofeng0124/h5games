@@ -49,6 +49,9 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <link rel="dns-prefetch" href="https://html5.gamedistribution.com" />
     <link rel="preconnect" href="https://static.cloudflareinsights.com" />
 
+    <!-- i18n support -->
+    <script src="/i18n/i18n.js" is:inline></script>
+
     <title>{siteTitle}</title>
 
     <!-- Cloudflare Web Analytics (privacy-first, no cookies) -->
