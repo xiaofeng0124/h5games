@@ -31,20 +31,24 @@
 /* Dark mode prose adaptation */
 .dark .prose { color: #cbd5e1; }
 
-/* Multi-layer soft glow background — light mode */
+/* Visible gradient background — light mode */
 body {
-  background:
-    radial-gradient(ellipse 900px 650px at -5% -8%, rgba(139, 92, 246, 0.22) 0%, transparent 60%),
-    radial-gradient(ellipse 750px 550px at 110% 108%, rgba(99, 102, 241, 0.16) 0%, transparent 60%),
-    radial-gradient(ellipse 350px 350px at 50% -10%, rgba(165, 180, 252, 0.10) 0%, transparent 55%),
-    linear-gradient(145deg, rgb(250, 245, 255), rgb(245, 243, 255) 40%, rgb(238, 242, 255) 80%, rgb(240, 248, 255));
+  background: linear-gradient(160deg,
+    rgb(245, 240, 255) 0%,
+    rgb(241, 238, 255) 25%,
+    rgb(237, 242, 255) 50%,
+    rgb(240, 246, 255) 75%,
+    rgb(245, 240, 255) 100%
+  );
 }
 
 /* Dark mode */
 .dark body {
-  background:
-    radial-gradient(ellipse 900px 650px at -5% -8%, rgba(139, 92, 246, 0.30) 0%, transparent 60%),
-    radial-gradient(ellipse 750px 550px at 110% 108%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
-    radial-gradient(ellipse 350px 350px at 50% -10%, rgba(165, 180, 252, 0.10) 0%, transparent 55%),
-    linear-gradient(145deg, rgb(15, 23, 42), rgb(30, 27, 48) 50%, rgb(15, 23, 42));
+  background: linear-gradient(160deg,
+    rgb(20, 15, 35) 0%,
+    rgb(18, 20, 40) 25%,
+    rgb(15, 23, 42) 50%,
+    rgb(18, 20, 40) 75%,
+    rgb(20, 15, 35) 100%
+  );
 }
