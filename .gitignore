@@ -28,3 +28,10 @@ add_games_batch*.cjs
 
 # GameMonetize temp data
 scripts/gm_games.json
+
+# temp scripts
+merge_gamezop.cjs
+fetch_gamezop.cjs
+gamezop_output.json
+test_output.json
+tmp_games_clean.txt
