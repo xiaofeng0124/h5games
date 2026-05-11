@@ -7,5 +7,10 @@
   "word": { "name": "Word", "description": "Word puzzles, spelling challenges and vocabulary games", "icon": "📝" },
   "card": { "name": "Card", "description": "Classic card games and solitaire variations", "icon": "🃏" },
   "hidden-object": { "name": "Hidden Object", "description": "Find hidden items in beautifully illustrated scenes", "icon": "🔍" },
-  "board": { "name": "Board", "description": "Classic board games including chess, mahjong, backgammon and more", "icon": "♟️" }
+  "board": { "name": "Board", "description": "Classic board games including chess, mahjong, backgammon and more", "icon": "♟️" },
+  "strategy": { "name": "Strategy", "description": "Tactical thinking and strategic planning games", "icon": "🧠" },
+  "adventure": { "name": "Adventure", "description": "Explore worlds, solve quests and go on exciting journeys", "icon": "⚔️" },
+  "sports": { "name": "Sports", "description": "Football, basketball, golf and other sports games", "icon": "🏆" },
+  "racing": { "name": "Racing", "description": "High-speed racing and driving games", "icon": "🏎️" },
+  "idle": { "name": "Idle", "description": "Relaxing incremental games where progress keeps going", "icon": "⏳" }
 }

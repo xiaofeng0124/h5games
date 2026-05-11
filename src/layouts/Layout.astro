@@ -61,6 +61,10 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <slot />
     </main>
+    <button id="back-to-top" aria-label="Back to top"
+      class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-300/50 dark:shadow-indigo-900/30 opacity-0 translate-y-4 invisible transition-all duration-300 hover:bg-indigo-700 hover:scale-110">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+    </button>
     <Footer />
     <CookieConsent />
     <script is:inline>
@@ -81,4 +85,21 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     updateTheme();
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
   })();
+
+  // Back to top button
+  const btn = document.getElementById('back-to-top');
+  if (btn) {
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        btn.classList.remove('invisible', 'opacity-0', 'translate-y-4');
+        btn.classList.add('opacity-100', 'translate-y-0');
+      } else {
+        btn.classList.add('invisible', 'opacity-0', 'translate-y-4');
+        btn.classList.remove('opacity-100', 'translate-y-0');
+      }
+    }, { passive: true });
+    btn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 </script>

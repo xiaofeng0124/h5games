@@ -1,21 +1,40 @@
 <footer class="bg-white/60 dark:bg-slate-800/60 border-t border-slate-200 dark:border-slate-700 mt-12">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div class="sm:col-span-2 md:col-span-1">
         <h3 class="text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-3">Chill Arcade</h3>
         <p class="text-sm text-slate-500 dark:text-slate-400">
           Your destination for free relaxing online games. Play instantly in your browser — no downloads, no signups, just fun.
         </p>
       </div>
+      <!-- Categories -->
       <div>
         <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="nav.categories">Categories</h4>
         <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
-          <li><a href="/category/match-3" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.match-3">Match-3</span> <span data-i18n="cat.games">Games</span></a></li>
-          <li><a href="/category/puzzle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.puzzle">Puzzle</span> <span data-i18n="cat.games">Games</span></a></li>
-          <li><a href="/category/merge" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.merge">Merge</span> <span data-i18n="cat.games">Games</span></a></li>
-          <li><a href="/category/casual" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.casual">Casual</span> <span data-i18n="cat.games">Games</span></a></li>
+          <li><a href="/category/match-3" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.match-3">Match-3</span></a></li>
+          <li><a href="/category/puzzle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.puzzle">Puzzle</span></a></li>
+          <li><a href="/category/merge" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.merge">Merge</span></a></li>
+          <li><a href="/category/arcade" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Arcade</a></li>
+          <li><a href="/category/casual" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"><span data-i18n="cat.casual">Casual</span></a></li>
+          <li><a href="/category/strategy" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Strategy</a></li>
+          <li><a href="/category/adventure" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Adventure</a></li>
         </ul>
       </div>
+      <!-- Categories 2 -->
+      <div>
+        <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider opacity-0">Categories</h4>
+        <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+          <li><a href="/category/word" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Word</a></li>
+          <li><a href="/category/card" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Card</a></li>
+          <li><a href="/category/board" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Board</a></li>
+          <li><a href="/category/hidden-object" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Hidden Object</a></li>
+          <li><a href="/category/sports" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Sports</a></li>
+          <li><a href="/category/racing" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Racing</a></li>
+          <li><a href="/category/idle" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Idle</a></li>
+        </ul>
+      </div>
+      <!-- More -->
       <div>
         <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="footer.more">More</h4>
         <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
@@ -25,9 +44,45 @@
           <li><a href="/contact" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="footer.contact">Contact</a></li>
         </ul>
       </div>
+      <!-- Feedback -->
+      <div>
+        <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 uppercase tracking-wider" data-i18n="feedback.title">Feedback</h4>
+        <form id="footer-feedback" class="space-y-2">
+          <input type="text" id="fb-name" data-i18n="feedback.name" data-i18n-attr="placeholder" placeholder="Your name (optional)"
+            class="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+          <textarea id="fb-message" rows="2" placeholder="Your message..." data-i18n="feedback.message" data-i18n-attr="placeholder"
+            class="w-full px-3 py-1.5 text-xs bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"></textarea>
+          <div id="fb-success" class="hidden text-xs text-green-600 dark:text-green-400 font-medium">&#10003; Thanks for your feedback!</div>
+          <button type="submit" data-i18n="feedback.send"
+            class="px-4 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-all hover:scale-105 shadow-sm">
+            Send
+          </button>
+        </form>
+      </div>
     </div>
     <div class="border-t border-slate-200 dark:border-slate-700 mt-8 pt-6 text-center text-xs text-slate-400 dark:text-slate-500">
       &copy; {new Date().getFullYear()} Chill Arcade. All rights reserved.
     </div>
   </div>
 </footer>
+
+<script>
+  const form = document.getElementById('footer-feedback');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('fb-name').value.trim();
+      const message = document.getElementById('fb-message').value.trim();
+      if (!message) return;
+      try {
+        const feedbacks = JSON.parse(localStorage.getItem('footer_feedback') || '[]');
+        feedbacks.push({ name, message, time: Date.now() });
+        localStorage.setItem('footer_feedback', JSON.stringify(feedbacks));
+      } catch {}
+      document.getElementById('fb-name').value = '';
+      document.getElementById('fb-message').value = '';
+      document.getElementById('fb-success').classList.remove('hidden');
+      setTimeout(() => document.getElementById('fb-success').classList.add('hidden'), 4000);
+    });
+  }
+</script>
