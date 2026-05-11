@@ -12,5 +12,7 @@
   "adventure": { "name": "Adventure", "description": "Explore worlds, solve quests and go on exciting journeys", "icon": "⚔️" },
   "sports": { "name": "Sports", "description": "Football, basketball, golf and other sports games", "icon": "🏆" },
   "racing": { "name": "Racing", "description": "High-speed racing and driving games", "icon": "🏎️" },
-  "idle": { "name": "Idle", "description": "Relaxing incremental games where progress keeps going", "icon": "⏳" }
+  "idle": { "name": "Idle", "description": "Relaxing incremental games where progress keeps going", "icon": "⏳" },
+  "fighting": { "name": "Fighting", "description": "Action-packed combat and battle games", "icon": "🥊" },
+  "multiplayer": { "name": "Multiplayer", "description": "Play with friends and players worldwide", "icon": "🌐" }
 }

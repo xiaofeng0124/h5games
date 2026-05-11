@@ -8,7 +8,7 @@ const featuredSlugs = new Set(featured.map(g => g.slug));
 const allGames = games.filter(g => !featuredSlugs.has(g.slug));
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
 const emojiMap: Record<string, string> = {
-  'match-3': '💎', 'puzzle': '🧩', 'merge': '🔄', 'casual': '🎮', 'arcade': '🕹️', 'word': '📝', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🧠', 'adventure': '⚔️', 'sports': '🏆', 'racing': '🏎️', 'idle': '⏳',
+  'match-3': '💎', 'puzzle': '🧩', 'merge': '🔄', 'casual': '🎮', 'arcade': '🕹️', 'word': '📝', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🧠', 'adventure': '⚔️', 'sports': '🏆', 'racing': '🏎️', 'action': '🎯', 'fighting': '🥊', 'multiplayer': '🌐', 'idle': '⏳',
 };
 ---
 
@@ -47,7 +47,7 @@ const emojiMap: Record<string, string> = {
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid #e2e8f0;
-      transition: box-shadow .2s, border-color .2s;
+      transition: box-shadow .3s, border-color .3s, transform .3s;
       text-decoration: none;
     }
     .dark .gc {
@@ -55,11 +55,12 @@ const emojiMap: Record<string, string> = {
       border-color: #334155;
     }
     .gc:hover {
-      border-color: #818cf8;
-      box-shadow: 0 4px 12px rgba(129,140,248,.2);
+      transform: translateY(-3px);
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 2px #a78bfa, 0 8px 25px rgba(129,140,248,.3);
     }
     .dark .gc:hover {
-      box-shadow: 0 4px 12px rgba(129,140,248,.1);
+      box-shadow: 0 0 0 2px #a78bfa, 0 8px 25px rgba(129,140,248,.15);
     }
     .gc-thumb {
       position: relative;
@@ -78,10 +79,10 @@ const emojiMap: Record<string, string> = {
       height: 100%;
       object-fit: cover;
       will-change: transform;
-      transition: transform .25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform .35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .gc:hover .gc-thumb img {
-      transform: scale(1.12);
+      transform: scale(1.28);
     }
     .gc-thumb .gc-icon {
       font-size: 2.5rem;
@@ -99,8 +100,8 @@ const emojiMap: Record<string, string> = {
       background: rgba(0,0,0,.12);
     }
     .gc-play {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       background: rgba(255,255,255,.95);
       border-radius: 50%;
       display: flex;
@@ -108,18 +109,22 @@ const emojiMap: Record<string, string> = {
       justify-content: center;
       opacity: 0;
       transform: scale(0.8);
-      transition: all .2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      transition: all .22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 14px rgba(0,0,0,.2);
     }
     .gc:hover .gc-play {
       opacity: 1;
       transform: scale(1);
+      animation: gc-pulse 1.2s ease-in-out infinite;
     }
     .gc-play svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       color: #4f46e5;
       margin-left: 3px;
+    }
+    .gc:hover .gc-play svg {
+      color: #7c3aed;
     }
     .gc-title {
       display: block;
@@ -131,80 +136,21 @@ const emojiMap: Record<string, string> = {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      transition: color .25s;
     }
     .dark .gc-title {
       color: #e2e8f0;
     }
-
-    /* Candy Blast special hover effect */
-    .gc[data-title="candy blast"] {
-      transition: box-shadow .3s, border-color .3s, transform .3s;
-    }
-    .gc[data-title="candy blast"]:hover {
-      transform: translateY(-4px);
-      border-color: #a78bfa;
-      box-shadow: 0 0 0 3px #a78bfa, 0 8px 25px rgba(129,140,248,.35);
-    }
-    .dark .gc[data-title="candy blast"]:hover {
-      box-shadow: 0 0 0 3px #a78bfa, 0 8px 25px rgba(129,140,248,.2);
-    }
-    .gc[data-title="candy blast"] .gc-thumb img {
-      transition: transform .35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .gc[data-title="candy blast"]:hover .gc-thumb img {
-      transform: scale(1.25);
-    }
-    .gc[data-title="candy blast"] .gc-play {
-      width: 48px;
-      height: 48px;
-      background: #fff;
-      transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .gc[data-title="candy blast"]:hover .gc-play {
-      animation: gc-pulse 1s ease-in-out infinite;
-    }
-    @keyframes gc-pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(129,140,248,.5); }
-      50% { transform: scale(1.12); box-shadow: 0 0 0 16px rgba(129,140,248,0); }
-    }
-    .gc[data-title="candy blast"] .gc-play svg {
-      width: 24px;
-      height: 24px;
-    }
-    .gc[data-title="candy blast"]:hover .gc-play svg {
+    .gc:hover .gc-title {
       color: #7c3aed;
     }
-    .gc[data-title="candy blast"] .gc-title {
-      transition: color .25s;
-    }
-    .gc[data-title="candy blast"]:hover .gc-title {
-      color: #7c3aed;
-    }
-    .dark .gc[data-title="candy blast"]:hover .gc-title {
+    .dark .gc:hover .gc-title {
       color: #a78bfa;
     }
 
-    /* iframe preview container (hidden by default) */
-    .gc-preview {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: none;
-      background: #000;
-      overflow: hidden;
-    }
-    .gc-preview iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-    /* Gummy Merge: show live preview on hover */
-    .gc[data-title="gummy merge"]:hover .gc-preview {
-      display: block;
-    }
-    .gc[data-title="gummy merge"]:hover .gc-thumb > img,
-    .gc[data-title="gummy merge"]:hover .gc-overlay {
-      display: none;
+    @keyframes gc-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(129,140,248,.4); }
+      50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(129,140,248,0); }
     }
   </style>
 
@@ -384,23 +330,4 @@ const emojiMap: Record<string, string> = {
   searchInput.addEventListener('input', filterGames);
   categoryFilter.addEventListener('change', filterGames);
   difficultyFilter.addEventListener('change', filterGames);
-
-  // Iframe preview lazy load (only Gummy Merge for now)
-  document.querySelectorAll('.gc[data-title="gummy merge"] .gc-preview').forEach(function(container) {
-    var card = container.closest('.gc');
-    var loaded = false;
-    card.addEventListener('mouseenter', function() {
-      if (!loaded) {
-        var iframe = document.createElement('iframe');
-        iframe.src = container.getAttribute('data-preview-src');
-        iframe.allow = 'autoplay *';
-        iframe.sandbox = 'allow-scripts allow-same-origin allow-popups allow-forms';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = '0';
-        container.appendChild(iframe);
-        loaded = true;
-      }
-    });
-  });
 </script>
