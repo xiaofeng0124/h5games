@@ -58,8 +58,8 @@
     // Update language selector button
     var btn = document.getElementById('lang-selector-btn');
     if (btn && langData) {
-      btn.style.background = 'url(/flags/' + (langData.country || 'us') + '.svg) center / cover no-repeat';
-      btn.innerHTML = '<span class="lang-current-name" style="text-shadow:0 1px 4px rgba(0,0,0,0.7)">' + langData.nativeName + '</span>';
+      var flagImg = '<img src="/flags/' + (langData.country || 'us') + '.svg" alt="" class="w-5 h-4 rounded-sm object-cover shrink-0" width="20" height="15" />';
+      btn.innerHTML = flagImg + ' <span class="lang-current-name">' + langData.nativeName + '</span> <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
     }
 
     // Close dropdown
