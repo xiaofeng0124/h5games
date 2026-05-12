@@ -63,12 +63,6 @@ const emojiMap: Record<string, string> = {
             <option value={slug} data-i18n={`cat.${slug}`}>{cat.name}</option>
           ))}
         </select>
-        <select id="difficulty-filter" class="px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          <option value="" data-i18n="filter.all">All Difficulties</option>
-          <option value="easy" data-i18n="filter.easy">Easy</option>
-          <option value="medium" data-i18n="filter.medium">Medium</option>
-          <option value="hard" data-i18n="filter.hard">Hard</option>
-        </select>
       </div>
       <div id="search-results-info" class="mt-1 text-xs text-slate-400 hidden">
         <span id="result-count">0</span> <span data-i18n="search.found">games found</span>
@@ -129,9 +123,9 @@ const emojiMap: Record<string, string> = {
 </Layout>
 
 <script>
+  window.__initPage = function() {
   const searchInput = document.getElementById('search-input');
   const categoryFilter = document.getElementById('category-filter');
-  const difficultyFilter = document.getElementById('difficulty-filter');
   const tagFilter = document.getElementById('tag-filter');
   const resultsInfo = document.getElementById('search-results-info');
   const resultCount = document.getElementById('result-count');
@@ -144,7 +138,7 @@ const emojiMap: Record<string, string> = {
   (window.__gamesDataPromise || Promise.resolve([])).then(function(data) {
     allGamesData = data;
     buildTagFilter();
-    if (searchInput?.value || categoryFilter?.value || difficultyFilter?.value || selectedTag) {
+    if (searchInput?.value || categoryFilter?.value || selectedTag) {
       filterGames();
     }
   });
@@ -231,22 +225,20 @@ const emojiMap: Record<string, string> = {
     if (window.__lazyLoadGamesData) window.__lazyLoadGamesData();
     const query = (searchInput?.value || '').trim().toLowerCase();
     const category = categoryFilter?.value || '';
-    const difficulty = difficultyFilter?.value || '';
 
     const filtered = allGamesData.filter(g => {
       const matchCategory = !category || g.category === category;
-      const matchDifficulty = !difficulty || g.difficulty === difficulty;
       const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
       const matchSearch = !query ||
         g.title.toLowerCase().includes(query) ||
         g.description.toLowerCase().includes(query) ||
         g.category.includes(query) ||
         (g.tags && g.tags.some(t => t.includes(query)));
-      return matchCategory && matchDifficulty && matchTag && matchSearch;
+      return matchCategory && matchTag && matchSearch;
     });
 
     if (resultsInfo && resultCount) {
-      if (query || category || difficulty || selectedTag) {
+      if (query || category || selectedTag) {
         resultsInfo.classList.remove('hidden');
         resultCount.textContent = filtered.length;
       } else {
@@ -259,5 +251,6 @@ const emojiMap: Record<string, string> = {
 
   searchInput?.addEventListener('input', filterGames);
   categoryFilter?.addEventListener('change', filterGames);
-  difficultyFilter?.addEventListener('change', filterGames);
+  };
+  window.__initPage();
 </script>
