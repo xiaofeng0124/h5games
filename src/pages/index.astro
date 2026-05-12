@@ -4,8 +4,9 @@ import SearchAutocomplete from '../components/SearchAutocomplete.astro';
 import games from '../data/games.json' with { type: 'json' };
 import categories from '../data/categories.json' with { type: 'json' };
 
-const featured = games.filter(g => g.featured).slice(0, 64);
-const latestGames = games.slice(0, 40);
+const playableGames = games.filter(g => !g.slug.includes('steam-key'));
+const featured = playableGames.filter(g => g.featured).slice(0, 64);
+const latestGames = playableGames.slice(-40).reverse();
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
 const emojiMap: Record<string, string> = {
   'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾',
