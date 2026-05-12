@@ -6,12 +6,10 @@ import categories from '../data/categories.json' with { type: 'json' };
 
 const playableGames = games.filter(g => !g.slug.includes('steam-key'));
 const featured = playableGames.filter(g => g.featured).slice(0, 80);
-// 补满到80款，不足时从非精选游戏顶部补齐
-if (featured.length < 80) {
-  for (const g of playableGames) {
-    if (featured.length >= 80) break;
-    if (!featured.find(f => f.slug === g.slug)) featured.push(g);
-  }
+// Fisher-Yates shuffle 随机打乱精选游戏
+for (let i = featured.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [featured[i], featured[j]] = [featured[j], featured[i]];
 }
 const latestGames = playableGames.slice(-48).reverse();
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
