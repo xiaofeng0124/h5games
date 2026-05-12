@@ -64,6 +64,18 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
 
     <!-- Cloudflare Web Analytics (privacy-first, no cookies) -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "6f01648ac96340dfa19a805a19941cdc"}'></script>
+
+    <!-- Instant navigation: Chrome prerenders likely pages, others fallback to prefetch -->
+    <script type="speculationrules">
+    {
+      "prerender": [{
+        "source": "document",
+        "where": { "href_matches": "/*" },
+        "eagerness": "moderate"
+      }]
+    }
+    </script>
+    <script defer src="https://instant.page/5.2.0" integrity="sha384-9asI8QYp8QoTmvSV4y9MWNU6x9Tzy42mWZtoRqDGF1sQEz6p7qXLPwLgsL0fMqK"></script>
   </head>
   <body class="min-h-screen text-slate-800 dark:text-slate-100">
     <Header />
