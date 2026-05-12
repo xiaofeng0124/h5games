@@ -43,6 +43,8 @@
 
     // Load games data from page's shared async data source
     var gamesData = window.__gamesData || [];
+    // Trigger lazy load on focus (first interaction)
+    if (window.__lazyLoadGamesData) window.__lazyLoadGamesData();
     (window.__gamesDataPromise || Promise.resolve([])).then(function(data) {
       gamesData = data;
     });

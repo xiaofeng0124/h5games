@@ -270,7 +270,7 @@ const catGradients: Record<string, string> = {
         <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" width="320" height="240" onerror="this.style.display='none'" />
+              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" width="320" height="240" fetchpriority="high" onerror="this.style.display='none'" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-overlay">
@@ -354,26 +354,34 @@ const catGradients: Record<string, string> = {
     }
   })} />
 
-  <!-- Game search data (cached in localStorage) -->
+  <!-- Game search data (lazy loaded when search/filter is used) -->
   <script is:inline>
     (function(){
       var data = null;
-      // Try immediate cache restore
+      // Try immediate cache restore (no network)
       try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) { data = c.d; window.__gamesData = c.d; } } catch(e){}
-      if (data) window.__gamesDataPromise = Promise.resolve(data);
-      // Background version check + update
-      var p = fetch('/search-data-version.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(v){
-        if (localStorage.getItem('sdv') === v.hash && data) return data;
-        return fetch('/search-data.json').then(function(r){ return r.json(); }).then(function(d){
-          window.__gamesData = d;
-          try { localStorage.setItem('sd', JSON.stringify({d:d})); localStorage.setItem('sdv', v.hash); } catch(e){}
-          return d;
-        });
-      }).catch(function(){
-        if (!window.__gamesData) window.__gamesData = [];
-        return window.__gamesData;
-      });
-      if (!window.__gamesDataPromise) window.__gamesDataPromise = p;
+      if (data) { window.__gamesDataPromise = Promise.resolve(data); return; }
+      // No cache - defer network fetch until needed (search focus or filter change)
+      window.__gamesData = [];
+      window.__gamesDataPromise = new Promise(function(r){ window.__resolveGamesData = r; });
+      window.__lazyLoadGamesData = function() {
+        if (!window.__lazyLoadGamesData__pending) {
+          window.__lazyLoadGamesData__pending = true;
+          fetch('/search-data-version.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(v){
+            return fetch('/search-data.json').then(function(r){ return r.json(); }).then(function(d){
+              window.__gamesData = d;
+              try { localStorage.setItem('sd', JSON.stringify({d:d})); localStorage.setItem('sdv', v.hash); } catch(e){}
+              if (window.__resolveGamesData) window.__resolveGamesData(d);
+              return d;
+            });
+          }).catch(function(){
+            if (!window.__gamesData) window.__gamesData = [];
+            if (window.__resolveGamesData) window.__resolveGamesData(window.__gamesData);
+            return window.__gamesData;
+          });
+        }
+        return window.__gamesDataPromise;
+      };
     })();
   </script>
 </Layout>
@@ -484,6 +492,8 @@ const catGradients: Record<string, string> = {
   }
 
   function filterGames() {
+    // Trigger lazy load on first filter interaction
+    if (window.__lazyLoadGamesData) window.__lazyLoadGamesData();
     const query = (searchInput?.value || '').trim().toLowerCase();
     const category = categoryFilter?.value || '';
     const difficulty = difficultyFilter?.value || '';

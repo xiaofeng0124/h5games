@@ -16,7 +16,6 @@ const searchData = games.map(g => ({
   slug: g.slug,
   title: g.title,
   category: g.category,
-  description: g.shortDescription,
   difficulty: g.difficulty || '',
   tags: g.tags || [],
   image: g.image || '',

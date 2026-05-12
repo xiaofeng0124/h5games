@@ -134,16 +134,30 @@ const canonical = currentPage === 1 ? `/category/${categorySlug}` : undefined;
     </section>
   )}
 
-  <!-- Game search data (loaded async, keeps page fast) -->
+  <!-- Game search data (lazy loaded when search/filter is used) -->
   <script is:inline>
-    window.__gamesData = window.__gamesData || [];
-    window.__gamesDataPromise = window.__gamesDataPromise || fetch('/search-data.json')
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        window.__gamesData = d;
-        return d;
-      })
-      .catch(function() { window.__gamesData = []; return []; });
+    if (!window.__lazyLoadGamesData) {
+      window.__gamesData = window.__gamesData || [];
+      window.__gamesDataPromise = window.__gamesDataPromise || new Promise(function(r){ window.__resolveGamesData = r; });
+      window.__lazyLoadGamesData = function() {
+        if (!window.__lazyLoadGamesData__pending) {
+          window.__lazyLoadGamesData__pending = true;
+          fetch('/search-data.json')
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+              window.__gamesData = d;
+              if (window.__resolveGamesData) window.__resolveGamesData(d);
+              return d;
+            })
+            .catch(function() {
+              window.__gamesData = [];
+              if (window.__resolveGamesData) window.__resolveGamesData([]);
+              return [];
+            });
+        }
+        return window.__gamesDataPromise;
+      };
+    }
   </script>
 </Layout>
 
@@ -247,6 +261,7 @@ const canonical = currentPage === 1 ? `/category/${categorySlug}` : undefined;
   }
 
   function filterGames() {
+    if (window.__lazyLoadGamesData) window.__lazyLoadGamesData();
     const query = (searchInput?.value || '').trim().toLowerCase();
     const difficulty = difficultyFilter?.value || '';
     const isActive = query || difficulty || selectedTag;

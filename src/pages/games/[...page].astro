@@ -101,16 +101,30 @@ const emojiMap: Record<string, string> = {
     <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/games" />
   </section>
 
-  <!-- Game search data (loaded async to keep page fast) -->
+  <!-- Game search data (lazy loaded when search/filter is used) -->
   <script is:inline>
-    window.__gamesData = window.__gamesData || [];
-    window.__gamesDataPromise = window.__gamesDataPromise || fetch('/search-data.json')
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        window.__gamesData = d;
-        return d;
-      })
-      .catch(function() { window.__gamesData = []; return []; });
+    if (!window.__lazyLoadGamesData) {
+      window.__gamesData = window.__gamesData || [];
+      window.__gamesDataPromise = window.__gamesDataPromise || new Promise(function(r){ window.__resolveGamesData = r; });
+      window.__lazyLoadGamesData = function() {
+        if (!window.__lazyLoadGamesData__pending) {
+          window.__lazyLoadGamesData__pending = true;
+          fetch('/search-data.json')
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+              window.__gamesData = d;
+              if (window.__resolveGamesData) window.__resolveGamesData(d);
+              return d;
+            })
+            .catch(function() {
+              window.__gamesData = [];
+              if (window.__resolveGamesData) window.__resolveGamesData([]);
+              return [];
+            });
+        }
+        return window.__gamesDataPromise;
+      };
+    }
   </script>
 </Layout>
 
@@ -213,6 +227,7 @@ const emojiMap: Record<string, string> = {
   }
 
   function filterGames() {
+    if (window.__lazyLoadGamesData) window.__lazyLoadGamesData();
     const query = (searchInput?.value || '').trim().toLowerCase();
     const category = categoryFilter?.value || '';
     const difficulty = difficultyFilter?.value || '';
