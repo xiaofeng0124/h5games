@@ -177,6 +177,18 @@ const catGradients: Record<string, string> = {
       50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(129,140,248,0); }
     }
 
+    /* Entrance animation */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .gc, .cat-card {
+      opacity: 0;
+    }
+    .gc.visible, .cat-card.visible {
+      animation: fade-up .4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
     /* Category card animations */
     .cat-card {
       transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -361,8 +373,8 @@ const catGradients: Record<string, string> = {
 
   // Hide sections when search is active
   const categoriesSection = document.getElementById('categories');
-  const featuredSection = document.querySelectorAll('.mb-10')[1]; // featured
-  const latestSection = document.querySelectorAll('.mb-8')[1]; // latest
+  const featuredSection = document.querySelectorAll('.mb-10')[0]; // featured
+  const latestSection = document.querySelectorAll('.mb-8')[2]; // latest
 
   let selectedTag = '';
   let allGamesData = window.__gamesData || [];
@@ -448,6 +460,10 @@ const catGradients: Record<string, string> = {
         <span class="gc-title">${g.title}</span>
       </a>
     `).join('');
+    // Animate new cards
+    resultsGrid.querySelectorAll('.gc').forEach(function(el) {
+      if (!el.classList.contains('visible')) el.classList.add('visible');
+    });
   }
 
   function filterGames() {
@@ -498,4 +514,22 @@ const catGradients: Record<string, string> = {
   difficultyFilter?.addEventListener('change', filterGames);
 
   document.addEventListener('i18nchange', buildTagFilter);
+
+  // Scroll entrance animation
+  function observeCards() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px 80px 0px', threshold: 0.1 });
+    document.querySelectorAll('.gc, .cat-card').forEach(function(el) {
+      observer.observe(el);
+    });
+  }
+  // Run after search data loads to also cover dynamically rendered cards
+  (window.__gamesDataPromise || Promise.resolve([])).then(observeCards);
+  observeCards();
 </script>

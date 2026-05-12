@@ -14,5 +14,6 @@
   "racing": { "name": "Racing", "description": "High-speed racing and driving games", "icon": "🏎️" },
   "idle": { "name": "Idle", "description": "Relaxing incremental games where progress keeps going", "icon": "📈" },
   "fighting": { "name": "Fighting", "description": "Action-packed combat and battle games", "icon": "🥊" },
+  "action": { "name": "Action", "description": "Fast-paced action games full of excitement and thrills", "icon": "🎯" },
   "multiplayer": { "name": "Multiplayer", "description": "Play with friends and players worldwide", "icon": "👥" }
 }
