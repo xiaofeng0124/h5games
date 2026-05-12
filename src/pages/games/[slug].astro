@@ -22,7 +22,7 @@ const related = allGames
 const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
 ---
 
-<Layout title={game.title} description={game.shortDescription} canonical={canonicalUrl}>
+<Layout title={game.title} description={game.shortDescription} image={game.image} canonical={canonicalUrl}>
   <!-- Breadcrumb -->
   <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
     <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.home">Home</a>
@@ -41,7 +41,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
           <div class="flex items-center gap-3 mt-2">
             <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-3 py-1 rounded-full capitalize"><span data-i18n={`cat.${game.category}`}>{game.category}</span></span>
             <span class="text-sm text-slate-400">⭐ {game.rating || 4.0}</span>
-            <span class="text-sm text-slate-400">👥 {(game.playCount || 0).toLocaleString()} plays</span>
+            {game.playCount ? <span class="text-sm text-slate-400">👥 {game.playCount.toLocaleString()} plays</span> : null}
           </div>
         </div>
         <button id="fav-btn" data-slug={game.slug} data-title={game.title} data-category={game.category}
@@ -85,7 +85,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
           </div>
         </div>
         {game.iframeUrl ? (
-          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30 pointer-events-none" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals"></iframe>
+          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30 pointer-events-none" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-pointer-lock allow-modals"></iframe>
         ) : (
           <div class="absolute inset-0 z-30 flex flex-col items-center justify-center text-center p-8">
             <div class="text-6xl mb-4">🎮</div>
@@ -256,41 +256,36 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
   }
 
   // Complete progress and hide loader once iframe loads
+  let loadTimedOut = false;
+
+  function hideLoading() {
+    if (progressTimer) cancelAnimationFrame(progressTimer);
+    if (progressBar) progressBar.style.width = '100%';
+    if (progressText) progressText.textContent = '100%';
+    if (gameLoading) {
+      gameLoading.style.transition = 'opacity 0.3s';
+      gameLoading.style.opacity = '0';
+      setTimeout(() => { gameLoading.style.display = 'none'; }, 300);
+    }
+  }
+
   if (gameIframe) {
     gameIframe.addEventListener('load', function() {
-      // Jump to 100%
-      if (progressBar) progressBar.style.width = '100%';
-      if (progressText) progressText.textContent = '100%';
-      // Stop the animation
-      if (progressTimer) cancelAnimationFrame(progressTimer);
-      // Fade out loader after a brief pause
-      setTimeout(() => {
-        if (gameLoading) {
-          gameLoading.style.transition = 'opacity 0.3s';
-          gameLoading.style.opacity = '0';
-          setTimeout(() => { gameLoading.style.display = 'none'; }, 300);
-        }
-      }, 400);
+      loadTimedOut = true;
+      hideLoading();
+    });
+    gameIframe.addEventListener('error', function() {
+      loadTimedOut = true;
+      hideLoading();
     });
   }
 
-  // Fallback: if loading takes too long, show a retry hint
+  // Safety timeout: force-hide loading after 20s even if iframe load event never fires
   setTimeout(() => {
-    if (gameLoading && gameLoading.style.display !== 'none' && gameLoading.style.opacity !== '0') {
-      const hint = document.createElement('p');
-      hint.className = 'text-slate-400 text-xs mt-2 cursor-pointer hover:text-white transition-colors';
-      hint.setAttribute('data-i18n', 'game.retry');
-      hint.textContent = 'Still loading? Click to retry';
-      hint.addEventListener('click', () => {
-        if (gameIframe) {
-          gameIframe.src = gameIframe.src;
-          progressBar.style.width = '0%';
-          progressText.textContent = '0%';
-        }
-      });
-      gameLoading.appendChild(hint);
+    if (gameLoading && gameLoading.style.display !== 'none' && !loadTimedOut) {
+      hideLoading();
     }
-  }, 15000);
+  }, 20000);
 
   // === Recently Played ===
   try {

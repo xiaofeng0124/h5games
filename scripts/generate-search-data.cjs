@@ -10,6 +10,8 @@ const outputPath = path.join(__dirname, '..', 'public', 'search-data.json');
 
 const games = JSON.parse(fs.readFileSync(gamesPath, 'utf-8'));
 
+const crypto = require('crypto');
+
 const searchData = games.map(g => ({
   slug: g.slug,
   title: g.title,
@@ -17,10 +19,16 @@ const searchData = games.map(g => ({
   description: g.shortDescription,
   difficulty: g.difficulty || '',
   tags: g.tags || [],
+  image: g.image || '',
 }));
 
 const json = JSON.stringify(searchData);
 fs.writeFileSync(outputPath, json, 'utf-8');
 
+// Generate version hash for cache busting
+const hash = crypto.createHash('md5').update(json).digest('hex').slice(0, 8);
+const versionPath = path.join(__dirname, '..', 'public', 'search-data-version.json');
+fs.writeFileSync(versionPath, JSON.stringify({ hash }), 'utf-8');
+
 const mb = (Buffer.byteLength(json, 'utf-8') / 1024 / 1024).toFixed(2);
-console.log(`✅ search-data.json generated: ${searchData.length} games, ${mb} MB (was 6.56 MB with images)`);
+console.log(`✅ search-data.json generated: ${searchData.length} games, ${mb} MB, version=${hash}`);

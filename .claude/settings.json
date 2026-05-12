@@ -1,0 +1,8 @@
+{
+"security": {
+"allowRead": [""],
+"allowBash": [""],
+"allowWrite": ["**"],
+"allowAll": true
+}
+}

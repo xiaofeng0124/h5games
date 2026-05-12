@@ -5,8 +5,8 @@ import games from '../data/games.json' with { type: 'json' };
 import categories from '../data/categories.json' with { type: 'json' };
 
 const playableGames = games.filter(g => !g.slug.includes('steam-key'));
-const featured = playableGames.filter(g => g.featured).slice(0, 64);
-const latestGames = playableGames.slice(-40).reverse();
+const featured = playableGames.filter(g => g.featured).slice(0, 80);
+const latestGames = playableGames.slice(-48).reverse();
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
 const emojiMap: Record<string, string> = {
   'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾',
@@ -258,14 +258,14 @@ const catGradients: Record<string, string> = {
   </div>
 
   <!-- Featured Games -->
-  <section class="mb-10">
+  <section id="featured" class="mb-10">
     <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-3">
       {featured.map(game => (
         <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" width="320" height="240" />
+              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" width="320" height="240" onerror="this.style.display='none'" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-overlay">
@@ -281,7 +281,7 @@ const catGradients: Record<string, string> = {
   </section>
 
   <!-- Latest Games -->
-  <section class="mb-8">
+  <section id="latest" class="mb-8">
     <div class="flex items-center justify-between mb-3">
       <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100">🆕 <span data-i18n="section.latest">Latest Games</span></h2>
       <a href="/games" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors inline-flex items-center gap-1">
@@ -293,7 +293,7 @@ const catGradients: Record<string, string> = {
         <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="lazy" decoding="async" width="240" height="180" />
+              ? <img src={game.image} alt={game.title} loading="lazy" decoding="async" width="240" height="180" onerror="this.style.display='none'" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-overlay">
@@ -349,16 +349,27 @@ const catGradients: Record<string, string> = {
     }
   })} />
 
-  <!-- Game search data (loaded async to keep page fast) -->
+  <!-- Game search data (cached in localStorage) -->
   <script is:inline>
-    window.__gamesData = window.__gamesData || [];
-    window.__gamesDataPromise = window.__gamesDataPromise || fetch('/search-data.json')
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        window.__gamesData = d;
-        return d;
-      })
-      .catch(function() { window.__gamesData = []; return []; });
+    (function(){
+      var data = null;
+      // Try immediate cache restore
+      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) { data = c.d; window.__gamesData = c.d; } } catch(e){}
+      if (data) window.__gamesDataPromise = Promise.resolve(data);
+      // Background version check + update
+      var p = fetch('/search-data-version.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(v){
+        if (localStorage.getItem('sdv') === v.hash && data) return data;
+        return fetch('/search-data.json').then(function(r){ return r.json(); }).then(function(d){
+          window.__gamesData = d;
+          try { localStorage.setItem('sd', JSON.stringify({d:d})); localStorage.setItem('sdv', v.hash); } catch(e){}
+          return d;
+        });
+      }).catch(function(){
+        if (!window.__gamesData) window.__gamesData = [];
+        return window.__gamesData;
+      });
+      if (!window.__gamesDataPromise) window.__gamesDataPromise = p;
+    })();
   </script>
 </Layout>
 
@@ -374,8 +385,8 @@ const catGradients: Record<string, string> = {
 
   // Hide sections when search is active
   const categoriesSection = document.getElementById('categories');
-  const featuredSection = document.querySelectorAll('.mb-10')[0]; // featured
-  const latestSection = document.querySelectorAll('.mb-8')[2]; // latest
+  const featuredSection = document.getElementById('featured');
+  const latestSection = document.getElementById('latest');
 
   let selectedTag = '';
   let allGamesData = window.__gamesData || [];

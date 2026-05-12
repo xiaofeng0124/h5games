@@ -91,7 +91,7 @@ const canonical = currentPage === 1 ? `/category/${categorySlug}` : undefined;
   </section>
 
   <!-- Dynamic search results -->
-  <div id="search-results" class="hidden mb-8">
+  <div id="search-results" class="hidden mb-8" data-category-slug={categorySlug}>
     <div id="results-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2"></div>
   </div>
 
@@ -157,6 +157,7 @@ const canonical = currentPage === 1 ? `/category/${categorySlug}` : undefined;
   const resultsGrid = document.getElementById('results-grid');
   const gamesSection = document.getElementById('games-section');
 
+  const categorySlug = searchResults?.getAttribute('data-category-slug') || '';
   let selectedTag = '';
   let allGamesData = window.__gamesData || [];
 
