@@ -163,22 +163,12 @@ body {
   transition: color .25s;
 }
 .dark .gc-title {
-  color: #c7d2fe;
+  color: #ea580c;
 }
 .gc:hover .gc-title {
   color: #7c3aed;
 }
 .dark .gc:hover .gc-title {
-  color: #a5b4fc;
-}
-
-/* Featured games 橘红色字体 */
-#featured .gc-title,
-.dark #featured .gc-title {
-  color: #ea580c;
-}
-#featured .gc:hover .gc-title,
-.dark #featured .gc:hover .gc-title {
   color: #f97316;
 }
 
