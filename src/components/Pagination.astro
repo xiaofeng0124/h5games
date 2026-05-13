@@ -53,7 +53,7 @@ const to = Math.min(currentPage * 48, 99999);
 
 <!-- Page info -->
 <p class="text-sm text-slate-500 dark:text-slate-400 text-center mb-4">
-  Page {currentPage} of {totalPages}
+  <span data-i18n="pagination.page">Page</span> {currentPage} <span data-i18n="pagination.of">of</span> {totalPages}
 </p>
 
 <nav class="flex items-center justify-center gap-1.5" aria-label="Pagination">
@@ -70,7 +70,7 @@ const to = Math.min(currentPage * 48, 99999);
     tabindex={currentPage <= 1 ? '-1' : '0'}
   >
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-    <span class="hidden sm:inline">Prev</span>
+    <span class="hidden sm:inline" data-i18n="pagination.prev">Prev</span>
   </a>
 
   <!-- Page numbers -->
@@ -105,7 +105,7 @@ const to = Math.min(currentPage * 48, 99999);
     aria-disabled={currentPage >= totalPages}
     tabindex={currentPage >= totalPages ? '-1' : '0'}
   >
-    <span class="hidden sm:inline">Next</span>
+    <span class="hidden sm:inline" data-i18n="pagination.next">Next</span>
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
   </a>
 </nav>
