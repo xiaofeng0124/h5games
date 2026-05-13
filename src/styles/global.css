@@ -172,6 +172,16 @@ body {
   color: #a5b4fc;
 }
 
+/* Featured games 橘红色字体 */
+#featured .gc-title,
+.dark #featured .gc-title {
+  color: #ea580c;
+}
+#featured .gc:hover .gc-title,
+.dark #featured .gc:hover .gc-title {
+  color: #f97316;
+}
+
 @keyframes gc-pulse {
   0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(129,140,248,.4); }
   50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(129,140,248,0); }
