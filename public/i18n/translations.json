@@ -221,7 +221,7 @@
       "zh-tw": "100% 免費網頁遊戲"
     },
     "hero.subtitle": {
-      "en": "No downloads, no sign-ups, no paywalls. Click and play thousands of games across multiple categories, supporting 16 languages. From match-3 puzzles to strategy adventures, from sports racing to fighting battles, from casual games to card games and more — all the entertainment you're looking for is right here. New games are added continuously. Play on mobile, desktop, tablet, and other devices.",
+      "en": "No downloads, no sign-ups, no paywalls. Click and play thousands of games on any device.",
       "es": "Sin descargas, sin registros, sin muros de pago. Juega al instante miles de juegos en múltiples categorías y 16 idiomas. Desde match-3 hasta estrategia, desde deportes hasta lucha — nuevos juegos cada semana, juega en cualquier dispositivo.",
       "fr": "Pas de téléchargement, pas d'inscription, pas de paywall. Jouez instantanément à des milliers de jeux dans plusieurs catégories et 16 langues. Du match-3 à la stratégie, du sport au combat — nouveaux jeux régulièrement, jouez sur tous vos appareils.",
       "de": "Keine Downloads, keine Anmeldung, keine Bezahlschranken. Spiele sofort tausende Spiele in mehreren Kategorien und 16 Sprachen. Von Match-3 bis Strategie, von Sport bis Kampf — neue Spiele regelmäßig, spiele auf jedem Gerät.",
@@ -235,8 +235,8 @@
       "ar": "لا تنزيل، لا تسجيل، لا جدران دفع. العب فوراً آلاف الألعاب في فئات متعددة و16 لغة. من ألغاز المطابقة إلى الإستراتيجية، من الرياضة إلى القتال — ألعاب جديدة بانتظام، العب على أي جهاز.",
       "ja": "ダウンロード不要、登録不要、課金なし。数千ものゲームを複数のカテゴリーと16言語で即プレイ。マッチ3からストラテジー、スポーツから格闘まで — 定期的に新作追加、どんなデバイスでもプレイ可能。",
       "ko": "다운로드 불필요, 회원가입 불필요, 유료 장벽 없음. 수천 가지 게임을 여러 카테고리와 16개 언어로 즉시 플레이하세요. 매치3부터 전략, 스포츠부터 격투까지 — 정기적으로 새로운 게임 추가, 모든 기기에서 플레이 가능.",
-      "zh": "无需下载，无需注册，无付费墙。即点即玩数千款游戏，涵盖多个分类，支持16种语言。从三消拼图到策略冒险，从体育竞速到格斗对战，新游戏持续更新，手机电脑均可畅玩。",
-      "zh-tw": "無需下載，無需註冊，無付費牆。即點即玩數千款遊戲，涵蓋多個分類，支援16種語言。從三消拼圖到策略冒險，從體育競速到格鬥對戰，新遊戲持續更新，手機電腦均可暢玩。"
+      "zh": "无需下载，无需注册，无付费墙，即点即玩数万款游戏，手机电脑均可畅玩。",
+      "zh-tw": "無需下載，無需註冊，無付費牆，即點即玩數萬款遊戲，手機電腦均可暢玩。"
     },
     "hero.browse": {
       "en": "Browse Games",

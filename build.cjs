@@ -16,6 +16,10 @@ if (original !== patched) {
   console.log('Tailwind esm-cache already patched');
 }
 
+// Generate smart game descriptions for GamePix games
+console.log('\n=== Generate Game Descriptions ===');
+execSync('node scripts/generate-descriptions.cjs', { stdio: 'inherit', shell: true });
+
 // Generate search data JSON (lean, no images)
 console.log('\n=== Generate Search Data ===');
 execSync('node scripts/generate-search-data.cjs', { stdio: 'inherit', shell: true });

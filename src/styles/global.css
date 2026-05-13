@@ -185,3 +185,11 @@ body {
 .group:hover .gc-play-nc {
   animation: gc-pulse 1.2s ease-in-out infinite;
 }
+
+/* Hero overlay game titles — orange-red, universal, no theme dependence */
+.hero-gc .gc-title-overlay {
+  color: #ea580c !important;
+}
+.hero-gc:hover .gc-title-overlay {
+  color: #f97316 !important;
+}

@@ -15,6 +15,16 @@ const { slug, title, category, image, description, difficulty, iframeUrl, priori
 const emojiMap: Record<string, string> = {
   'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾', 'word': '🔤', 'card': '🃏', 'hidden-object': '🔍',
 };
+// Optimize image URLs for faster thumbnail loading on GamePix CDN (imgix)
+function optImage(img: string | undefined, size: number): string {
+  if (!img) return '';
+  if (img.includes('img.gamepix.com')) {
+    const params = `?w=${size}&h=${Math.round(size*0.75)}&fit=crop&auto=format&q=75`;
+    return img + (img.includes('?') ? '&' : params);
+  }
+  return img;
+}
+const thumbSrc = optImage(image, compact ? 320 : 480);
 ---
 
 {
@@ -25,7 +35,7 @@ const emojiMap: Record<string, string> = {
     >
       <div class="gc-thumb">
         {image
-          ? <img src={image} alt={title} loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'auto'} onerror="this.style.display='none'" />
+          ? <img src={thumbSrc} alt={title} loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'auto'} width="320" height="240" onerror="this.style.display='none'" />
           : <span class="gc-icon">{emojiMap[category] || '🎮'}</span>
         }
         <!-- iframe preview container -->
@@ -51,7 +61,7 @@ const emojiMap: Record<string, string> = {
       <!-- Thumbnail -->
       <div class="game-thumb relative aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 flex items-center justify-center text-6xl overflow-hidden">
         {image
-          ? <img src={image} alt={title} class="absolute inset-0 w-full h-full object-cover will-change-transform transition-transform duration-300 group-hover:scale-150" loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'low'} width="320" height="180" onerror="this.style.display='none'" />
+          ? <img src={thumbSrc} alt={title} class="absolute inset-0 w-full h-full object-cover will-change-transform transition-transform duration-300 group-hover:scale-150" loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'low'} width="320" height="180" onerror="this.style.display='none'" />
           : <span>{emojiMap[category] || '🎮'}</span>
         }
         {image && <span class="z-0">{emojiMap[category] || '🎮'}</span>}

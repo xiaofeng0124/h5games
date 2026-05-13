@@ -86,6 +86,7 @@ const tagCN = {
   'racing': '竞速', 'shooting': '射击', 'simulation': '模拟', 'snow': '雪地',
   'space': '太空', 'sports': '体育', 'strategy': '策略', 'summer': '夏日',
   'survival': '生存', 'tennis': '网球', 'word': '文字', 'zombie': '僵尸',
+  'snooker': '斯诺克',
 };
 const tagCounts: Record<string, number> = {};
 for (const g of playableGames) {
@@ -98,6 +99,10 @@ for (const g of playableGames) {
 const topTags = Object.entries(tagCounts)
   .sort((a, b) => b[1] - a[1])
   .slice(0, 24);
+// Always include snooker tag
+if (!topTags.some(t => t[0] === 'snooker')) {
+  topTags.push(['snooker', tagCounts['snooker'] || 27]);
+}
 
 const catGradients: Record<string, string> = {
   'match-3': 'from-pink-100 to-rose-100 dark:from-pink-900/40 dark:to-rose-900/40',
@@ -118,9 +123,33 @@ const catGradients: Record<string, string> = {
   'multiplayer': 'from-indigo-100 to-blue-100 dark:from-indigo-900/40 dark:to-blue-900/40',
   'idle': 'from-gray-100 to-slate-100 dark:from-gray-700/60 dark:to-slate-700/60',
 };
+// Image optimization helpers
+function preloadSrc(img: string | undefined, size: number): string {
+  if (!img) return '';
+  return img.includes('img.gamepix.com')
+    ? img + (img.includes('?') ? '&' : '?') + `w=${size}&h=${Math.round(size*0.75)}&fit=crop&auto=format&q=75`
+    : img;
+}
+function optImg(img: string | undefined, size: number): string {
+  if (!img) return '';
+  if (img.includes('img.gamepix.com')) {
+    const params = `?w=${size}&h=${Math.round(size*0.75)}&fit=crop&auto=format&q=75`;
+    return img + (img.includes('?') ? '&' : params);
+  }
+  return img;
+}
+const heroThumbs = heroGames.map(g => optImg(g.image, 320));
+const featuredFirst = featured.slice(0, 20);
 ---
 
 <Layout title="Free Relaxing Browser Games - Play Online Instantly">
+  <!-- Hero image preloads -->
+  {heroGames.filter(g => g.image).map(g => (
+    <link rel="preload" as="image" href={preloadSrc(g.image, 320)} />
+  ))}
+  {featuredFirst.filter(g => g.image).map(g => (
+    <link rel="preload" as="image" href={preloadSrc(g.image, 320)} />
+  ))}
   <!-- Notification bar -->
   <div id="notif-bar" class="relative overflow-hidden h-12 bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-600 dark:to-pink-600 text-white text-base font-bold shadow-md flex items-center" style="cursor:default">
     <div id="notif-text" class="whitespace-nowrap will-change-transform" style="animation: marquee 18s linear forwards">
@@ -183,7 +212,7 @@ const catGradients: Record<string, string> = {
       <!-- S1 -->
       {heroGames[1] && <a href={`/games/${heroGames[1].slug}`} class="hero-gc group relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow">
         {heroGames[1].image
-          ? <img src={heroGames[1].image} alt={heroGames[1].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[1].image, 320)} alt={heroGames[1].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-2xl">{emojiMap[heroGames[1].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -192,12 +221,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1 left-1.5 right-1.5 text-white text-[10px] font-medium truncate drop-shadow-sm">{heroGames[1].title}</span>
+        <span class="absolute bottom-1 left-1.5 right-1.5 gc-title-overlay text-[10px] font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[1].title}</span>
       </a>}
       <!-- S2 -->
       {heroGames[2] && <a href={`/games/${heroGames[2].slug}`} class="hero-gc group relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow">
         {heroGames[2].image
-          ? <img src={heroGames[2].image} alt={heroGames[2].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[2].image, 320)} alt={heroGames[2].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-2xl">{emojiMap[heroGames[2].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -206,12 +235,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1 left-1.5 right-1.5 text-white text-[10px] font-medium truncate drop-shadow-sm">{heroGames[2].title}</span>
+        <span class="absolute bottom-1 left-1.5 right-1.5 gc-title-overlay text-[10px] font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[2].title}</span>
       </a>}
       <!-- Big 2x2 (top right) -->
       <a href={`/games/${heroGames[0].slug}`} class="hero-gc group relative col-span-2 row-span-2 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow min-h-[160px]">
         {heroGames[0].image
-          ? <img src={heroGames[0].image} alt={heroGames[0].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[0].image, 640)} alt={heroGames[0].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-4xl">{emojiMap[heroGames[0].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -220,12 +249,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent"></div>
-        <span class="absolute bottom-2 left-2.5 right-2.5 text-white text-sm font-medium truncate drop-shadow-sm">{heroGames[0].title}</span>
+        <span class="absolute bottom-2 left-2.5 right-2.5 gc-title-overlay text-sm font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[0].title}</span>
       </a>
       <!-- S3 -->
       {heroGames[3] && <a href={`/games/${heroGames[3].slug}`} class="hero-gc group relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow">
         {heroGames[3].image
-          ? <img src={heroGames[3].image} alt={heroGames[3].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[3].image, 320)} alt={heroGames[3].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-2xl">{emojiMap[heroGames[3].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -234,12 +263,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1 left-1.5 right-1.5 text-white text-[10px] font-medium truncate drop-shadow-sm">{heroGames[3].title}</span>
+        <span class="absolute bottom-1 left-1.5 right-1.5 gc-title-overlay text-[10px] font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[3].title}</span>
       </a>}
       <!-- S4 -->
       {heroGames[4] && <a href={`/games/${heroGames[4].slug}`} class="hero-gc group relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow">
         {heroGames[4].image
-          ? <img src={heroGames[4].image} alt={heroGames[4].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[4].image, 320)} alt={heroGames[4].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-2xl">{emojiMap[heroGames[4].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -248,12 +277,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1 left-1.5 right-1.5 text-white text-[10px] font-medium truncate drop-shadow-sm">{heroGames[4].title}</span>
+        <span class="absolute bottom-1 left-1.5 right-1.5 gc-title-overlay text-[10px] font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[4].title}</span>
       </a>}
       <!-- Medium 2x1 (bottom left) -->
       <a href={`/games/${heroGames[5].slug}`} class="hero-gc group relative col-span-2 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow min-h-[68px]">
         {heroGames[5].image
-          ? <img src={heroGames[5].image} alt={heroGames[5].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[5].image, 640)} alt={heroGames[5].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-3xl">{emojiMap[heroGames[5].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -262,12 +291,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1.5 left-2 right-2 text-white text-xs font-medium truncate drop-shadow-sm">{heroGames[5].title}</span>
+        <span class="absolute bottom-1.5 left-2 right-2 gc-title-overlay text-xs font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[5].title}</span>
       </a>
       <!-- S5 -->
       {heroGames[6] && <a href={`/games/${heroGames[6].slug}`} class="hero-gc group relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow">
         {heroGames[6].image
-          ? <img src={heroGames[6].image} alt={heroGames[6].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[6].image, 320)} alt={heroGames[6].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-2xl">{emojiMap[heroGames[6].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -276,12 +305,12 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1 left-1.5 right-1.5 text-white text-[10px] font-medium truncate drop-shadow-sm">{heroGames[6].title}</span>
+        <span class="absolute bottom-1 left-1.5 right-1.5 gc-title-overlay text-[10px] font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[6].title}</span>
       </a>}
       <!-- S6 -->
       {heroGames[7] && <a href={`/games/${heroGames[7].slug}`} class="hero-gc group relative aspect-video rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 shadow-sm hover:shadow-md transition-shadow">
         {heroGames[7].image
-          ? <img src={heroGames[7].image} alt={heroGames[7].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+          ? <img src={optImg(heroGames[7].image, 320)} alt={heroGames[7].title} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="eager" decoding="async" fetchpriority="high" onerror="this.style.display='none'" />
           : <div class="absolute inset-0 flex items-center justify-center text-2xl">{emojiMap[heroGames[7].category] || '🎮'}</div>
         }
         <div class="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-colors duration-200">
@@ -290,7 +319,7 @@ const catGradients: Record<string, string> = {
           </div>
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-1 left-1.5 right-1.5 text-white text-[10px] font-medium truncate drop-shadow-sm">{heroGames[7].title}</span>
+        <span class="absolute bottom-1 left-1.5 right-1.5 gc-title-overlay text-[10px] font-medium truncate drop-shadow-sm" style="color:#ea580c">{heroGames[7].title}</span>
       </a>}
     </div>
   </section>
@@ -332,11 +361,11 @@ const catGradients: Record<string, string> = {
   <section id="featured" class="mb-10">
     <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-3">
-      {featured.map(game => (
+      {featured.map((game, idx) => (
         <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="eager" decoding="async" width="320" height="240" fetchpriority="high" onerror="this.style.display='none'" />
+              ? <img src={optImg(game.image, 240)} alt={game.title} loading={idx < 20 ? 'eager' : 'lazy'} decoding="async" width="240" height="180" fetchpriority={idx < 20 ? 'high' : 'low'} onerror="this.style.display='none'" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-overlay">
@@ -360,11 +389,11 @@ const catGradients: Record<string, string> = {
       </a>
     </div>
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-2">
-      {latestGames.map(game => (
+      {latestGames.map((game, idx) => (
         <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={game.image} alt={game.title} loading="lazy" decoding="async" width="240" height="180" onerror="this.style.display='none'" />
+              ? <img src={optImg(game.image, 240)} alt={game.title} loading="lazy" decoding="async" width="240" height="180" fetchpriority={idx < 20 ? 'high' : 'low'} onerror="this.style.display='none'" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-overlay">
@@ -519,12 +548,16 @@ const catGradients: Record<string, string> = {
       resultsGrid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 dark:text-slate-500"><p class="text-lg mb-1">🔍</p><p data-i18n="search.noresults">No games found. Try a different search.</p></div>';
       return;
     }
+    function optImg(url, size) {
+      if (!url || url.indexOf('img.gamepix.com') === -1) return url || '';
+      return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'w=' + size + '&h=' + Math.round(size*0.75) + '&fit=crop&auto=format&q=75';
+    }
     const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
     resultsGrid.innerHTML = games.map(g => `
       <a href="/games/${g.slug}" class="gc">
         <div class="gc-thumb">
           ${g.image
-            ? `<img src="${g.image}" alt="${g.title}" loading="lazy" decoding="async" width="240" height="180" />`
+            ? `<img src="${optImg(g.image, 240)}" alt="${g.title}" loading="lazy" decoding="async" width="240" height="180" />`
             : `<span class="gc-icon">${emojiMap[g.category] || '🎮'}</span>`
           }
           <div class="gc-overlay">
@@ -554,7 +587,6 @@ const catGradients: Record<string, string> = {
       const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
       const matchSearch = !query ||
         g.title.toLowerCase().includes(query) ||
-        g.description.toLowerCase().includes(query) ||
         g.category.includes(query) ||
         (g.tags && g.tags.some(t => t.includes(query)));
       return matchCategory && matchTag && matchSearch;

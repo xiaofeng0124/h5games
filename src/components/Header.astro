@@ -59,9 +59,10 @@ const categories = [
           <span id="lang-name">English</span>
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div id="lang-selector-menu" class="hidden fixed md:absolute md:top-full md:right-0 md:left-auto md:mt-1 inset-x-0 bottom-0 md:bottom-auto md:w-[360px] max-h-[80vh] md:max-h-[440px] overflow-y-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-3 z-[100]">
+        <!-- Desktop dropdown -->
+        <div id="lang-selector-menu" class="hidden md:absolute md:top-full md:right-0 md:left-auto md:mt-1 md:w-[360px] md:max-h-[440px] md:overflow-y-auto bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-3 z-[100]">
           <div class="text-xs font-semibold text-slate-400 dark:text-slate-500 mb-2 px-1">Select Language</div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5" id="lang-list">
+          <div class="grid grid-cols-3 gap-1.5" id="lang-list">
             {[
               { code: 'en', country: 'us', name: 'English', native: 'English' },
               { code: 'es', country: 'es', name: 'Spanish', native: 'Español' },
@@ -90,6 +91,45 @@ const categories = [
             ))}
           </div>
         </div>
+        <!-- Mobile full-screen overlay -->
+        <div id="lang-overlay" class="hidden fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm md:hidden">
+          <div class="absolute inset-x-0 bottom-0 top-[18%] bg-white dark:bg-slate-800 rounded-t-3xl shadow-2xl overflow-y-auto p-5 pb-8">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-semibold text-slate-500 dark:text-slate-400">Select Language</span>
+              <button id="lang-overlay-close" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              {[
+                { code: 'en', country: 'us', name: 'English', native: 'English' },
+                { code: 'es', country: 'es', name: 'Spanish', native: 'Español' },
+                { code: 'fr', country: 'fr', name: 'French', native: 'Français' },
+                { code: 'de', country: 'de', name: 'German', native: 'Deutsch' },
+                { code: 'pt', country: 'br', name: 'Portuguese', native: 'Português' },
+                { code: 'it', country: 'it', name: 'Italian', native: 'Italiano' },
+                { code: 'nl', country: 'nl', name: 'Dutch', native: 'Nederlands' },
+                { code: 'pl', country: 'pl', name: 'Polish', native: 'Polski' },
+                { code: 'sv', country: 'se', name: 'Swedish', native: 'Svenska' },
+                { code: 'ru', country: 'ru', name: 'Russian', native: 'Русский' },
+                { code: 'tr', country: 'tr', name: 'Turkish', native: 'Türkçe' },
+                { code: 'ar', country: 'sa', name: 'Arabic', native: 'العربية' },
+                { code: 'ja', country: 'jp', name: 'Japanese', native: '日本語' },
+                { code: 'ko', country: 'kr', name: 'Korean', native: '한국어' },
+                { code: 'zh', country: 'cn', name: 'Chinese', native: '简体中文' },
+                { code: 'zh-tw', country: 'tw', name: 'Chinese (TW)', native: '繁體中文' },
+              ].map(lang => (
+                <button data-lang-code={lang.code} class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all text-left active:scale-[0.98]">
+                  <img src={`/flags/${lang.country}.svg`} alt="" class="w-6 h-5 rounded-sm object-cover shrink-0" width="24" height="20" />
+                  <div class="flex flex-col leading-tight min-w-0">
+                    <span class="font-medium text-xs truncate">{lang.native}</span>
+                    <span class="text-[10px] text-slate-400 truncate">{lang.name}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -97,6 +137,54 @@ const categories = [
 </header>
 
 <script>
+  // Language selector: desktop dropdown (from Layout) + mobile overlay
+  (function() {
+    var overlay = document.getElementById('lang-overlay');
+    var closeBtn = document.getElementById('lang-overlay-close');
+    var triggerBtn = document.getElementById('lang-selector-btn');
+    if (!overlay || !triggerBtn) return;
+
+    // Move overlay to body so header's backdrop-filter doesn't break fixed positioning
+    document.body.appendChild(overlay);
+
+    // Toggle overlay on mobile (md: hidden)
+    triggerBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (window.innerWidth >= 768) return; // desktop uses dropdown from Layout
+      var isOpen = !overlay.classList.contains('hidden');
+      if (isOpen) {
+        closeOverlay();
+      } else {
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    function closeOverlay() {
+      overlay.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeOverlay();
+    });
+
+    // Language selection inside overlay
+    overlay.addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-lang-code]');
+      if (!btn) return;
+      var code = btn.getAttribute('data-lang-code');
+      if (window.__applyLang) window.__applyLang(code);
+      closeOverlay();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeOverlay();
+    });
+  })();
+
   // Categories dropdown — hover (desktop) + click (touch)
   const catToggle = document.getElementById('cat-toggle');
   const catMenu = document.getElementById('cat-menu');

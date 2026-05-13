@@ -59,6 +59,7 @@ const tagCN = {
   'racing': '竞速', 'shooting': '射击', 'simulation': '模拟', 'snow': '雪地',
   'space': '太空', 'sports': '体育', 'strategy': '策略', 'summer': '夏日',
   'survival': '生存', 'tennis': '网球', 'word': '文字', 'zombie': '僵尸',
+  'snooker': '斯诺克',
 };
 const tagCounts: Record<string, number> = {};
 for (const g of allGames) {
@@ -71,6 +72,18 @@ for (const g of allGames) {
 const topTags = Object.entries(tagCounts)
   .sort((a, b) => b[1] - a[1])
   .slice(0, 24);
+// Always include snooker tag
+if (!topTags.some(t => t[0] === 'snooker')) {
+  topTags.push(['snooker', tagCounts['snooker'] || 27]);
+}
+// Image optimization for preload
+function preloadSrc(img: string | undefined, size: number): string {
+  if (!img) return '';
+  return img.includes('img.gamepix.com')
+    ? img + (img.includes('?') ? '&' : '?') + `w=${size}&h=${Math.round(size*0.75)}&fit=crop&auto=format&q=75`
+    : img;
+}
+const firstPage = currentPage === 1;
 ---
 
 <Layout title={pageTitle} description={pageDesc} canonical={canonical}>
@@ -125,6 +138,9 @@ const topTags = Object.entries(tagCounts)
   </div>
 
   <!-- Game Grid (paginated) -->
+  {firstPage && pageGames.slice(0, 12).map(g => g.image ? (
+    <link rel="preload" as="image" href={preloadSrc(g.image, 320)} />
+  ) : null)}
   <section class="mb-8" id="games-section">
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2">
       {pageGames.map((game, idx) => (
@@ -166,28 +182,31 @@ const topTags = Object.entries(tagCounts)
 
   <!-- Game search data (lazy loaded when search/filter is used) -->
   <script is:inline>
-    if (!window.__lazyLoadGamesData) {
-      window.__gamesData = window.__gamesData || [];
-      window.__gamesDataPromise = window.__gamesDataPromise || new Promise(function(r){ window.__resolveGamesData = r; });
+    (function(){
+      var data = null;
+      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) { data = c.d; window.__gamesData = c.d; } } catch(e){}
+      if (data) { window.__gamesDataPromise = Promise.resolve(data); return; }
+      window.__gamesData = [];
+      window.__gamesDataPromise = new Promise(function(r){ window.__resolveGamesData = r; });
       window.__lazyLoadGamesData = function() {
         if (!window.__lazyLoadGamesData__pending) {
           window.__lazyLoadGamesData__pending = true;
-          fetch('/search-data.json')
-            .then(function(r) { return r.json(); })
-            .then(function(d) {
+          fetch('/search-data-version.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(v){
+            return fetch('/search-data.json').then(function(r){ return r.json(); }).then(function(d){
               window.__gamesData = d;
+              try { localStorage.setItem('sd', JSON.stringify({d:d})); localStorage.setItem('sdv', v.hash); } catch(e){}
               if (window.__resolveGamesData) window.__resolveGamesData(d);
               return d;
-            })
-            .catch(function() {
-              window.__gamesData = [];
-              if (window.__resolveGamesData) window.__resolveGamesData([]);
-              return [];
             });
+          }).catch(function(){
+            if (!window.__gamesData) window.__gamesData = [];
+            if (window.__resolveGamesData) window.__resolveGamesData(window.__gamesData);
+            return window.__gamesData;
+          });
         }
         return window.__gamesDataPromise;
       };
-    }
+    })();
   </script>
 </Layout>
 
@@ -254,12 +273,16 @@ const topTags = Object.entries(tagCounts)
       resultsGrid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 dark:text-slate-500"><p class="text-lg mb-1">🔍</p><p data-i18n="search.noresults">No games found. Try a different search.</p></div>';
       return;
     }
+    function optImg(url, size) {
+      if (!url || url.indexOf('img.gamepix.com') === -1) return url || '';
+      return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'w=' + size + '&h=' + Math.round(size*0.75) + '&fit=crop&auto=format&q=75';
+    }
     const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
     resultsGrid.innerHTML = games.map(g => `
       <a href="/games/${g.slug}" class="gc">
         <div class="gc-thumb">
           ${g.image
-            ? `<img src="${g.image}" alt="${g.title}" loading="lazy" decoding="async" />`
+            ? `<img src="${optImg(g.image, 240)}" alt="${g.title}" loading="lazy" decoding="async" width="240" height="180" />`
             : `<span class="gc-icon">${emojiMap[g.category] || '🎮'}</span>`
           }
           <div class="gc-overlay">
@@ -285,7 +308,6 @@ const topTags = Object.entries(tagCounts)
       const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
       const matchSearch = !query ||
         g.title.toLowerCase().includes(query) ||
-        g.description.toLowerCase().includes(query) ||
         g.category.includes(query) ||
         (g.tags && g.tags.some(t => t.includes(query)));
       return matchCategory(g) && matchTag && matchSearch;
