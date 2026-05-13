@@ -436,11 +436,15 @@ const featuredFirst = featured.slice(0, 20);
         if (!window.__lazyLoadGamesData__pending) {
           window.__lazyLoadGamesData__pending = true;
           fetch('/search-data-version.json?' + Date.now()).then(function(r){ return r.json(); }).then(function(v){
-            return fetch('/search-data.json').then(function(r){ return r.json(); }).then(function(d){
-              window.__gamesData = d;
-              try { localStorage.setItem('sd', JSON.stringify({d:d})); localStorage.setItem('sdv', v.hash); } catch(e){}
-              if (window.__resolveGamesData) window.__resolveGamesData(d);
-              return d;
+            return fetch('/search-data.json?' + Date.now()).then(function(r){ return r.text(); }).then(function(text){
+              // Defer JSON.parse to avoid blocking main thread on mobile
+              setTimeout(function() {
+                var d;
+                try { d = JSON.parse(text); } catch(e) { d = []; }
+                window.__gamesData = d;
+                try { localStorage.setItem('sd', JSON.stringify({d:d})); localStorage.setItem('sdv', v.hash); } catch(e){}
+                if (window.__resolveGamesData) window.__resolveGamesData(d);
+              }, 0);
             });
           }).catch(function(){
             if (!window.__gamesData) window.__gamesData = [];
