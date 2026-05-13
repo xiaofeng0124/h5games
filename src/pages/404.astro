@@ -17,9 +17,9 @@ const catEntries = Object.entries(categories).slice(0, 8);
     <!-- Icon -->
     <div class="text-7xl md:text-8xl mb-6">🎮</div>
 
-    <h1 class="text-3xl md:text-5xl font-extrabold text-slate-800 dark:text-slate-100 mb-3">Game Over?</h1>
-    <p class="text-lg text-slate-500 dark:text-slate-400 mb-2">We couldn't find the page you were looking for.</p>
-    <p class="text-sm text-slate-400 dark:text-slate-500 mb-8">It might have moved, or the link may be broken. Let's get you back in the game.</p>
+    <h1 class="text-3xl md:text-5xl font-extrabold text-slate-800 dark:text-slate-100 mb-3" data-i18n="404.title">Game Over?</h1>
+    <p class="text-lg text-slate-500 dark:text-slate-400 mb-2" data-i18n="404.subtitle">We couldn't find the page you were looking for.</p>
+    <p class="text-sm text-slate-400 dark:text-slate-500 mb-8" data-i18n="404.hint">It might have moved, or the link may be broken. Let's get you back in the game.</p>
 
     <!-- Search -->
     <div class="max-w-md mx-auto mb-10">
@@ -28,7 +28,7 @@ const catEntries = Object.entries(categories).slice(0, 8);
 
     <!-- Quick categories -->
     <div class="mb-10">
-      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Browse by Category</h2>
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4" data-i18n="nav.categories">Browse by Category</h2>
       <div class="flex flex-wrap justify-center gap-2">
         {catEntries.map(([slug, cat]) => (
           <a href={`/category/${slug}`} class="inline-flex items-center gap-1.5 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all shadow-sm hover:shadow">
@@ -44,7 +44,7 @@ const catEntries = Object.entries(categories).slice(0, 8);
 
     <!-- Popular games -->
     <div>
-      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Popular Right Now</h2>
+      <h2 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4"><span data-i18n="404.popular">Popular Right Now</span></h2>
       <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
         {popular.map((game, idx) => (
           <a href={`/games/${game.slug}`} class="gc group">
