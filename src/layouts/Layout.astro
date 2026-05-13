@@ -170,6 +170,7 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     var menu = document.getElementById('lang-selector-menu');
     if (!btn || !menu) return;
     btn.addEventListener('click', function(e) {
+      if (window.innerWidth < 768) return;
       e.stopPropagation();
       menu.classList.toggle('hidden');
       menu.classList.toggle('grid');
@@ -195,6 +196,8 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     return trans[key][lang] || trans[key].en || key;
   };
 
+  window.__applyLang = apply;
+
   load(function() { apply(lang); initUI(); });
 })();
     </script>
@@ -205,14 +208,13 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
   (function() {
     history.scrollRestoration = 'auto';
     function updateTheme() {
-      if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
+      if (localStorage.getItem('theme') === 'light') {
         document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
       }
     }
     updateTheme();
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
   })();
 
   // Back to top button
@@ -241,7 +243,7 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
       }
     });
   }, { rootMargin: '0px 0px 80px 0px', threshold: 0.1 });
-  document.querySelectorAll('.gc, .cat-card').forEach(function(el) {
+  document.querySelectorAll('.gc, .cat-card, .hero-gc').forEach(function(el) {
     cardObserver.observe(el);
   });
 </script>
