@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="My Favorites - Chill Arcade" description="Your favorite games saved in your browser.">
+  <div class="mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2">♥ <span data-i18n="favorites.title">My Favorites</span></h1>
+    <p class="text-slate-500 dark:text-slate-400" data-i18n="favorites.desc">Games you've saved — stored in your browser.</p>
+  </div>
+
+  <div id="fav-empty" class="hidden text-center py-20">
+    <div class="text-6xl mb-4">🤍</div>
+    <p class="text-lg text-slate-500 dark:text-slate-400 mb-2" data-i18n="favorites.empty">No favorites yet.</p>
+    <p class="text-sm text-slate-400 dark:text-slate-500 mb-6" data-i18n="favorites.empty_hint">Click the ♥ on any game to save it here.</p>
+    <a href="/games" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all hover:scale-105 text-sm shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30">
+      🎮 <span data-i18n="view_all">Browse Games</span>
+    </a>
+  </div>
+  <div id="fav-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2"></div>
+
+  <script is:inline>
+    (function() {
+      function render(games) {
+        var empty = document.getElementById('fav-empty');
+        var grid = document.getElementById('fav-grid');
+        if (!grid) return;
+
+        var favs;
+        try { favs = JSON.parse(localStorage.getItem('favorites') || '[]'); } catch(e) { favs = []; }
+
+        if (!favs.length) { empty.classList.remove('hidden'); grid.innerHTML = ''; return; }
+        empty.classList.add('hidden');
+
+        var lookup = {};
+        for (var i = 0; i < games.length; i++) lookup[games[i].slug] = games[i];
+        var items = [];
+        for (var j = 0; j < favs.length; j++) {
+          var g = lookup[favs[j].slug];
+          if (g) items.push(g);
+        }
+
+        if (!items.length) { empty.classList.remove('hidden'); grid.innerHTML = ''; return; }
+
+        function optImg(url, size) {
+          if (!url || url.indexOf('img.gamepix.com') === -1) return url || '';
+          return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'w=' + size + '&h=' + Math.round(size * 0.75) + '&fit=crop&auto=format&q=75';
+        }
+
+        var emoji = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
+
+        grid.innerHTML = items.map(function(g) {
+          return '<a href="/games/' + g.slug + '" class="gc group">' +
+            '<div class="gc-thumb">' +
+            (g.image ? '<img src="' + optImg(g.image, 240) + '" alt="' + g.title + '" loading="lazy" decoding="async" width="240" height="180" onerror="this.style.display=\'none\'" />' : '<span class="gc-icon" style="font-size:1.5rem">🎮</span>') +
+            '<div class="gc-overlay"><div class="gc-play"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
+            '</div><span class="gc-title">' + g.title + '</span></a>';
+        }).join('');
+
+        grid.querySelectorAll('.gc').forEach(function(el) {
+          if (!el.classList.contains('visible')) el.classList.add('visible');
+        });
+      }
+
+      // Load from search-data (same lazy mechanism as search pages)
+      var data = null;
+      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) data = c.d; } catch(e) {}
+
+      if (data) { render(data); return; }
+
+      window.__favDataReady = function() { render(window.__gamesData || []); };
+
+      var promise = window.__gamesDataPromise;
+      if (promise) {
+        promise.then(function(d) { render(d); });
+      } else {
+        // Standalone load
+        fetch('/search-data.json').then(function(r) { return r.json(); }).then(function(d) {
+          render(d);
+          try { localStorage.setItem('sd', JSON.stringify({d:d})); } catch(e) {}
+        }).catch(function() { render([]); });
+      }
+    })();
+  </script>
+</Layout>
