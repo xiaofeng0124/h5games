@@ -70,6 +70,35 @@ const emojiMap: Record<string, string> = {
   'multiplayer': '👥', 'idle': '📈',
 };
 
+// 预计算标签数据
+const tagCN = {
+  'action': '动作', 'adventure': '冒险', 'animals': '动物', 'arcade': '街机',
+  'baseball': '棒球', 'basketball': '篮球', 'bike': '摩托', 'block': '方块',
+  'board': '桌游', 'boat': '船', 'bubble': '泡泡', 'building': '建造',
+  'car': '汽车', 'card': '纸牌', 'casual': '休闲', 'christmas': '圣诞',
+  'city': '城市', 'coloring': '涂色', 'cooking': '烹饪', 'decorating': '装饰',
+  'dress-up': '换装', 'driving': '驾驶', 'educational': '教育', 'endless': '无尽',
+  'fantasy': '幻想', 'farming': '农场', 'fighting': '格斗', 'flying': '飞行',
+  'football': '足球', 'golf': '高尔夫', 'halloween': '万圣节', 'hidden-object': '寻物',
+  'idle': '挂机', 'io': 'IO', 'jump': '跳跃', 'magic': '魔法', 'match-3': '三消',
+  'math': '数学', 'memory': '记忆', 'merge': '合成', 'multiplayer': '多人',
+  'music': '音乐', 'ocean': '海洋', 'physics': '物理', 'puzzle': '益智',
+  'racing': '竞速', 'shooting': '射击', 'simulation': '模拟', 'snow': '雪地',
+  'space': '太空', 'sports': '体育', 'strategy': '策略', 'summer': '夏日',
+  'survival': '生存', 'tennis': '网球', 'word': '文字', 'zombie': '僵尸',
+};
+const tagCounts: Record<string, number> = {};
+for (const g of playableGames) {
+  if (g.tags) {
+    for (const t of g.tags) {
+      tagCounts[t] = (tagCounts[t] || 0) + 1;
+    }
+  }
+}
+const topTags = Object.entries(tagCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 24);
+
 const catGradients: Record<string, string> = {
   'match-3': 'from-pink-100 to-rose-100 dark:from-pink-900/40 dark:to-rose-900/40',
   'puzzle': 'from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40',
@@ -285,7 +314,13 @@ const catGradients: Record<string, string> = {
       </div>
     </div>
     <!-- Tag filter -->
-    <div id="tag-filter" class="flex flex-wrap gap-1.5 mt-2"></div>
+    <div id="tag-filter" class="flex flex-wrap gap-1.5 mt-2">
+      {topTags.map(([tag, count]) => (
+        <button data-tag={tag} data-cn={tagCN[tag] || tag} class="tag-chip px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-indigo-300 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all whitespace-nowrap">
+          {tag} ({count})
+        </button>
+      ))}
+    </div>
   </section>
 
   <!-- Dynamic search results -->
@@ -435,63 +470,48 @@ const catGradients: Record<string, string> = {
   let selectedTag = '';
   let allGamesData = window.__gamesData || [];
 
-  // When search data finishes loading, build tag filter and re-run any active filter
+  // When search data finishes loading, re-run any active filter
   (window.__gamesDataPromise || Promise.resolve([])).then(function(data) {
     allGamesData = data;
-    buildTagFilter();
     if (searchInput?.value || categoryFilter?.value || selectedTag) {
       filterGames();
     }
   });
 
-  function buildTagFilter() {
-    if (!tagFilter || !allGamesData.length) return;
-    const tagCN = {
-      'action': '动作', 'adventure': '冒险', 'animals': '动物', 'arcade': '街机',
-      'baseball': '棒球', 'basketball': '篮球', 'bike': '摩托', 'block': '方块',
-      'board': '桌游', 'boat': '船', 'bubble': '泡泡', 'building': '建造',
-      'car': '汽车', 'card': '纸牌', 'casual': '休闲', 'christmas': '圣诞',
-      'city': '城市', 'coloring': '涂色', 'cooking': '烹饪', 'decorating': '装饰',
-      'dress-up': '换装', 'driving': '驾驶', 'educational': '教育', 'endless': '无尽',
-      'fantasy': '幻想', 'farming': '农场', 'fighting': '格斗', 'flying': '飞行',
-      'football': '足球', 'golf': '高尔夫', 'halloween': '万圣节', 'hidden-object': '寻物',
-      'idle': '挂机', 'io': 'IO', 'jump': '跳跃', 'magic': '魔法', 'match-3': '三消',
-      'math': '数学', 'memory': '记忆', 'merge': '合成', 'multiplayer': '多人',
-      'music': '音乐', 'ocean': '海洋', 'physics': '物理', 'puzzle': '益智',
-      'racing': '竞速', 'shooting': '射击', 'simulation': '模拟', 'snow': '雪地',
-      'space': '太空', 'sports': '体育', 'strategy': '策略', 'summer': '夏日',
-      'survival': '生存', 'tennis': '网球', 'word': '文字', 'zombie': '僵尸',
-    };
+  // 标签点击筛选（标签按钮已预渲染，只需事件绑定）
+  tagFilter?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-tag]');
+    if (!btn) return;
+    const tag = btn.getAttribute('data-tag');
+    if (selectedTag === tag) {
+      selectedTag = '';
+      btn.classList.remove('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
+      btn.classList.add('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
+    } else {
+      tagFilter.querySelectorAll('[data-tag]').forEach(b => {
+        b.classList.remove('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
+        b.classList.add('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
+      });
+      selectedTag = tag;
+      btn.classList.remove('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
+      btn.classList.add('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
+    }
+    filterGames();
+  });
+
+  // 语言切换时更新标签文字
+  function updateTagLabels() {
     const lang = localStorage.getItem('i18n_lang') || 'en';
-    const counts = {};
-    allGamesData.forEach(g => {
-      if (g.tags) g.tags.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
-    });
-    const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 24);
-    tagFilter.innerHTML = sorted.map(([tag, count]) => {
-      const label = lang === 'zh' || lang === 'zh-tw' ? (tagCN[tag] || tag) : tag;
-      return `<button data-tag="${tag}" class="tag-chip px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-indigo-300 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all whitespace-nowrap">${label} (${count})</button>`;
-    }).join('');
-    tagFilter.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-tag]');
-      if (!btn) return;
-      const tag = btn.getAttribute('data-tag');
-      if (selectedTag === tag) {
-        selectedTag = '';
-        btn.classList.remove('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
-        btn.classList.add('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
-      } else {
-        tagFilter.querySelectorAll('[data-tag]').forEach(b => {
-          b.classList.remove('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
-          b.classList.add('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
-        });
-        selectedTag = tag;
-        btn.classList.remove('border-slate-200','dark:border-slate-600','text-slate-500','dark:text-slate-400');
-        btn.classList.add('bg-indigo-100','dark:bg-indigo-900/30','border-indigo-400','text-indigo-700','dark:text-indigo-300');
-      }
-      filterGames();
+    tagFilter?.querySelectorAll('[data-tag][data-cn]').forEach(el => {
+      const en = el.getAttribute('data-tag');
+      const cn = el.getAttribute('data-cn');
+      const count = el.textContent.match(/\((\d+)\)/);
+      const cnt = count ? count[1] : '';
+      const label = (lang === 'zh' || lang === 'zh-tw') ? (cn || en) : en;
+      el.textContent = label + ' (' + cnt + ')';
     });
   }
+  updateTagLabels();
 
   function renderResults(games) {
     if (!resultsGrid || !searchResults) return;
@@ -568,7 +588,7 @@ const catGradients: Record<string, string> = {
   searchInput?.addEventListener('input', filterGames);
   categoryFilter?.addEventListener('change', filterGames);
 
-  document.addEventListener('i18nchange', buildTagFilter);
+  document.addEventListener('i18nchange', updateTagLabels);
 
   // Re-observe dynamically rendered cards after search data loads
   (window.__gamesDataPromise || Promise.resolve([])).then(function() {
