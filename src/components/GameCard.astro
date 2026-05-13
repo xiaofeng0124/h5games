@@ -22,17 +22,13 @@ const emojiMap: Record<string, string> = {
     <a
       href={`/games/${slug}`}
       class="gc"
-      data-category={category}
-      data-title={title.toLowerCase()}
-      data-description={description.toLowerCase()}
-      data-difficulty={difficulty || ''}
     >
       <div class="gc-thumb">
         {image
           ? <img src={image} alt={title} loading="lazy" decoding="async" onerror="this.style.display='none'" />
           : <span class="gc-icon">{emojiMap[category] || '🎮'}</span>
         }
-        {/* iframe preview container */}
+        <!-- iframe preview container -->
         <div class="game-preview absolute inset-0 w-full h-full z-10 hidden opacity-0 transition-opacity duration-200"></div>
         <div class="gc-overlay">
           <div class="gc-play">
