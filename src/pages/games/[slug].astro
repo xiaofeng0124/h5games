@@ -19,6 +19,14 @@ const related = allGames
   .filter((g: Game) => g.category === game.category && g.slug !== game.slug)
   .slice(0, 8);
 
+// Prev/next navigation within category
+const catGames = allGames
+  .filter((g: Game) => g.category === game.category)
+  .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+const currentIdx = catGames.findIndex((g: Game) => g.slug === game.slug);
+const prevGame = currentIdx > 0 ? catGames[currentIdx - 1] : null;
+const nextGame = currentIdx < catGames.length - 1 ? catGames[currentIdx + 1] : null;
+
 const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
 ---
 
@@ -136,6 +144,26 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     </div>
   )}
 
+  <!-- Prev / Next Navigation -->
+  {(prevGame || nextGame) && (
+    <div class="flex items-center justify-between gap-4 mb-8">
+      {prevGame
+        ? <a href={`/games/${prevGame.slug}`} class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all shadow-sm hover:shadow max-w-[45%]">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            <span class="truncate">{prevGame.title}</span>
+          </a>
+        : <div></div>
+      }
+      {nextGame
+        ? <a href={`/games/${nextGame.slug}`} class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-600 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all shadow-sm hover:shadow max-w-[45%] ml-auto">
+            <span class="truncate">{nextGame.title}</span>
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        : <div></div>
+      }
+    </div>
+  )}
+
   <!-- Related Games -->
   {related.length > 0 && (
     <section>
@@ -202,8 +230,8 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
   const progressBar = document.getElementById('progress-bar');
   const progressText = document.getElementById('progress-text');
 
-  // Simulated progress: fast start, then slow and cap at 80%.
-  // Remaining 20% jumps on real iframe load event.
+  // Simulated progress: fast start, then slow and cap at 85%.
+  // Remaining 15% jumps on real iframe load event.
   function startProgressSimulation() {
     let p = 0;
     const steps = [
@@ -212,7 +240,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
       { target: 50, duration: 1500 },
       { target: 65, duration: 3000 },
       { target: 75, duration: 6000 },
-      { target: 80, duration: 10000 },
+      { target: 85, duration: 10000 },
     ];
     let stepIdx = 0;
     let stepStart = performance.now();
@@ -222,8 +250,8 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
       if (!progressBar || !progressText) return;
       const step = steps[stepIdx];
       if (!step) {
-        // Cap at 80%, wait for real iframe load
-        if (p < 80) p = 80;
+        // Cap at 85%, wait for real iframe load
+        if (p < 85) p = 85;
         progressBar.style.width = p + '%';
         progressText.textContent = Math.round(p) + '%';
         return;
