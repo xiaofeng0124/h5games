@@ -21,15 +21,33 @@ for (let i = heroPool.length - 1; i > 0; i--) {
   [heroPool[i], heroPool[j]] = [heroPool[j], heroPool[i]];
 }
 const heroGames = heroPool.slice(0, 8);
-// 每个分类各取一游戏，然后随机打乱
+// 每个分类取 2~3 款游戏，凑齐 48 款后随机打乱
 const gamesByCategory = {};
 for (const g of playableGames) {
   const cat = g.category;
   if (!gamesByCategory[cat]) gamesByCategory[cat] = [];
   gamesByCategory[cat].push(g);
 }
-const latestGames = Object.values(gamesByCategory)
-  .map(group => group[Math.floor(Math.random() * group.length)]);
+const catKeys = Object.keys(gamesByCategory);
+// 每个分类至少取 2 款
+const latestGames = catKeys.flatMap(key => {
+  const group = gamesByCategory[key];
+  const pick = [];
+  for (let i = 0; i < 2 && group.length > 0; i++) {
+    const idx = Math.floor(Math.random() * group.length);
+    pick.push(group.splice(idx, 1)[0]);
+  }
+  return pick;
+});
+// 剩余 14 个名额分给随机 14 个分类，各加 1 款
+const shuffled = catKeys.sort(() => Math.random() - 0.5);
+for (let i = 0; i < 14 && i < shuffled.length; i++) {
+  const group = gamesByCategory[shuffled[i]];
+  if (group.length > 0) {
+    const idx = Math.floor(Math.random() * group.length);
+    latestGames.push(group.splice(idx, 1)[0]);
+  }
+}
 // Fisher-Yates shuffle
 for (let i = latestGames.length - 1; i > 0; i--) {
   const j = Math.floor(Math.random() * (i + 1));
