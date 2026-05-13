@@ -100,7 +100,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
           </div>
         </div>
         {game.iframeUrl ? (
-          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30 pointer-events-none" allow="autoplay *; fullscreen *" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-pointer-lock allow-modals"></iframe>
+          <iframe id="game-iframe" data-src={game.iframeUrl} class="absolute inset-0 w-full h-full z-30 pointer-events-none" allow="autoplay *" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-pointer-lock allow-modals"></iframe>
         ) : (
           <div class="absolute inset-0 z-30 flex flex-col items-center justify-center text-center p-8">
             <div class="text-6xl mb-4">🎮</div>
