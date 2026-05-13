@@ -155,20 +155,14 @@ body {
   padding: 6px 8px;
   font-size: .8125rem;
   line-height: 1.25;
-  color: #334155;
+  color: #ea580c;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color .25s;
 }
-.dark .gc-title {
-  color: #ea580c;
-}
 .gc:hover .gc-title {
-  color: #7c3aed;
-}
-.dark .gc:hover .gc-title {
   color: #f97316;
 }
 
