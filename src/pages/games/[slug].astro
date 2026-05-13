@@ -202,17 +202,17 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
   const progressBar = document.getElementById('progress-bar');
   const progressText = document.getElementById('progress-text');
 
-  // Simulated progress: fast start, decelerating curve
+  // Simulated progress: fast start, then slow and cap at 80%.
+  // Remaining 20% jumps on real iframe load event.
   function startProgressSimulation() {
     let p = 0;
     const steps = [
       { target: 15, duration: 400 },
       { target: 30, duration: 800 },
       { target: 50, duration: 1500 },
-      { target: 70, duration: 3000 },
-      { target: 82, duration: 4000 },
-      { target: 90, duration: 6000 },
-      { target: 94, duration: 10000 },
+      { target: 65, duration: 3000 },
+      { target: 75, duration: 6000 },
+      { target: 80, duration: 10000 },
     ];
     let stepIdx = 0;
     let stepStart = performance.now();
@@ -222,11 +222,10 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
       if (!progressBar || !progressText) return;
       const step = steps[stepIdx];
       if (!step) {
-        // Hold at ~94-96%
-        p = Math.min(p + 0.3, 96);
+        // Cap at 80%, wait for real iframe load
+        if (p < 80) p = 80;
         progressBar.style.width = p + '%';
         progressText.textContent = Math.round(p) + '%';
-        progressTimer = requestAnimationFrame(tick);
         return;
       }
       const elapsed = now - stepStart;
