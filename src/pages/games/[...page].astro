@@ -75,7 +75,7 @@ const emojiMap: Record<string, string> = {
   <!-- Game Grid -->
   <section class="mb-8">
     <div id="games-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2">
-      {pageGames.map(game => (
+      {pageGames.map((game, idx) => (
         <GameCard
           slug={game.slug}
           title={game.title}
@@ -85,6 +85,7 @@ const emojiMap: Record<string, string> = {
           iframeUrl={game.iframeUrl}
           difficulty={game.difficulty}
           compact={true}
+          priority={currentPage === 1 && idx < 24}
         />
       ))}
     </div>
