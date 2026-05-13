@@ -11,16 +11,25 @@ for (let i = featured.length - 1; i > 0; i--) {
   const j = Math.floor(Math.random() * (i + 1));
   [featured[i], featured[j]] = [featured[j], featured[i]];
 }
-// Daily seeded: 从非精选池中取8款，每天不同
+// Daily seeded: 从高热度游戏池中取8款，每天不同
+// 热度分 = score + featured加分 + playCount加分
+const popularPool = playableGames
+  .map(g => {
+    let pop = g.score || 0;
+    if (g.featured) pop += 5;
+    if (g.playCount) pop += Math.min(Math.log10(g.playCount) * 3, 10);
+    return { ...g, popularity: pop };
+  })
+  .sort((a, b) => b.popularity - a.popularity)
+  .slice(0, 200);
 const todaySeed = new Date().toISOString().slice(0, 10).split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-const heroPool = playableGames.slice(80);
 let sd = todaySeed;
-for (let i = heroPool.length - 1; i > 0; i--) {
+for (let i = popularPool.length - 1; i > 0; i--) {
   sd = (sd * 16807) % 2147483647;
   const j = sd % (i + 1);
-  [heroPool[i], heroPool[j]] = [heroPool[j], heroPool[i]];
+  [popularPool[i], popularPool[j]] = [popularPool[j], popularPool[i]];
 }
-const heroGames = heroPool.slice(0, 8);
+const heroGames = popularPool.slice(0, 8);
 // 每个分类取 2~3 款游戏，凑齐 48 款后随机打乱
 const gamesByCategory = {};
 for (const g of playableGames) {
