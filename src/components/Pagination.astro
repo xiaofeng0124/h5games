@@ -9,7 +9,7 @@ const { currentPage, totalPages, baseUrl } = Astro.props;
 
 function pageUrl(n: number): string {
   if (n <= 1) return baseUrl;
-  return `${baseUrl.replace(/\/$/, '')}/${n}/`;
+  return `${baseUrl.replace(/\/$/, '')}/${n}`;
 }
 
 function range(start: number, end: number): number[] {
