@@ -18,13 +18,12 @@ const searchData = games.map(g => {
   if (url.includes('gamedistribution.com')) platform = 'gd';
   else if (url.includes('gamemonetize.co')) platform = 'gm';
   return {
-    slug: g.slug,
-    title: g.title,
-    category: g.category,
-    difficulty: g.difficulty || '',
-    tags: g.tags || [],
-    image: g.image || '',
-    platform,
+    s: g.slug,
+    t: g.title,
+    c: g.category,
+    tg: g.tags || [],
+    i: g.image || '',
+    p: platform,
   };
 });
 

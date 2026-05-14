@@ -64,7 +64,7 @@
       var results = [];
       for (var i = 0; i < gamesData.length; i++) {
         var g = gamesData[i];
-        if (g.title.toLowerCase().indexOf(q) !== -1) {
+        if (g.t.toLowerCase().indexOf(q) !== -1) {
           results.push(g);
           if (results.length >= MAX_RESULTS) break;
         }
@@ -81,16 +81,16 @@
       var html = '';
       for (var i = 0; i < results.length; i++) {
         var g = results[i];
-        var emoji = EMOJI_MAP[g.category] || '🎮';
-        var escapedTitle = g.title.replace(/"/g, '&quot;');
-        html += '<a href="/games/' + g.slug + '"'
+        var emoji = EMOJI_MAP[g.c] || '🎮';
+        var escapedTitle = g.t.replace(/"/g, '&quot;');
+        html += '<a href="/games/' + g.s + '"'
           + ' class="ac-item flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 cursor-pointer transition-colors border-b border-slate-100 dark:border-slate-700/50 last:border-b-0"'
           + ' data-index="' + i + '"'
-          + ' data-image="' + (g.image || '') + '"'
+          + ' data-image="' + (g.i || '') + '"'
           + ' data-title="' + escapedTitle + '">'
           + '<span class="flex-shrink-0 w-7 h-7 flex items-center justify-center text-base bg-slate-100 dark:bg-slate-700 rounded-lg">' + emoji + '</span>'
-          + '<span class="flex-1 truncate">' + g.title + '</span>'
-          + '<span class="flex-shrink-0 text-xs text-slate-400 dark:text-slate-500 capitalize">' + g.category + '</span>'
+          + '<span class="flex-1 truncate">' + g.t + '</span>'
+          + '<span class="flex-shrink-0 text-xs text-slate-400 dark:text-slate-500 capitalize">' + g.c + '</span>'
           + '</a>';
       }
       dropdown.innerHTML = html;

@@ -68,7 +68,9 @@ import Layout from '../layouts/Layout.astro';
     messagesEl.innerHTML = '';
 
     try {
-      const res = await fetch(`/api/feedback?password=${encodeURIComponent(password)}`);
+      const res = await fetch('/api/feedback', {
+        headers: { 'X-Admin-Password': password }
+      });
       if (!res.ok) {
         const errMsg = res.status === 401 ? 'Wrong password' : 'Failed to load messages';
         throw new Error(errMsg);

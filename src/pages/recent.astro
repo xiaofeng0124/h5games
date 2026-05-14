@@ -32,7 +32,7 @@ import Layout from '../layouts/Layout.astro';
         empty.classList.add('hidden');
 
         var lookup = {};
-        for (var i = 0; i < games.length; i++) lookup[games[i].slug] = games[i];
+        for (var i = 0; i < games.length; i++) lookup[games[i].s] = games[i];
         var items = [];
         for (var j = 0; j < recent.length; j++) {
           var g = lookup[recent[j].slug];
@@ -49,11 +49,11 @@ import Layout from '../layouts/Layout.astro';
         var emoji = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
 
         grid.innerHTML = items.map(function(g) {
-          return '<a href="/games/' + g.slug + '" class="gc group">' +
+          return '<a href="/games/' + g.s + '" class="gc group">' +
             '<div class="gc-thumb">' +
-            (g.image ? '<img src="' + optImg(g.image, 240) + '" alt="' + g.title + '" loading="lazy" decoding="async" width="240" height="180" onerror="this.style.display=\'none\'" />' : '<span class="gc-icon" style="font-size:1.5rem">🎮</span>') +
+            (g.i ? '<img src="' + optImg(g.i, 240) + '" alt="' + g.t + '" loading="lazy" decoding="async" width="240" height="180" onerror="this.style.display=\'none\'" />' : '<span class="gc-icon" style="font-size:1.5rem">🎮</span>') +
             '<div class="gc-overlay"><div class="gc-play"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
-            '</div><span class="gc-title">' + g.title + '</span></a>';
+            '</div><span class="gc-title">' + g.t + '</span></a>';
         }).join('');
 
         grid.querySelectorAll('.gc').forEach(function(el) {
@@ -62,7 +62,7 @@ import Layout from '../layouts/Layout.astro';
       }
 
       var data = null;
-      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) data = c.d; } catch(e) {}
+      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d && Array.isArray(c.d)) { if (c.d[0] && c.d[0].slug !== undefined) { localStorage.removeItem('sd'); localStorage.removeItem('sdv'); } else { data = c.d; } } } catch(e) {}
 
       if (data) { render(data); return; }
 

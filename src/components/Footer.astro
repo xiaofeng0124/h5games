@@ -69,18 +69,51 @@
   if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const name = document.getElementById('fb-name').value.trim();
-      const message = document.getElementById('fb-message').value.trim();
+      const nameInput = document.getElementById('fb-name');
+      const msgInput = document.getElementById('fb-message');
+      const name = nameInput.value.trim();
+      const message = msgInput.value.trim();
       if (!message) return;
-      try {
-        const feedbacks = JSON.parse(localStorage.getItem('footer_feedback') || '[]');
-        feedbacks.push({ name, message, time: Date.now() });
-        localStorage.setItem('footer_feedback', JSON.stringify(feedbacks));
-      } catch {}
-      document.getElementById('fb-name').value = '';
-      document.getElementById('fb-message').value = '';
-      document.getElementById('fb-success').classList.remove('hidden');
-      setTimeout(() => document.getElementById('fb-success').classList.add('hidden'), 4000);
+
+      const btn = form.querySelector('button[type="submit"]');
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      // Try submitting to server first
+      fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, message })
+      }).then(function(res) {
+        if (!res.ok) throw new Error();
+        // Success — clear form
+        nameInput.value = '';
+        msgInput.value = '';
+        showSuccess();
+      }).catch(function() {
+        // Offline fallback — save to localStorage
+        try {
+          const feedbacks = JSON.parse(localStorage.getItem('footer_feedback') || '[]');
+          feedbacks.push({ name, message, time: Date.now() });
+          localStorage.setItem('footer_feedback', JSON.stringify(feedbacks));
+        } catch(e) { /* localStorage full or unavailable */ }
+        nameInput.value = '';
+        msgInput.value = '';
+        showSuccess();
+      }).finally(function() {
+        btn.disabled = false;
+        btn.textContent = origText;
+      });
     });
+
+    function showSuccess() {
+      var el = document.getElementById('fb-success');
+      if (el) {
+        el.textContent = '✓ ' + (el.getAttribute('data-i18n') === 'feedback.thanks' ? 'Thanks for your feedback!' : 'Thanks for your feedback!');
+        el.classList.remove('hidden');
+        setTimeout(function() { el.classList.add('hidden'); }, 4000);
+      }
+    }
   }
 </script>

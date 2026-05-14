@@ -442,7 +442,7 @@ const featuredFirst = featured.slice(0, 20);
     (function(){
       var data = null;
       // Try immediate cache restore (no network)
-      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) { data = c.d; window.__gamesData = c.d; } } catch(e){}
+      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d && Array.isArray(c.d)) { if (c.d[0] && c.d[0].slug !== undefined) { localStorage.removeItem('sd'); localStorage.removeItem('sdv'); } else { data = c.d; window.__gamesData = c.d; } } } catch(e){}
       if (data) { window.__gamesDataPromise = Promise.resolve(data); return; }
       // No cache - defer network fetch until needed (search focus or filter change)
       window.__gamesData = [];
@@ -546,11 +546,11 @@ const featuredFirst = featured.slice(0, 20);
     }
     const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
     resultsGrid.innerHTML = games.map(g => `
-      <a href="/games/${g.slug}" class="gc">
+      <a href="/games/${g.s}" class="gc">
         <div class="gc-thumb">
-          ${g.image
-            ? `<img src="${optImg(g.image, 240)}" alt="${g.title}" loading="lazy" decoding="async" width="240" height="180" />`
-            : `<span class="gc-icon">${emojiMap[g.category] || '🎮'}</span>`
+          ${g.i
+            ? `<img src="${optImg(g.i, 240)}" alt="${g.t}" loading="lazy" decoding="async" width="240" height="180" />`
+            : `<span class="gc-icon">${emojiMap[g.c] || '🎮'}</span>`
           }
           <div class="gc-overlay">
             <div class="gc-play">
@@ -558,7 +558,7 @@ const featuredFirst = featured.slice(0, 20);
             </div>
           </div>
         </div>
-        <span class="gc-title">${g.title}</span>
+        <span class="gc-title">${g.t}</span>
       </a>
     `).join('');
     // Animate new cards
@@ -575,16 +575,16 @@ const featuredFirst = featured.slice(0, 20);
     const isActive = query || category || selectedTag;
 
     const filtered = allGamesData.filter(g => {
-      const matchCategory = !category || g.category === category;
-      const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
+      const matchCategory = !category || g.c === category;
+      const matchTag = !selectedTag || (g.tg && g.tg.includes(selectedTag));
       const matchSearch = !query ||
-        g.title.toLowerCase().includes(query) ||
-        g.category.includes(query) ||
-        (g.tags && g.tags.some(t => t.includes(query)));
+        g.t.toLowerCase().includes(query) ||
+        g.c.includes(query) ||
+        (g.tg && g.tg.some(t => t.includes(query)));
       return matchCategory && matchTag && matchSearch;
     }).sort((a, b) => {
       const order = { gd: 0, gm: 1, gp: 2 };
-      return (order[a.platform] ?? 2) - (order[b.platform] ?? 2);
+      return (order[a.p] ?? 2) - (order[b.p] ?? 2);
     });
 
     // Show/hide results info

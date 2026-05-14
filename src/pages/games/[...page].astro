@@ -5,6 +5,7 @@ import GameCard from '../../components/GameCard.astro';
 import Pagination from '../../components/Pagination.astro';
 import allGames from '../../data/games.json' with { type: 'json' };
 import categories from '../../data/categories.json' with { type: 'json' };
+import { tagCN, emojiMap } from '../../data/constants';
 import fs from 'node:fs';
 
 const PER_PAGE = 48;
@@ -26,31 +27,8 @@ const start = (currentPage - 1) * PER_PAGE;
 const end = Math.min(start + PER_PAGE, allGames.length);
 const pageGames = allGames.slice(start, end);
 const categoryEntries = Object.entries(categories) as [string, { name: string; description: string; icon: string }][];
-const emojiMap: Record<string, string> = {
-  'match-3': '🍬', 'puzzle': '🧩', 'merge': '🧪', 'casual': '🎮', 'arcade': '👾',
-  'word': '🔤', 'card': '🃏', 'hidden-object': '🔍', 'board': '♟️', 'strategy': '🎯',
-  'adventure': '⚔️', 'sports': '⚽', 'racing': '🏎️', 'action': '🎯', 'fighting': '🥊',
-  'multiplayer': '👥', 'idle': '📈',
-};
 
 // 预计算标签数据
-const tagCN = {
-  'action': '动作', 'adventure': '冒险', 'animals': '动物', 'arcade': '街机',
-  'baseball': '棒球', 'basketball': '篮球', 'bike': '摩托', 'block': '方块',
-  'board': '桌游', 'boat': '船', 'bubble': '泡泡', 'building': '建造',
-  'car': '汽车', 'card': '纸牌', 'casual': '休闲', 'christmas': '圣诞',
-  'city': '城市', 'coloring': '涂色', 'cooking': '烹饪', 'decorating': '装饰',
-  'dress-up': '换装', 'driving': '驾驶', 'educational': '教育', 'endless': '无尽',
-  'fantasy': '幻想', 'farming': '农场', 'fighting': '格斗', 'flying': '飞行',
-  'football': '足球', 'golf': '高尔夫', 'halloween': '万圣节', 'hidden-object': '寻物',
-  'idle': '挂机', 'io': 'IO', 'jump': '跳跃', 'magic': '魔法', 'match-3': '三消',
-  'math': '数学', 'memory': '记忆', 'merge': '合成', 'multiplayer': '多人',
-  'music': '音乐', 'ocean': '海洋', 'physics': '物理', 'puzzle': '益智',
-  'racing': '竞速', 'shooting': '射击', 'simulation': '模拟', 'snow': '雪地',
-  'space': '太空', 'sports': '体育', 'strategy': '策略', 'summer': '夏日',
-  'survival': '生存', 'tennis': '网球', 'word': '文字', 'zombie': '僵尸',
-  'snooker': '斯诺克',
-};
 const tagCounts: Record<string, number> = {};
 for (const g of allGames) {
   if (g.tags) {
@@ -151,7 +129,7 @@ const firstPage = currentPage === 1;
   <script is:inline>
     (function(){
       var data = null;
-      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d) { data = c.d; window.__gamesData = c.d; } } catch(e){}
+      try { var c = JSON.parse(localStorage.getItem('sd')); if (c && c.d && Array.isArray(c.d)) { if (c.d[0] && c.d[0].slug !== undefined) { localStorage.removeItem('sd'); localStorage.removeItem('sdv'); } else { data = c.d; window.__gamesData = c.d; } } } catch(e){}
       if (data) { window.__gamesDataPromise = Promise.resolve(data); return; }
       window.__gamesData = [];
       window.__gamesDataPromise = new Promise(function(r){ window.__resolveGamesData = r; });
@@ -243,11 +221,11 @@ const firstPage = currentPage === 1;
     }
     const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
     gamesGrid.innerHTML = games.map(g => `
-      <a href="/games/${g.slug}" class="gc">
+      <a href="/games/${g.s}" class="gc">
         <div class="gc-thumb">
-          ${g.image
-            ? `<img src="${g.image}" alt="${g.title}" loading="lazy" decoding="async" />`
-            : `<span class="gc-icon">${emojiMap[g.category] || '🎮'}</span>`
+          ${g.i
+            ? `<img src="${g.i}" alt="${g.t}" loading="lazy" decoding="async" />`
+            : `<span class="gc-icon">${emojiMap[g.c] || '🎮'}</span>`
           }
           <div class="gc-overlay">
             <div class="gc-play">
@@ -255,7 +233,7 @@ const firstPage = currentPage === 1;
             </div>
           </div>
         </div>
-        <span class="gc-title">${g.title}</span>
+        <span class="gc-title">${g.t}</span>
       </a>
     `).join('');
     gamesGrid.querySelectorAll('.gc').forEach(function(el) {
@@ -269,16 +247,16 @@ const firstPage = currentPage === 1;
     const category = categoryFilter?.value || '';
 
     const filtered = allGamesData.filter(g => {
-      const matchCategory = !category || g.category === category;
-      const matchTag = !selectedTag || (g.tags && g.tags.includes(selectedTag));
+      const matchCategory = !category || g.c === category;
+      const matchTag = !selectedTag || (g.tg && g.tg.includes(selectedTag));
       const matchSearch = !query ||
-        g.title.toLowerCase().includes(query) ||
-        g.category.includes(query) ||
-        (g.tags && g.tags.some(t => t.includes(query)));
+        g.t.toLowerCase().includes(query) ||
+        g.c.includes(query) ||
+        (g.tg && g.tg.some(t => t.includes(query)));
       return matchCategory && matchTag && matchSearch;
     }).sort((a, b) => {
       const order = { gd: 0, gm: 1, gp: 2 };
-      return (order[a.platform] ?? 2) - (order[b.platform] ?? 2);
+      return (order[a.p] ?? 2) - (order[b.p] ?? 2);
     });
 
     if (resultsInfo && resultCount) {

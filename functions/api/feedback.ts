@@ -50,7 +50,8 @@ export async function onRequestPost(context: { request: Request; env: { FEEDBACK
 
 export async function onRequestGet(context: { request: Request; env: { FEEDBACK?: KVNamespace } }): Promise<Response> {
   const url = new URL(context.request.url);
-  const password = url.searchParams.get('password');
+  // Accept password via header (preferred) or query param (legacy)
+  const password = context.request.headers.get('X-Admin-Password') || url.searchParams.get('password');
 
   // Simple password protection
   if (password !== 'chillarcade0124') {
