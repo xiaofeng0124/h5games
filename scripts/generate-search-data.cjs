@@ -12,14 +12,21 @@ const games = JSON.parse(fs.readFileSync(gamesPath, 'utf-8'));
 
 const crypto = require('crypto');
 
-const searchData = games.map(g => ({
-  slug: g.slug,
-  title: g.title,
-  category: g.category,
-  difficulty: g.difficulty || '',
-  tags: g.tags || [],
-  image: g.image || '',
-}));
+const searchData = games.map(g => {
+  let platform = 'gp';
+  const url = g.iframeUrl || '';
+  if (url.includes('gamedistribution.com')) platform = 'gd';
+  else if (url.includes('gamemonetize.co')) platform = 'gm';
+  return {
+    slug: g.slug,
+    title: g.title,
+    category: g.category,
+    difficulty: g.difficulty || '',
+    tags: g.tags || [],
+    image: g.image || '',
+    platform,
+  };
+});
 
 const json = JSON.stringify(searchData);
 fs.writeFileSync(outputPath, json, 'utf-8');

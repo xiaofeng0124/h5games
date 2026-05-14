@@ -5,7 +5,20 @@ import games from '../data/games.json' with { type: 'json' };
 import categories from '../data/categories.json' with { type: 'json' };
 
 const playableGames = games.filter(g => !g.slug.includes('steam-key'));
-const featured = playableGames.filter(g => g.featured).slice(0, 80);
+
+// Platform detection helpers
+function getPlatform(iframeUrl) {
+  if (!iframeUrl) return 'gp';
+  if (iframeUrl.includes('gamedistribution.com')) return 'gd';
+  if (iframeUrl.includes('gamemonetize.co')) return 'gm';
+  return 'gp';
+}
+function isPreferred(g) {
+  const p = getPlatform(g.iframeUrl);
+  return p === 'gd' || p === 'gm';
+}
+
+const featured = playableGames.filter(g => g.featured && isPreferred(g)).slice(0, 80);
 // Fisher-Yates shuffle 随机打乱精选游戏
 for (let i = featured.length - 1; i > 0; i--) {
   const j = Math.floor(Math.random() * (i + 1));
@@ -14,6 +27,7 @@ for (let i = featured.length - 1; i > 0; i--) {
 // Daily seeded: 从高热度游戏池中取8款，每天不同
 // 热度分 = score + featured加分 + playCount加分
 const popularPool = playableGames
+  .filter(isPreferred)
   .map(g => {
     let pop = g.score || 0;
     if (g.featured) pop += 5;
@@ -31,8 +45,9 @@ for (let i = popularPool.length - 1; i > 0; i--) {
 }
 const heroGames = popularPool.slice(0, 8);
 // 每个分类取 2~3 款游戏，凑齐 48 款后随机打乱
+const preferredGames = playableGames.filter(isPreferred);
 const gamesByCategory = {};
-for (const g of playableGames) {
+for (const g of preferredGames) {
   const cat = g.category;
   if (!gamesByCategory[cat]) gamesByCategory[cat] = [];
   gamesByCategory[cat].push(g);
@@ -567,6 +582,9 @@ const featuredFirst = featured.slice(0, 20);
         g.category.includes(query) ||
         (g.tags && g.tags.some(t => t.includes(query)));
       return matchCategory && matchTag && matchSearch;
+    }).sort((a, b) => {
+      const order = { gd: 0, gm: 1, gp: 2 };
+      return (order[a.platform] ?? 2) - (order[b.platform] ?? 2);
     });
 
     // Show/hide results info

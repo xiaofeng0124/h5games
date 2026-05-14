@@ -276,6 +276,9 @@ const firstPage = currentPage === 1;
         g.category.includes(query) ||
         (g.tags && g.tags.some(t => t.includes(query)));
       return matchCategory && matchTag && matchSearch;
+    }).sort((a, b) => {
+      const order = { gd: 0, gm: 1, gp: 2 };
+      return (order[a.platform] ?? 2) - (order[b.platform] ?? 2);
     });
 
     if (resultsInfo && resultCount) {
