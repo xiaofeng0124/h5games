@@ -154,6 +154,13 @@ const firstPage = currentPage === 1;
         }
         return window.__gamesDataPromise;
       };
+      // Preload during idle time so data is ready when user searches
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() { window.__lazyLoadGamesData(); }, { timeout: 3000 });
+      } else {
+        setTimeout(function() { window.__lazyLoadGamesData(); }, 2000);
+      }
+
     })();
   </script>
 </Layout>
@@ -219,12 +226,16 @@ const firstPage = currentPage === 1;
       gamesGrid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 dark:text-slate-500"><p class="text-lg mb-1">😕</p><p data-i18n="search.noresults">No games found. Try a different search.</p></div>';
       return;
     }
+    function optImg(url, size) {
+      if (!url || url.indexOf('img.gamepix.com') === -1) return url || '';
+      return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'w=' + size + '&h=' + Math.round(size * 0.75) + '&fit=crop&auto=format&q=75';
+    }
     const emojiMap = {'match-3':'🍬','puzzle':'🧩','merge':'🧪','casual':'🎮','arcade':'👾','word':'🔤','card':'🃏','hidden-object':'🔍','board':'♟️','strategy':'🎯','adventure':'⚔️','sports':'⚽','racing':'🏎️','action':'🎯','fighting':'🥊','multiplayer':'👥','idle':'📈'};
     gamesGrid.innerHTML = games.map(g => `
       <a href="/games/${g.s}" class="gc">
         <div class="gc-thumb">
           ${g.i
-            ? `<img src="${g.i}" alt="${g.t}" loading="lazy" decoding="async" />`
+            ? `<img src="${optImg(g.i, 240)}" alt="${g.t}" loading="lazy" decoding="async" width="240" height="180" />`
             : `<span class="gc-icon">${emojiMap[g.c] || '🎮'}</span>`
           }
           <div class="gc-overlay">

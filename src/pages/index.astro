@@ -469,6 +469,13 @@ const featuredFirst = featured.slice(0, 20);
         }
         return window.__gamesDataPromise;
       };
+      // Preload during idle time so data is ready when user searches
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() { window.__lazyLoadGamesData(); }, { timeout: 3000 });
+      } else {
+        setTimeout(function() { window.__lazyLoadGamesData(); }, 2000);
+      }
+
     })();
   </script>
 </Layout>
