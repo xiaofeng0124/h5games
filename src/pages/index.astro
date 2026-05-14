@@ -347,7 +347,7 @@ const featuredFirst = featured.slice(0, 20);
 
   <!-- Featured Games -->
   <section id="featured" class="mb-10">
-    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
+    <h2 class="text-lg font-bold text-white mb-3">🔥 <span data-i18n="section.featured">Featured Games</span></h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-3">
       {featured.map((game, idx) => (
         <a href={`/games/${game.slug}`} class="gc">
@@ -371,7 +371,7 @@ const featuredFirst = featured.slice(0, 20);
   <!-- Latest Games -->
   <section id="latest" class="mb-8">
     <div class="flex items-center justify-between mb-3">
-      <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100">🆕 <span data-i18n="section.latest">Latest Games</span></h2>
+      <h2 class="text-lg font-bold text-white">🆕 <span data-i18n="section.latest">Latest Games</span></h2>
       <a href="/games" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors inline-flex items-center gap-1">
         View all <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </a>
