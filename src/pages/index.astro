@@ -403,7 +403,7 @@ const featuredFirst = featured.slice(0, 20);
 
   <!-- Categories -->
   <section id="categories" class="mb-10">
-    <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">📂 <span data-i18n="nav.categories">Browse by Category</span></h2>
+    <h2 class="text-lg font-bold text-amber-400 mb-4">📂 <span data-i18n="nav.categories">Browse by Category</span></h2>
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-2">
       {categoryEntries.map(([slug, cat]) => {
         const count = games.filter(g => g.category === slug).length;
