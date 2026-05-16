@@ -44,11 +44,8 @@ for (let i = popularPool.length - 1; i > 0; i--) {
   [popularPool[i], popularPool[j]] = [popularPool[j], popularPool[i]];
 }
 const heroGames = popularPool.slice(0, 8);
-// 分类取 2 款 + 新游戏混入最新区域
+// 每个分类取 2~3 款游戏，凑齐 48 款后随机打乱
 const preferredGames = playableGames.filter(isPreferred);
-const newGmGames = playableGames.filter(g =>
-  g.iframeUrl && g.iframeUrl.includes('gamemonetize.co') && g.score === 0
-);
 const gamesByCategory = {};
 for (const g of preferredGames) {
   const cat = g.category;
@@ -56,7 +53,7 @@ for (const g of preferredGames) {
   gamesByCategory[cat].push(g);
 }
 const catKeys = Object.keys(gamesByCategory);
-// 每个分类取 2 款
+// 每个分类至少取 2 款
 const latestGames = catKeys.flatMap(key => {
   const group = gamesByCategory[key];
   const pick = [];
@@ -66,14 +63,14 @@ const latestGames = catKeys.flatMap(key => {
   }
   return pick;
 });
-// 再从新加的 GM 游戏里随机取 24 款混入
-const newShuffled = [...newGmGames];
-for (let i = newShuffled.length - 1; i > 0; i--) {
-  const j = Math.floor(Math.random() * (i + 1));
-  [newShuffled[i], newShuffled[j]] = [newShuffled[j], newShuffled[i]];
-}
-for (let i = 0; i < 24 && i < newShuffled.length; i++) {
-  latestGames.push(newShuffled[i]);
+// 剩余 14 个名额分给随机 14 个分类，各加 1 款
+const shuffled = catKeys.sort(() => Math.random() - 0.5);
+for (let i = 0; i < 14 && i < shuffled.length; i++) {
+  const group = gamesByCategory[shuffled[i]];
+  if (group.length > 0) {
+    const idx = Math.floor(Math.random() * group.length);
+    latestGames.push(group.splice(idx, 1)[0]);
+  }
 }
 // Fisher-Yates shuffle
 for (let i = latestGames.length - 1; i > 0; i--) {
