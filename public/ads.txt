@@ -1,3 +1,7 @@
+#GameMonetize.com
+google.com, pub-5519830896693885, DIRECT, F08C47FEC0942FA0
+google.com, PUB-4764333688337558, DIRECT, F08C47FEC0942FA0
+
 #gpx-property-9ACC1
 #gpx-last-updated-2024-11-21
 #gpx-reviq
