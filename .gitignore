@@ -28,3 +28,6 @@ add_games_batch*.cjs
 
 # GameMonetize temp data
 scripts/gm_games.json
+
+# Claude Code internal files
+.claude/
