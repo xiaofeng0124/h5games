@@ -158,11 +158,8 @@ const featuredFirst = featured.slice(0, 20);
 ---
 
 <Layout title="Free Relaxing Browser Games - Play Online Instantly">
-  <!-- Hero image preloads -->
+  <!-- Preload only hero images (above the fold) -->
   {heroGames.filter(g => g.image).map(g => (
-    <link rel="preload" as="image" href={preloadSrc(g.image, 320)} />
-  ))}
-  {featuredFirst.filter(g => g.image).map(g => (
     <link rel="preload" as="image" href={preloadSrc(g.image, 320)} />
   ))}
   <style is:global>
@@ -353,7 +350,7 @@ const featuredFirst = featured.slice(0, 20);
         <a href={`/games/${game.slug}`} class="gc">
           <div class="gc-thumb">
             {game.image
-              ? <img src={optImg(game.image, 240)} alt={game.title} loading={idx < 20 ? 'eager' : 'lazy'} decoding="async" width="240" height="180" fetchpriority={idx < 20 ? 'high' : 'low'} onerror="this.style.display='none'" />
+              ? <img src={optImg(game.image, 240)} alt={game.title} loading="lazy" decoding="async" width="240" height="180" fetchpriority="low" onerror="this.style.display='none'" />
               : <span class="gc-icon">{emojiMap[game.category] || '🎮'}</span>
             }
             <div class="gc-overlay">

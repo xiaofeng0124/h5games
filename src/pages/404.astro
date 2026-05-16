@@ -66,3 +66,18 @@ const catEntries = Object.entries(categories).slice(0, 8);
     </div>
   </div>
 </Layout>
+
+<script>
+  // Track 404 URLs to identify broken links
+  try {
+    const badUrl = window.location.pathname + window.location.search;
+    const ref = document.referrer || '';
+    const logs = JSON.parse(localStorage.getItem('_404_log') || '[]');
+    // Only log if not already in the last 50 entries
+    if (!logs.some((e: string) => e.includes(badUrl))) {
+      logs.push(badUrl + (ref ? ' (from: ' + ref + ')' : ''));
+      if (logs.length > 100) logs.splice(0, logs.length - 100);
+      localStorage.setItem('_404_log', JSON.stringify(logs));
+    }
+  } catch(e) {}
+</script>
