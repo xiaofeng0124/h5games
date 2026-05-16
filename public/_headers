@@ -1,0 +1,16 @@
+# Static assets with content hashes - cache at edge and browser for 1 year
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages - cache at Cloudflare edge for 1 hour, no browser cache
+# Cloudflare Pages auto-purges cache on deploy, so safe for updates
+/*
+  Cache-Control: public, max-age=0, s-maxage=3600
+
+# No caching for these files
+/ads.txt
+  Cache-Control: no-cache, private
+/search-data.json
+  Cache-Control: no-cache, private
+/search-data-version.json
+  Cache-Control: no-cache, private

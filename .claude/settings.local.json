@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx astro *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(npx wrangler *)",
+      "Bash(git commit *)",
+      "Bash(node *)",
+      "Bash(npm run *)",
+      "Bash(python3 -c *)",
+      "Bash(python -c *)",
+      "Bash(curl -s https://production.chillarcade.pages.dev/)",
+      "WebFetch(domain:production.chillarcade.pages.dev)",
+      "WebFetch(domain:chillarcade.io)",
+      "Bash(curl -s https://chillarcade.io/)",
+      "Bash(curl -sI https://chillarcade.io/)",
+      "Bash(curl -s -o /tmp/pages.html http://production.chillarcade.pages.dev/)",
+      "Bash(curl -s https://chillarcade.io/games/2048-merge-world)",
+      "Read(//c/Users/XF012/.wrangler/config/**)",
+      "Bash(curl -s https://api.cloudflare.com/client/v4/zones?name=chillarcade.io -H \"Authorization: Bearer $\\(grep -o 'CLOUDFLARE_API_TOKEN=[^ ]*' ~/.wrangler/config/default.toml)",
+      "Bash(curl -s -X POST \"https://api.cloudflare.com/client/v4/zones/$\\(curl -s https://api.cloudflare.com/client/v4/zones?name=chillarcade.io -H \"Authorization: Bearer $\\(grep -o 'CLOUDFLARE_API_TOKEN=[^ ]*' ~/.wrangler/config/default.toml)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://chillarcade.io/games/2048-merge-world)",
+      "Bash(curl -sL https://chillarcade.io/games/2048-merge-world)",
+      "Bash(curl -sL --max-time 15 https://chillarcade.io/games/tiny-heroes-merge)",
+      "Bash(curl -sI --max-time 10 https://chillarcade.io/games/tiny-heroes-merge)",
+      "Bash(curl -s --max-time 10 https://chillarcade.io/games/tiny-heroes-merge)",
+      "Bash(xargs grep *)",
+      "Bash(curl -s --max-time 10 https://chillarcade.io/games/magi-dogi-gp)",
+      "Bash(curl -sI --max-time 10 https://chillarcade.io/games/magi-dogi-gp)",
+      "Bash(curl -sI --max-time 5 https://chillarcade.io/)",
+      "WebSearch",
+      "Bash(curl -sI -H \"Accept: image/webp,image/jpeg,*/*\" \"https://img.gamepix.com/games/body-drop-3d/cover/body-drop-3d.png\")",
+      "Bash(curl -sI \"https://img.gamemonetize.com/cid2yhcps0fo4y1wjnmkt9ittxnwxiia/256x192.jpg\")",
+      "Bash(curl -sI \"https://img.gamedistribution.com/7461e5111cc548879103152b4f113604-256x256.jpeg\")",
+      "Bash(gh run *)"
+    ]
+  }
+}
