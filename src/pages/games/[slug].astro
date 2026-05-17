@@ -97,10 +97,11 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     <div id="game-container" class="w-full bg-slate-900 relative overflow-hidden">
       <!-- Fullscreen toggle (visible on mobile after game starts) -->
       <button id="fs-btn" aria-label="Toggle fullscreen"
-        class="absolute top-3 right-3 z-40 w-9 h-9 hidden items-center justify-center rounded-lg bg-black/40 text-white/80 hover:bg-black/60 transition-colors backdrop-blur-sm">
-        <svg id="fs-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        class="absolute top-3 right-3 z-40 hidden items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/50 text-white/90 hover:bg-black/70 transition-colors backdrop-blur-sm text-sm font-medium">
+        <svg id="fs-icon" class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path id="fs-enter" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/>
         </svg>
+        <span id="fs-label">Fullscreen</span>
       </button>
       <div class="w-full max-w-4xl mx-auto relative" style={`aspect-ratio: ${(game as any).width || 16} / ${(game as any).height || 9}`}>
         <!-- Cover image + play button overlay -->
@@ -346,6 +347,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
       gameIframe.classList.remove('pointer-events-none');
       gameIframe.removeAttribute('data-src');
     }, 100);
+    updateFsButton();
   }
 
   if (gameCover && gameIframe) {
@@ -455,6 +457,8 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
         : 'M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5'
       );
     }
+    var fsLabel = document.getElementById('fs-label');
+    if (fsLabel) fsLabel.textContent = isFs() ? 'Exit' : 'Fullscreen';
   }
 
   if (fsBtn && gameContainer) {
