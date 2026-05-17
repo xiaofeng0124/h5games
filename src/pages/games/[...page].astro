@@ -14,15 +14,15 @@ const totalPages = Math.ceil(allGames.length / PER_PAGE);
 export async function getStaticPaths() {
   const g = JSON.parse(fs.readFileSync('src/data/games.json', 'utf-8'));
   const total = Math.ceil(g.length / 48);
-  const paths = [{ params: { page: undefined } }];
+  const paths = [{ params: { page: undefined }, props: { pageNum: 1 } }];
   for (let i = 2; i <= total; i++) {
-    paths.push({ params: { page: String(i) } });
+    paths.push({ params: { page: String(i) }, props: { pageNum: i } });
   }
   return paths;
 }
 
-const { page } = Astro.props;
-const currentPage = page ? parseInt(page as string, 10) : 1;
+const { pageNum } = Astro.props;
+const currentPage = pageNum;
 const start = (currentPage - 1) * PER_PAGE;
 const end = Math.min(start + PER_PAGE, allGames.length);
 const pageGames = allGames.slice(start, end);
