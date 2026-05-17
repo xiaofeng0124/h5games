@@ -434,12 +434,14 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     el.classList.add('fs-mode');
     document.body.style.overflow = 'hidden';
     fsMode = true;
+    updateFsButton();
   }
 
   function exitFallbackFs() {
     gameContainer.classList.remove('fs-mode');
     document.body.style.overflow = '';
     fsMode = false;
+    updateFsButton();
   }
 
   function updateFsButton() {
@@ -465,6 +467,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
     fsBtn.addEventListener('click', function() {
       if (isFs()) {
         exitFullscreen();
+        updateFsButton();
       } else {
         requestFullscreen(gameContainer);
       }
