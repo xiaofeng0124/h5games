@@ -102,7 +102,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
           <path id="fs-enter" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/>
         </svg>
       </button>
-      <div class="w-full max-w-4xl mx-auto aspect-[4/3] md:aspect-[16/9] relative">
+      <div class="w-full max-w-4xl mx-auto relative" style={`aspect-ratio: ${(game as any).width || 16} / ${(game as any).height || 9}`}>
         <!-- Cover image + play button overlay -->
         <div id="game-cover" class="absolute inset-0 z-10 flex flex-col items-center justify-center cursor-pointer rounded-none" style="background:linear-gradient(135deg,#1e1b4b,#312e81)">
           {game.image && (
@@ -442,8 +442,7 @@ const canonicalUrl = `https://chillarcade.io/games/${game.slug}`;
 
   function updateFsButton() {
     if (!fsBtn) return;
-    const mobile = window.innerWidth < 768;
-    if (mobile && iframeLoaded) {
+    if (iframeLoaded) {
       fsBtn.classList.remove('hidden');
       fsBtn.classList.add('flex');
     } else {
