@@ -64,7 +64,6 @@ const thumbSrc = optImage(image, compact ? 320 : 480);
           ? <img src={thumbSrc} alt={title} class="absolute inset-0 w-full h-full object-cover will-change-transform transition-transform duration-300 group-hover:scale-150" loading={priority ? 'eager' : 'lazy'} decoding="async" fetchpriority={priority ? 'high' : 'low'} width="320" height="180" onerror="this.style.display='none'" />
           : <span>{emojiMap[category] || '🎮'}</span>
         }
-        {image && <span class="z-0">{emojiMap[category] || '🎮'}</span>}
         <!-- Preview container: real game loads here on hover -->
         <div class="game-preview absolute inset-0 w-full h-full z-10 hidden opacity-0 transition-opacity duration-200"></div>
         <!-- Play overlay -->
