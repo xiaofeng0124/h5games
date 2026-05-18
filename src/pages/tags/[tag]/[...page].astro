@@ -1,0 +1,105 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import GameCard from '../../../components/GameCard.astro';
+import Pagination from '../../../components/Pagination.astro';
+import allGames from '../../../data/games.json' with { type: 'json' };
+import fs from 'node:fs';
+
+const PER_PAGE = 96;
+
+export async function getStaticPaths() {
+  const g = JSON.parse(fs.readFileSync('src/data/games.json', 'utf-8'));
+  const tagSet = new Set<string>();
+  (g as { tags?: string[] }[]).forEach((game: any) => {
+    if (game.tags) game.tags.forEach((t: string) => tagSet.add(t));
+  });
+  const sortedTags = [...tagSet].sort();
+  const paths: any[] = [];
+  for (const tag of sortedTags) {
+    const tagGames = (g as any[]).filter((game: any) => game.tags && game.tags.includes(tag));
+    const total = Math.ceil(tagGames.length / 96);
+    paths.push({ params: { tag, page: undefined }, props: { tag, pageNum: 1 } });
+    for (let i = 2; i <= total; i++) {
+      paths.push({ params: { tag, page: String(i) }, props: { tag, pageNum: i } });
+    }
+  }
+  return paths;
+}
+
+const { tag, pageNum } = Astro.props;
+const currentPage = pageNum;
+const tagGames = (allGames as { tags?: string[] }[]).filter(g => g.tags && g.tags.includes(tag));
+const totalPages = Math.ceil(tagGames.length / PER_PAGE);
+const start = (currentPage - 1) * PER_PAGE;
+const end = Math.min(start + PER_PAGE, tagGames.length);
+const pageGames = tagGames.slice(start, end);
+const tagCapitalized = tag.charAt(0).toUpperCase() + tag.slice(1);
+
+// Image optimization for preload
+function preloadSrc(img: string | undefined, size: number): string {
+  if (!img) return '';
+  return img.includes('img.gamepix.com')
+    ? img + (img.includes('?') ? '&' : '?') + `w=${size}&h=${Math.round(size*0.75)}&fit=crop&auto=format&q=75`
+    : img;
+}
+const firstPage = currentPage === 1;
+---
+
+<Layout title={`Best Free ${tagCapitalized} Games Online - Chill Arcade`} description={`Play the best free ${tag} games online. Browse ${tagGames.length} ${tag} games on page ${currentPage} of ${totalPages}, play instantly in your browser, no downloads needed.`}>
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
+    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="nav.home">Home</a>
+    <span>/</span>
+    <span class="text-slate-700 dark:text-slate-300 font-medium capitalize">{tag} <span data-i18n="cat.games">Games</span></span>
+  </nav>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+      <span class="capitalize">{tag}</span> Games
+    </h1>
+    <p class="text-slate-500 dark:text-slate-400">
+      <span class="font-semibold text-indigo-600 dark:text-indigo-400">{tagGames.length}</span> games tagged with "<span class="font-medium">{tag}</span>" — page {currentPage} of {totalPages}
+    </p>
+  </div>
+
+  <!-- Game Grid -->
+  {firstPage && pageGames.slice(0, 12).map(g => (g as any).image ? (
+    <link rel="preload" as="image" href={preloadSrc((g as any).image, 320)} />
+  ) : null)}
+  <section class="mb-8">
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+      {pageGames.map((game, idx) => (
+        <GameCard
+          slug={(game as any).slug}
+          title={(game as any).title}
+          category={(game as any).category}
+          image={(game as any).image}
+          description={(game as any).shortDescription}
+          iframeUrl={(game as any).iframeUrl}
+          difficulty={(game as any).difficulty}
+          compact={true}
+          priority={currentPage === 1 && idx < 24}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Pagination -->
+  {totalPages > 1 && (
+    <section class="mb-12">
+      <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={`/tags/${tag}`} />
+    </section>
+  )}
+
+  <!-- SEO content -->
+  <section class="mt-12 p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+    <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3">
+      Free <span class="capitalize">{tag}</span> Games Online
+    </h2>
+    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+      Browse our collection of {tagGames.length} free {tag} games. All games are optimized for mobile and desktop,
+      load instantly in your browser, and are completely free to play. No download required, no signup needed.
+    </p>
+  </section>
+</Layout>
