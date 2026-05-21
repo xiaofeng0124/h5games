@@ -167,9 +167,58 @@ body {
   color: #f97316;
 }
 
+@media (max-width: 767px) {
+  .gc-title { font-size: .9375rem; }
+}
+
 @keyframes gc-pulse {
   0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(129,140,248,.4); }
   50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(129,140,248,0); }
+}
+
+/* ========== Image Loading Skeleton / Shimmer ========== */
+/* Animated shimmer overlay on thumb containers while images load */
+.gc-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: gc-shimmer 1.8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+.dark .gc-thumb::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+}
+/* Hide shimmer once image is loaded (img fills container and covers pseudo-element) */
+.gc-thumb img {
+  position: relative;
+  z-index: 3;
+}
+
+@keyframes gc-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Hero card shimmer */
+.hero-gc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: gc-shimmer 1.8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+.dark .hero-gc::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+}
+.hero-gc img {
+  position: relative;
+  z-index: 2;
 }
 
 /* Entrance animation */

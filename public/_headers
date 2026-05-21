@@ -14,3 +14,5 @@
   Cache-Control: no-cache, private
 /search-data-version.json
   Cache-Control: no-cache, private
+/i18n/translations.json
+  Cache-Control: public, max-age=0, s-maxage=3600
