@@ -69,6 +69,26 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
     <link rel="preconnect" href="https://static.cloudflareinsights.com" />
 
     <!-- i18n support -->
+    <script is:inline>
+    (function(){
+      try {
+        var cached = JSON.parse(localStorage.getItem('i18n_cache'));
+        if (cached && cached.translations) {
+          window.__i18nData = cached;
+          var lang = localStorage.getItem('i18n_lang') || 'en';
+          document.documentElement.lang = lang;
+          if (cached.languages) {
+            for (var i = 0; i < cached.languages.length; i++) {
+              if (cached.languages[i].code === lang) {
+                document.documentElement.dir = cached.languages[i].dir || 'ltr';
+                break;
+              }
+            }
+          }
+        }
+      } catch(e) {}
+    })();
+    </script>
 
     <title>{siteTitle}</title>
 
@@ -96,24 +116,24 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
 
   function load(cb) {
     if (trans) { cb(); return; }
-    try {
-      var cached = JSON.parse(localStorage.getItem('i18n_cache'));
-      if (cached && cached.translations && cached.languages) {
-        trans = cached.translations;
-        langs = cached.languages;
-        cb();
-        fetch('/i18n/translations.json?v=1')
-          .then(function(r) { return r.json(); })
-          .then(function(d) {
-            trans = d.translations;
-            langs = d.languages;
-            try { localStorage.setItem('i18n_cache', JSON.stringify(d)); } catch(ex) {}
-            apply(lang);
-          })
-          .catch(function() {});
-        return;
-      }
-    } catch(ex) {}
+    // Use pre-loaded cache from head script if available (synchronous)
+    if (window.__i18nData) {
+      trans = window.__i18nData.translations;
+      langs = window.__i18nData.languages || null;
+      window.__i18nData = null;
+      cb();
+      // Refresh cache in background
+      fetch('/i18n/translations.json?v=1')
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          trans = d.translations;
+          langs = d.languages;
+          try { localStorage.setItem('i18n_cache', JSON.stringify(d)); } catch(ex) {}
+          apply(lang);
+        })
+        .catch(function() {});
+      return;
+    }
     fetch('/i18n/translations.json?v=1')
       .then(function(r) { return r.json(); })
       .then(function(d) {

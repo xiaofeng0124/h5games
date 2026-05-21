@@ -19,6 +19,11 @@
 .line-clamp-1 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
 .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 
+/* i18n elements: prevent CLS when text length changes between languages */
+[data-i18n] {
+  min-height: 1lh;
+}
+
 /* Prose-like styling for blog content */
 .prose { line-height: 1.75; }
 .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
