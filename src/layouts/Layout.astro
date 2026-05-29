@@ -157,6 +157,8 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site).href;
       var text = trans[key][l] || trans[key].en || key;
       var cnt = el.getAttribute('data-i18n-count');
       if (cnt && text.indexOf('{count}') >= 0) text = text.split('{count}').join(cnt);
+      var name = el.getAttribute('data-i18n-name');
+      if (name && text.indexOf('{name}') >= 0) text = text.split('{name}').join(name);
       if (el.getAttribute('data-i18n-attr') === 'placeholder') {
         el.placeholder = text;
       } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {

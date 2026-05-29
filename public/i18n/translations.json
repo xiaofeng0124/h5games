@@ -1466,6 +1466,79 @@
       "ko": "지금 인기",
       "zh": "热门推荐",
       "zh-tw": "熱門推薦"
+    },
+    "about.title": {
+      "en": "About ChillArcade",
+      "es": "Acerca de ChillArcade",
+      "fr": "À propos de ChillArcade",
+      "de": "Über ChillArcade",
+      "pt": "Sobre o ChillArcade",
+      "it": "Informazioni su ChillArcade",
+      "nl": "Over ChillArcade",
+      "pl": "O ChillArcade",
+      "sv": "Om ChillArcade",
+      "ru": "О ChillArcade",
+      "tr": "ChillArcade Hakkında",
+      "ar": "حول ChillArcade",
+      "ja": "ChillArcadeについて",
+      "ko": "ChillArcade 소개",
+      "zh": "关于 ChillArcade",
+      "zh-tw": "關於 ChillArcade"
+    },
+    "about.desc": {
+      "en": "ChillArcade is a free online gaming platform with over 18,000 browser games across 20+ categories including action, puzzle, match-3, adventure, sports, racing, strategy, and more. No downloads, no sign-ups, no paywalls — just click and play. New games are added every week, so there is always something fresh to discover. Whether you have got five minutes to kill or an afternoon to unwind, ChillArcade makes it easy to find your next favorite game and start playing instantly.",
+      "es": "ChillArcade es una plataforma de juegos en línea gratuita con más de 18,000 juegos de navegador en más de 20 categorías, incluyendo acción, puzzle, match-3, aventura, deportes, carreras, estrategia y más. Sin descargas, sin registros, sin muros de pago — solo haz clic y juega. Se añaden nuevos juegos cada semana, siempre hay algo nuevo por descubrir. Ya sea que tengas cinco minutos libres o una tarde para relajarte, ChillArcade te permite encontrar tu próximo juego favorito y empezar a jugar al instante.",
+      "fr": "ChillArcade est une plateforme de jeux en ligne gratuite avec plus de 18 000 jeux navigateur répartis dans plus de 20 catégories, incluant action, puzzle, match-3, aventure, sport, course, stratégie et plus encore. Pas de téléchargement, pas d'inscription, pas de paywall — cliquez et jouez. De nouveaux jeux sont ajoutés chaque semaine, il y a toujours quelque chose de nouveau à découvrir. Que vous ayez cinq minutes à tuer ou un après-midi pour vous détendre, ChillArcade vous permet de trouver votre prochain jeu préféré et de commencer à jouer instantanément.",
+      "de": "ChillArcade ist eine kostenlose Online-Gaming-Plattform mit über 18.000 Browsergames in über 20 Kategorien, darunter Action, Puzzle, Match-3, Abenteuer, Sport, Rennspiele, Strategie und mehr. Keine Downloads, keine Anmeldung, keine Bezahlschranken — einfach klicken und spielen. Jede Woche kommen neue Spiele hinzu, es gibt immer etwas Neues zu entdecken. Egal, ob Sie fünf Minuten Zeit haben oder einen Nachmittag entspannen möchten, ChillArcade macht es Ihnen leicht, Ihr nächstes Lieblingsspiel zu finden und sofort zu spielen.",
+      "pt": "ChillArcade é uma plataforma de jogos online gratuita com mais de 18.000 jogos de navegador em mais de 20 categorias, incluindo ação, puzzle, match-3, aventura, esportes, corrida, estratégia e muito mais. Sem downloads, sem cadastros, sem paywalls — apenas clique e jogue. Novos jogos são adicionados toda semana, sempre há algo novo para descobrir. Se você tem cinco minutos livres ou uma tarde para relaxar, o ChillArcade torna fácil encontrar seu próximo jogo favorito e começar a jogar instantaneamente.",
+      "it": "ChillArcade è una piattaforma di giochi online gratuita con oltre 18.000 giochi browser in più di 20 categorie, tra cui azione, puzzle, match-3, avventura, sport, corsa, strategia e altro. Nessun download, nessuna registrazione, nessun paywall — basta cliccare e giocare. Nuovi giochi vengono aggiunti ogni settimana, c'è sempre qualcosa di nuovo da scoprire. Che tu abbia cinque minuti liberi o un pomeriggio per rilassarti, ChillArcade ti permette di trovare il tuo prossimo gioco preferito e iniziare a giocare immediatamente.",
+      "nl": "ChillArcade is een gratis online gamingplatform met meer dan 18.000 browsergames in meer dan 20 categorieën, waaronder actie, puzzel, match-3, avontuur, sport, racen, strategie en meer. Geen downloads, geen registratie, geen betaalmuren — gewoon klikken en spelen. Er worden elke week nieuwe games toegevoegd, dus er is altijd iets nieuws te ontdekken. Of je nu vijf minuten de tijd hebt of een middag wilt ontspannen, ChillArcade maakt het gemakkelijk om je volgende favoriete game te vinden en direct te spelen.",
+      "pl": "ChillArcade to darmowa platforma do gier online z ponad 18 000 gier przeglądarkowych w ponad 20 kategoriach, w tym akcji, logicznych, match-3, przygodowych, sportowych, wyścigowych, strategicznych i wielu innych. Bez pobierania, bez rejestracji, bez paywalli — po prostu kliknij i graj. Nowe gry są dodawane co tydzień, więc zawsze jest coś nowego do odkrycia. Niezależnie od tego, czy masz pięć minut wolnego, czy popołudnie na relaks, ChillArcade ułatwia znalezienie następnej ulubionej gry i rozpoczęcie gry natychmiast.",
+      "sv": "ChillArcade är en gratis online-spelplattform med över 18 000 webbläsarspel inom över 20 kategorier, inklusive action, pussel, match-3, äventyr, sport, racing, strategi och mer. Inga nedladdningar, inga registreringar, inga betalväggar — bara klicka och spela. Nya spel läggs till varje vecka, så det finns alltid något nytt att upptäcka. Oavsett om du har fem minuter över eller en eftermiddag att koppla av, gör ChillArcade det enkelt att hitta ditt nästa favoritspel och börja spela direkt.",
+      "ru": "ChillArcade — это бесплатная игровая онлайн-платформа с более чем 18 000 браузерных игр в более чем 20 категориях, включая экшн, головоломки, три-в-ряд, приключения, спорт, гонки, стратегии и многое другое. Без скачивания, без регистрации, без платных подписок — просто нажмите и играйте. Новые игры добавляются каждую неделю, так что всегда есть что-то новое. Есть ли у вас пять минут или целый день, ChillArcade поможет вам найти следующую любимую игру и начать играть мгновенно.",
+      "tr": "ChillArcade, 20'den fazla kategoride 18.000'den fazla tarayıcı oyunu sunan ücretsiz bir çevrimiçi oyun platformudur. Aksiyon, bulmaca, match-3, macera, spor, yarış, strateji ve daha fazlası. İndirme yok, kayıt yok, ödeme duvarı yok — sadece tıkla ve oyna. Her hafta yeni oyunlar eklenir, her zaman keşfedilecek yeni bir şey vardır. İster beş dakikanız olsun ister bir öğleden sonranız, ChillArcade bir sonraki favori oyununuzu bulmayı ve hemen oynamaya başlamayı kolaylaştırır.",
+      "ar": "ChillArcade هي منصة ألعاب مجانية عبر الإنترنت تضم أكثر من 18,000 لعبة متصفح في أكثر من 20 فئة، بما في ذلك الأكشن والألغاز والمطابقة الثلاثية والمغامرة والرياضة والسباقات والاستراتيجية والمزيد. لا تنزيل، لا تسجيل، لا جدران دفع — فقط اضغط والعب. تتم إضافة ألعاب جديدة كل أسبوع، لذا هناك دائمًا شيء جديد لاكتشافه. سواء كان لديك خمس دقائق أو بعد ظهر كامل للاسترخاء، ChillArcade تجعل من السهل العثور على لعبتك المفضلة التالية والبدء في اللعب فورًا.",
+      "ja": "ChillArcade は、アクション、パズル、マッチ3、アドベンチャー、スポーツ、レーシング、ストラテジーなど、20以上のカテゴリーにわたる18,000以上のブラウザゲームを提供する無料のオンラインゲームプラットフォームです。ダウンロード不要、登録不要、課金なし — クリックするだけですぐにプレイ。毎週新しいゲームが追加され、常に新しい発見があります。5分の空き時間でも、午後いっぱいのんびりすごしたいときでも、ChillArcade なら次のお気に入りのゲームをすぐに見つけてプレイを始められます。",
+      "ko": "ChillArcade는 액션, 퍼즐, 매치-3, 어드벤처, 스포츠, 레이싱, 전략 등 20개 이상의 카테고리에 걸친 18,000개 이상의 브라우저 게임을 제공하는 무료 온라인 게임 플랫폼입니다. 다운로드 불필요, 회원가입 불필요, 유료 장벽 없음 — 클릭만 하면 플레이 가능. 매주 새로운 게임이 추가되어 항상 새로운 발견이 기다리고 있습니다. 5분의 짧은 시간이든 오후 전체를 여유롭게 보내고 싶을 때든, ChillArcade는 다음 즐겨찾기 게임을 쉽게 찾아 즉시 플레이할 수 있게 해줍니다.",
+      "zh": "ChillArcade 是一个免费在线游戏平台，拥有超过 18,000 款网页游戏，涵盖动作、益智、三消、冒险、体育、竞速、策略等 20 多种分类。无需下载，无需注册，无付费墙 — 点开即玩。每周都有新游戏上线，总有新鲜内容等你发现。无论你是想打发五分钟还是放松一个下午，ChillArcade 都能让你轻松找到喜欢的游戏并立刻开始游玩。",
+      "zh-tw": "ChillArcade 是一個免費在線遊戲平台，擁有超過 18,000 款網頁遊戲，涵蓋動作、益智、三消、冒險、體育、競速、策略等 20 多種分類。無需下載，無需註冊，無付費牆 — 點開即玩。每週都有新遊戲上線，總有新鮮內容等你發現。無論你是想打發五分鐘還是放鬆一個下午，ChillArcade 都能讓你輕鬆找到喜歡的遊戲並立刻開始遊玩。"
+    },
+    "seo.category.heading": {
+      "en": "Free {name} Games Online",
+      "fr": "Jeux de {name} gratuits en ligne",
+      "nl": "Gratis {name} spelletjes online",
+      "zh": "免费在线{name}游戏",
+      "zh-tw": "免費在線{name}遊戲"
+    },
+    "seo.category.desc": {
+      "en": "Play the best free {name} games right in your browser. No download required, no signup needed. All {name} games are optimized for mobile and desktop, and are completely free to play. Bookmark your favorites and come back anytime!",
+      "fr": "Jouez aux meilleurs jeux de {name} gratuits directement dans votre navigateur. Pas de téléchargement, pas d'inscription nécessaire. Tous les jeux de {name} sont optimisés pour mobile et desktop, et sont entièrement gratuits. Ajoutez vos favoris aux signets et revenez quand vous voulez !",
+      "nl": "Speel de beste gratis {name} spelletjes direct in je browser. Geen download nodig, geen registratie vereist. Alle {name} spelletjes zijn geoptimaliseerd voor mobiel en desktop en zijn volledig gratis te spelen. Voeg je favorieten toe aan je bladwijzers en kom wanneer je wilt terug!",
+      "zh": "直接在浏览器中畅玩最佳的免费{name}游戏。无需下载，无需注册。所有{name}游戏都针对移动端和桌面端优化，完全免费。收藏你喜欢的游戏，随时回来玩！",
+      "zh-tw": "直接在瀏覽器中暢玩最佳的免費{name}遊戲。無需下載，無需註冊。所有{name}遊戲都針對行動端和桌面端優化，完全免費。收藏你喜歡的遊戲，隨時回來玩！"
+    },
+    "about.feedback_title": {
+      "en": "We'd Love Your Feedback",
+      "es": "Nos Encantaría Saber Tu Opinión",
+      "fr": "Nous Aimons Recevoir Vos Avis",
+      "de": "Wir Würden Uns über Ihr Feedback Freuen",
+      "pt": "Adoraríamos Sua Opinião",
+      "it": "Ci Piacerebbe Ricevere il Tuo Feedback",
+      "nl": "We Horen Graag Jouw Feedback",
+      "pl": "Chcielibyśmy Poznać Twoją Opinię",
+      "sv": "Vi Vill Gärna Höra Din Åsikt",
+      "ru": "Мы Будем Рады Вашему Мнению",
+      "tr": "Geri Bildiriminizi Çok İsteriz",
+      "ar": "يسعدنا سماع ملاحظاتك",
+      "ja": "ご意見をおきかせください",
+      "ko": "의견을 듣고 싶습니다",
+      "zh": "我们期待您的反馈",
+      "zh-tw": "我們期待您的反饋"
+    },
+    "about.feedback_desc": {
+      "en": "If you run into any issues while using the site or have feedback on a game, please let us know through our contact form. We'll look into it and get it sorted as soon as possible. Improving your experience is what drives us — and we're grateful for your support and love for ChillArcade.",
+      "zh": "如果您在使用网站时遇到任何问题或对某款游戏有反馈意见，请通过我们的联系表单告知我们。我们会尽快查看并解决。提升您的体验是我们的动力 — 感谢您对 ChillArcade 的支持与喜爱！",
+      "zh-tw": "如果您在使用網站時遇到任何問題或對某款遊戲有反饋意見，請通過我們的聯繫表單告知我們。我們會盡快查看並解決。提升您的體驗是我們的動力 — 感謝您對 ChillArcade 的支持與喜愛！"
     }
   }
 }

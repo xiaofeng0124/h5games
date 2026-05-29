@@ -153,10 +153,14 @@ const firstPage = currentPage === 1;
   <!-- SEO text (only on page 1) -->
   {currentPage === 1 && (
     <section class="mt-8 p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
-      <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3">
+      <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3"
+          data-i18n="seo.category.heading"
+          data-i18n-name={category?.name || categorySlug}>
         Free {category?.name || categorySlug} Games Online
       </h2>
-      <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="text-slate-600 dark:text-slate-300 leading-relaxed"
+         data-i18n="seo.category.desc"
+         data-i18n-name={category?.name || categorySlug}>
         Play the best free {category?.name || categorySlug} games right in your browser.
         No download required, no signup needed. All {categorySlug} games are optimized for mobile and desktop,
         and are completely free to play. Bookmark your favorites and come back anytime!
